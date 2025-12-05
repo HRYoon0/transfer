@@ -43,6 +43,13 @@
         .alert-info { background: #d1ecf1; border: 1px solid #17a2b8; color: #0c5460; }
         .help-text { font-size: 12px; color: #6c757d; margin-top: 5px; }
         .hidden { display: none; }
+        /* 검색 가능한 드롭다운 스타일 */
+        .searchable-select { position: relative; }
+        .searchable-select input { width: 100%; }
+        .searchable-dropdown { position: absolute; top: 100%; left: 0; right: 0; max-height: 300px; overflow-y: auto; background: white; border: 2px solid #667eea; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 1000; margin-top: 5px; }
+        .searchable-dropdown-item { padding: 10px 12px; cursor: pointer; transition: all 0.2s; }
+        .searchable-dropdown-item:hover { background: #f0f4ff; }
+        .searchable-dropdown-item.selected { background: #667eea; color: white; }
         @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .action-buttons { flex-direction: column; } }
     </style>
 </head>
@@ -64,6 +71,79 @@
             <!-- 1. 기본 정보 -->
             <div class="section">
                 <h2 class="section-title">1. 기본 정보</h2>
+
+                <!-- 전보 정보 -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>전보구분 <span class="required">*</span></label>
+                        <select id="transferType" onchange="handleTransferTypeChange()">
+                            <option value="">선택하세요</option>
+                            <option value="희망">희망</option>
+                            <option value="만기">만기</option>
+                            <option value="우선">우선</option>
+                            <option value="초빙">초빙</option>
+                            <option value="비정기">비정기</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>1희망 <span class="required">*</span></label>
+                        <div class="searchable-select">
+                            <input type="text" id="firstChoice" placeholder="검색 또는 선택..." autocomplete="off">
+                            <div id="firstChoiceDropdown" class="searchable-dropdown hidden"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>2희망</label>
+                        <div class="searchable-select">
+                            <input type="text" id="secondChoice" placeholder="검색 또는 선택..." autocomplete="off">
+                            <div id="secondChoiceDropdown" class="searchable-dropdown hidden"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>3희망</label>
+                        <div class="searchable-select">
+                            <input type="text" id="thirdChoice" placeholder="검색 또는 선택..." autocomplete="off">
+                            <div id="thirdChoiceDropdown" class="searchable-dropdown hidden"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 통합 희망 섹션 (1희망에 통합 선택 시에만 표시) -->
+                <div id="integratedSection" class="hidden" style="margin-top: 20px; margin-bottom: 30px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">통합 희망 상세</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>통합 1희망</label>
+                            <select id="integrated1" onchange="updateIntegratedOptions()">
+                                <option value="">선택하세요</option>
+                                <option value="이천">이천</option>
+                                <option value="원동">원동</option>
+                                <option value="좌삼">좌삼</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>통합 2희망</label>
+                            <select id="integrated2" onchange="updateIntegratedOptions()">
+                                <option value="">선택하세요</option>
+                                <option value="이천">이천</option>
+                                <option value="원동">원동</option>
+                                <option value="좌삼">좌삼</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>통합 3희망</label>
+                            <select id="integrated3">
+                                <option value="">선택하세요</option>
+                                <option value="이천">이천</option>
+                                <option value="원동">원동</option>
+                                <option value="좌삼">좌삼</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 기본 정보 -->
+                <h3 style="color: #667eea; margin: 30px 0 15px 0;">개인 정보</h3>
                 <div class="form-grid">
                     <div class="form-group">
                         <label>성명 <span class="required">*</span></label>
@@ -84,9 +164,10 @@
                     </div>
                     <div class="form-group">
                         <label>현임교 <span class="required">*</span></label>
-                        <select id="currentSchool">
-                            <option value="">선택하세요</option>
-                        </select>
+                        <div class="searchable-select">
+                            <input type="text" id="currentSchool" placeholder="검색 또는 선택..." autocomplete="off">
+                            <div id="currentSchoolDropdown" class="searchable-dropdown hidden"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>현임교근무연수 <span class="required">*</span></label>
@@ -139,83 +220,9 @@
                 </div>
             </div>
 
-            <!-- 2. 전보 정보 -->
+            <!-- 2. 경력 사항 -->
             <div class="section">
-                <h2 class="section-title">2. 전보 정보</h2>
-                <div class="alert alert-info">
-                    <strong>안내:</strong> 1희망~3희망은 서로 다른 학교여야 합니다. 통합 선택 시 통합 1~3희망도 서로 달라야 합니다.
-                </div>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>전보구분 <span class="required">*</span></label>
-                        <select id="transferType">
-                            <option value="">선택하세요</option>
-                            <option value="희망">희망</option>
-                            <option value="만기">만기</option>
-                            <option value="우선">우선</option>
-                            <option value="초빙">초빙</option>
-                            <option value="비정기">비정기</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>1희망 <span class="required">*</span></label>
-                        <select id="firstChoice" onchange="toggleIntegratedSection()">
-                            <option value="">선택하세요</option>
-                            <option value="통합">통합</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>2희망</label>
-                        <select id="secondChoice">
-                            <option value="">선택하세요</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>3희망</label>
-                        <select id="thirdChoice">
-                            <option value="">선택하세요</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- 통합 희망 섹션 (1희망에 통합 선택 시에만 표시) -->
-                <div id="integratedSection" class="hidden" style="margin-top: 20px;">
-                    <h3 style="color: #667eea; margin-bottom: 15px;">통합 희망 상세</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>통합 1희망</label>
-                            <select id="integrated1">
-                                <option value="">선택하세요</option>
-                                <option value="이천">이천</option>
-                                <option value="원동">원동</option>
-                                <option value="좌삼">좌삼</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>통합 2희망</label>
-                            <select id="integrated2">
-                                <option value="">선택하세요</option>
-                                <option value="이천">이천</option>
-                                <option value="원동">원동</option>
-                                <option value="좌삼">좌삼</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>통합 3희망</label>
-                            <select id="integrated3">
-                                <option value="">선택하세요</option>
-                                <option value="이천">이천</option>
-                                <option value="원동">원동</option>
-                                <option value="좌삼">좌삼</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. 경력 사항 -->
-            <div class="section">
-                <h2 class="section-title">3. 경력 사항 (최근 4년)</h2>
+                <h2 class="section-title">2. 경력 사항 (최근 4년)</h2>
                 <div class="alert alert-warning">
                     <strong>주의:</strong> 최근 근무기간부터 4년간 기재. 휴직기간이 있으면 전후로 구분하여 입력하고 휴직기간만큼 소급하여 이전 근무경력 포함.
                 </div>
@@ -223,9 +230,9 @@
                 <button class="btn btn-add" onclick="addCareer()">+ 경력 추가</button>
             </div>
 
-            <!-- 4. 가산점 -->
+            <!-- 3. 가산점 -->
             <div class="section">
-                <h2 class="section-title">4. 가산점 (최근 4년 이내 현임교 실적)</h2>
+                <h2 class="section-title">3. 가산점 (최근 4년 이내 현임교 실적)</h2>
                 <div class="alert alert-info">
                     <strong>순서:</strong> 표창 → 근무실적 → 연구실적 → 우우조건 순으로 입력. 같은 종별 내에서는 번호 순서대로 입력.
                 </div>
@@ -233,9 +240,9 @@
                 <button class="btn btn-add" onclick="addBonus()">+ 가산점 추가</button>
             </div>
 
-            <!-- 5. 교육실습협력학교 가산점 -->
+            <!-- 4. 교육실습협력학교 가산점 -->
             <div class="section">
-                <h2 class="section-title">5. 교육실습협력학교 가산점</h2>
+                <h2 class="section-title">4. 교육실습협력학교 가산점</h2>
                 <div class="alert alert-warning">
                     <strong>중요:</strong> 제11조 가산점 실적과 중복될 경우, 제19조를 우선하되 중복 사용 불가. 만기자가 일반 학교로 전보 시에는 제11조 조항에 따름.
                 </div>
@@ -285,9 +292,9 @@
                 </div>
             </div>
 
-            <!-- 6. 추가 입력 항목 -->
+            <!-- 5. 추가 입력 항목 -->
             <div class="section">
-                <h2 class="section-title">6. 추가 입력 항목</h2>
+                <h2 class="section-title">5. 추가 입력 항목</h2>
                 <div class="form-grid">
                     <div class="form-group">
                         <label>과원 전보 내신자 희망</label>
@@ -349,9 +356,9 @@
                 </div>
             </div>
 
-            <!-- 7. 점수 계산 결과 -->
+            <!-- 6. 점수 계산 결과 -->
             <div class="section">
-                <h2 class="section-title">7. 점수 계산</h2>
+                <h2 class="section-title">6. 점수 계산</h2>
                 <div class="score-display">
                     <div class="score-item">
                         <span>학교경력점:</span>
@@ -855,21 +862,99 @@
         });
 
         function initSchoolSelects() {
-            ['currentSchool', 'firstChoice', 'secondChoice', 'thirdChoice'].forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (selectId === 'firstChoice') {
-                    const integOption = document.createElement('option');
-                    integOption.value = '통합';
-                    integOption.textContent = '통합';
-                    select.appendChild(integOption);
-                }
-                schools.forEach(school => {
-                    const option = document.createElement('option');
-                    option.value = school;
-                    option.textContent = school;
-                    select.appendChild(option);
-                });
+            // 이천, 원동, 좌삼은 통합에서만 선택 가능하므로 1~3희망에서는 제외
+            const schoolsWithoutIntegrated = schools.filter(school =>
+                !['이천', '원동', '좌삼'].includes(school)
+            );
+            const schoolsForChoice = [...schoolsWithoutIntegrated, '통합', '양산교육지원청'];
+            const schoolsWithEdu = [...schools, '양산교육지원청'];
+
+            // 현임교는 검색 가능한 input으로 설정 (schools + 양산교육지원청)
+            setupSearchableSelect('currentSchool', schoolsWithEdu, () => {});
+
+            // 1~3희망은 검색 가능한 input으로 설정 (이천,원동,좌삼 제외 + 통합, 양산교육지원청 포함)
+            setupSearchableSelect('firstChoice', schoolsForChoice, () => {
+                toggleIntegratedSection();
+                updateChoiceOptions();
             });
+            setupSearchableSelect('secondChoice', schoolsForChoice, () => {
+                updateChoiceOptions();
+            });
+            setupSearchableSelect('thirdChoice', schoolsForChoice, () => {});
+
+            // 초기 로드 시 선택된 값이 있다면 옵션 업데이트
+            updateChoiceOptions();
+        }
+
+        function setupSearchableSelect(inputId, options, onChange) {
+            const input = document.getElementById(inputId);
+            const dropdown = document.getElementById(inputId + 'Dropdown');
+            let selectedValue = '';
+
+            // input 포커스 시 드롭다운 표시
+            input.addEventListener('focus', function() {
+                showDropdown(input, dropdown, options, inputId);
+            });
+
+            // input 입력 시 필터링
+            input.addEventListener('input', function() {
+                const searchText = this.value.toLowerCase();
+                showDropdown(input, dropdown, options, inputId, searchText);
+            });
+
+            // input 외부 클릭 시 드롭다운 숨김
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+
+            // 값 변경 콜백 저장
+            input.onchange = onChange;
+        }
+
+        function showDropdown(input, dropdown, options, inputId, searchText = '') {
+            dropdown.innerHTML = '';
+
+            // 제외할 항목 가져오기
+            let excludedItems = [];
+            if (inputId === 'secondChoice') {
+                excludedItems = [document.getElementById('firstChoice').value];
+            } else if (inputId === 'thirdChoice') {
+                excludedItems = [
+                    document.getElementById('firstChoice').value,
+                    document.getElementById('secondChoice').value
+                ];
+            }
+
+            // 필터링
+            const filtered = options.filter(school => {
+                if (excludedItems.includes(school) || school === '') return false;
+                if (searchText) {
+                    return school.toLowerCase().includes(searchText);
+                }
+                return true;
+            });
+
+            // 드롭다운 아이템 생성
+            filtered.forEach(school => {
+                const item = document.createElement('div');
+                item.className = 'searchable-dropdown-item';
+                item.textContent = school;
+                item.addEventListener('click', function() {
+                    input.value = school;
+                    dropdown.classList.add('hidden');
+                    if (input.onchange) input.onchange();
+                });
+                dropdown.appendChild(item);
+            });
+
+            dropdown.classList.remove('hidden');
+        }
+
+        function updateChoiceOptions() {
+            // 검색 가능한 드롭다운에서는 실시간으로 필터링됨
+            // 이 함수는 기존 호출 호환성을 위해 유지
         }
 
         function toggleIntegratedSection() {
@@ -877,9 +962,72 @@
             const section = document.getElementById('integratedSection');
             if (firstChoice === '통합') {
                 section.classList.remove('hidden');
+                updateIntegratedOptions();
             } else {
                 section.classList.add('hidden');
             }
+        }
+
+        function handleTransferTypeChange() {
+            const transferType = document.getElementById('transferType').value;
+            const secondChoice = document.getElementById('secondChoice');
+            const thirdChoice = document.getElementById('thirdChoice');
+
+            if (transferType === '희망') {
+                // 희망 선택 시 2, 3희망 비활성화 및 초기화
+                secondChoice.disabled = true;
+                thirdChoice.disabled = true;
+                secondChoice.value = '';
+                thirdChoice.value = '';
+                secondChoice.style.backgroundColor = '#f0f0f0';
+                thirdChoice.style.backgroundColor = '#f0f0f0';
+            } else {
+                // 다른 전보구분 선택 시 2, 3희망 활성화
+                secondChoice.disabled = false;
+                thirdChoice.disabled = false;
+                secondChoice.style.backgroundColor = '';
+                thirdChoice.style.backgroundColor = '';
+                updateChoiceOptions();
+            }
+        }
+
+        function updateIntegratedOptions() {
+            const integrated1 = document.getElementById('integrated1').value;
+            const integrated2 = document.getElementById('integrated2').value;
+            const integrated2Select = document.getElementById('integrated2');
+            const integrated3Select = document.getElementById('integrated3');
+
+            const integratedSchools = ['이천', '원동', '좌삼'];
+
+            // 통합 2희망 업데이트: 통합 1희망에서 선택한 것 제외
+            const currentIntegrated2Value = integrated2;
+            integrated2Select.innerHTML = '<option value="">선택하세요</option>';
+            integratedSchools.forEach(school => {
+                if (school !== integrated1) {
+                    const option = document.createElement('option');
+                    option.value = school;
+                    option.textContent = school;
+                    if (school === currentIntegrated2Value) {
+                        option.selected = true;
+                    }
+                    integrated2Select.appendChild(option);
+                }
+            });
+
+            // 통합 3희망 업데이트: 통합 1희망, 2희망에서 선택한 것 제외
+            const currentIntegrated3Value = integrated3Select.value;
+            integrated3Select.innerHTML = '<option value="">선택하세요</option>';
+            integratedSchools.forEach(school => {
+                if (school !== integrated1 && school !== integrated2) {
+                    const option = document.createElement('option');
+                    option.value = school;
+                    option.textContent = school;
+                    if (school === currentIntegrated3Value) {
+                        option.selected = true;
+                    }
+                    integrated3Select.appendChild(option);
+                }
+            });
         }
 
         function addCareer() {
