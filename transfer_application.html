@@ -1,0 +1,3672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026학년도 관내전보 내신자 조사서 작성</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Malgun Gothic', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .header p { font-size: 14px; opacity: 0.9; }
+        .content { padding: 30px; }
+        .section { margin-bottom: 40px; }
+        .section-title { font-size: 20px; color: #667eea; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #667eea; display: flex; align-items: center; }
+        .section-title::before { content: '●'; margin-right: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 14px; font-weight: bold; color: #333; margin-bottom: 8px; }
+        .form-group label .required { color: #e74c3c; }
+        .form-group input, .form-group select, .form-group textarea { padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; transition: all 0.3s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .item-box { background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 2px solid #e0e0e0; position: relative; }
+        .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .item-number { font-weight: bold; color: #667eea; font-size: 16px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.3s; font-weight: bold; }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3); }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-success:hover { background: #229954; }
+        .btn-add { width: 100%; margin-top: 10px; padding: 15px; background: white; border: 2px dashed #667eea; color: #667eea; }
+        .btn-add:hover { background: #f8f9ff; }
+        .action-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
+        .score-display { background: #f0f7ff; padding: 20px; border-radius: 12px; border: 2px solid #667eea; }
+        .score-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0; }
+        .score-item:last-child { border-bottom: none; font-weight: bold; font-size: 18px; color: #667eea; }
+        .alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .alert-warning { background: #fff3cd; border: 1px solid #ffc107; color: #856404; }
+        .alert-info { background: #d1ecf1; border: 1px solid #17a2b8; color: #0c5460; }
+        .help-text { font-size: 12px; color: #6c757d; margin-top: 5px; }
+        .hidden { display: none; }
+        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .action-buttons { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 style="margin: 0 0 10px 0; font-size: 28px;">2026학년도 관내전보 내신자 조사서</h1>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                <p style="margin: 0; font-size: 14px; opacity: 0.9;">양산교육지원청 교육공무원 인사관리기준</p>
+                <a href="https://works.do/GbfcAqT" target="_blank" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.3); white-space: nowrap;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">📥 파일 다운로드</a>
+            </div>
+            <div style="text-align: right; font-size: 12px; opacity: 0.9; margin-top: 15px;">
+                <p style="margin: 0 0 3px 0;">작성자: 황산초등학교 윤희류</p>
+                <p style="margin: 0;">오류 및 개선사항 문의: tmdsh2000@naver.com 혹은 내부메일</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- 1. 기본 정보 -->
+            <div class="section">
+                <h2 class="section-title">1. 기본 정보</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>성명 <span class="required">*</span></label>
+                        <input type="text" id="name" placeholder="홍길동">
+                    </div>
+                    <div class="form-group">
+                        <label>성별 <span class="required">*</span></label>
+                        <select id="gender">
+                            <option value="">선택하세요</option>
+                            <option value="남">남</option>
+                            <option value="여">여</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>생년월일 <span class="required">*</span></label>
+                        <input type="text" id="birthdate" placeholder="19880311" oninput="formatDate(this); updateWoo4Birthdate();">
+                        <div class="help-text">숫자 8자리 입력 (예: 19880311 → 1988.03.11)</div>
+                    </div>
+                    <div class="form-group">
+                        <label>현임교 <span class="required">*</span></label>
+                        <select id="currentSchool">
+                            <option value="">선택하세요</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>현임교근무연수 <span class="required">*</span></label>
+                        <input type="text" id="currentSchoolYears" placeholder="4.06">
+                        <div class="help-text">형식: y.mm (예: 4.06 = 4년 6개월, 휴직/파견기간 제외)</div>
+                    </div>
+                    <div class="form-group">
+                        <label>생활근거지 <span class="required">*</span></label>
+                        <input type="text" id="residence" placeholder="양산중앙">
+                        <div class="help-text">예: 양산중앙, 부산화명, 양산동면, 울산언양</div>
+                    </div>
+                    <div class="form-group">
+                        <label>소지자격 <span class="required">*</span></label>
+                        <select id="qualification">
+                            <option value="">선택하세요</option>
+                            <option value="초1정">초1정</option>
+                            <option value="초2정">초2정</option>
+                            <option value="초등특수1정">초등특수1정</option>
+                            <option value="초등특수2정">초등특수2정</option>
+                            <option value="보건1급">보건1급</option>
+                            <option value="보건2급">보건2급</option>
+                            <option value="사서1급">사서1급</option>
+                            <option value="사서2급">사서2급</option>
+                            <option value="상담1급">상담1급</option>
+                            <option value="상담2급">상담2급</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>타시군내신</label>
+                        <input type="text" id="otherCity" placeholder="창원, 진주 등">
+                        <div class="help-text">타시군내신 낸 경우만 지역명 2자 입력</div>
+                    </div>
+                    <div class="form-group">
+                        <label>타시도내신</label>
+                        <input type="text" id="otherProvince" placeholder="서울, 경기 등">
+                        <div class="help-text">타시도내신 낸 경우만 지역명 2자 입력</div>
+                    </div>
+                    <div class="form-group">
+                        <label>승진후보자 <span class="required">*</span></label>
+                        <select id="promotionCandidate">
+                            <option value="">선택하세요</option>
+                            <option value="예">예</option>
+                            <option value="아니오">아니오</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>비고</label>
+                        <textarea id="remarks" rows="2" placeholder="과원1, 별도정원, 전보유예, 명예퇴직 등"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 전보 정보 -->
+            <div class="section">
+                <h2 class="section-title">2. 전보 정보</h2>
+                <div class="alert alert-info">
+                    <strong>안내:</strong> 1희망~3희망은 서로 다른 학교여야 합니다. 통합 선택 시 통합 1~3희망도 서로 달라야 합니다.
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>전보구분 <span class="required">*</span></label>
+                        <select id="transferType">
+                            <option value="">선택하세요</option>
+                            <option value="희망">희망</option>
+                            <option value="만기">만기</option>
+                            <option value="우선">우선</option>
+                            <option value="초빙">초빙</option>
+                            <option value="비정기">비정기</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>1희망 <span class="required">*</span></label>
+                        <select id="firstChoice" onchange="toggleIntegratedSection()">
+                            <option value="">선택하세요</option>
+                            <option value="통합">통합</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>2희망</label>
+                        <select id="secondChoice">
+                            <option value="">선택하세요</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>3희망</label>
+                        <select id="thirdChoice">
+                            <option value="">선택하세요</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 통합 희망 섹션 (1희망에 통합 선택 시에만 표시) -->
+                <div id="integratedSection" class="hidden" style="margin-top: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">통합 희망 상세</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>통합 1희망</label>
+                            <select id="integrated1">
+                                <option value="">선택하세요</option>
+                                <option value="이천">이천</option>
+                                <option value="원동">원동</option>
+                                <option value="좌삼">좌삼</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>통합 2희망</label>
+                            <select id="integrated2">
+                                <option value="">선택하세요</option>
+                                <option value="이천">이천</option>
+                                <option value="원동">원동</option>
+                                <option value="좌삼">좌삼</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>통합 3희망</label>
+                            <select id="integrated3">
+                                <option value="">선택하세요</option>
+                                <option value="이천">이천</option>
+                                <option value="원동">원동</option>
+                                <option value="좌삼">좌삼</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 경력 사항 -->
+            <div class="section">
+                <h2 class="section-title">3. 경력 사항 (최근 4년)</h2>
+                <div class="alert alert-warning">
+                    <strong>주의:</strong> 최근 근무기간부터 4년간 기재. 휴직기간이 있으면 전후로 구분하여 입력하고 휴직기간만큼 소급하여 이전 근무경력 포함.
+                </div>
+                <div id="careerList"></div>
+                <button class="btn btn-add" onclick="addCareer()">+ 경력 추가</button>
+            </div>
+
+            <!-- 4. 가산점 -->
+            <div class="section">
+                <h2 class="section-title">4. 가산점 (최근 4년 이내 현임교 실적)</h2>
+                <div class="alert alert-info">
+                    <strong>순서:</strong> 표창 → 근무실적 → 연구실적 → 우우조건 순으로 입력. 같은 종별 내에서는 번호 순서대로 입력.
+                </div>
+                <div id="bonusList"></div>
+                <button class="btn btn-add" onclick="addBonus()">+ 가산점 추가</button>
+            </div>
+
+            <!-- 5. 교육실습협력학교 가산점 -->
+            <div class="section">
+                <h2 class="section-title">5. 교육실습협력학교 가산점</h2>
+                <div class="alert alert-warning">
+                    <strong>중요:</strong> 제11조 가산점 실적과 중복될 경우, 제19조를 우선하되 중복 사용 불가. 만기자가 일반 학교로 전보 시에는 제11조 조항에 따름.
+                </div>
+
+                <!-- 1~3. 수업 실적 (최대 3개) -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="font-weight: bold; margin-bottom: 10px; display: block;">1~3. 수업 실적 (최대 3개, 각 2.00점)</label>
+                    <div id="practiceClassList"></div>
+                    <button class="btn btn-add" onclick="addPracticeClass()" id="addPracticeClassBtn">+ 수업 실적 추가</button>
+                    <div style="margin-top: 10px;">
+                        <label>점수: </label>
+                        <input type="text" id="practiceClassScore" readonly style="width: 80px; background: #f0f0f0;">
+                    </div>
+                </div>
+
+                <!-- 4. 연구 실적 -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="font-weight: bold;">4. 연구 실적 (2.00점)</label>
+                    <input type="text" id="practiceResearchContent" placeholder="내용 입력">
+                    <input type="text" id="practiceResearchDate" placeholder="날짜 (예: 20071105)" oninput="formatDate(this); calculatePracticeScore();">
+                    <div style="margin-top: 10px;">
+                        <label>점수: </label>
+                        <input type="text" id="practiceResearchScore" readonly style="width: 80px; background: #f0f0f0;">
+                    </div>
+                </div>
+
+                <!-- 5. 미래교육 실적 -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="font-weight: bold;">5. 미래교육 실적 (2.00점)</label>
+                    <input type="text" id="practiceFutureContent" placeholder="내용 입력">
+                    <input type="text" id="practiceFuturePeriod" placeholder="기간 (예: 2022030120230228)" oninput="formatPeriod(this); calculatePracticeScore();">
+                    <div style="margin-top: 10px;">
+                        <label>점수: </label>
+                        <input type="text" id="practiceFutureScore" readonly style="width: 80px; background: #f0f0f0;">
+                    </div>
+                </div>
+
+                <!-- 6. 교육력 제고 실적 -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="font-weight: bold;">6. 교육력 제고 실적 (2.00점)</label>
+                    <input type="text" id="practiceImprovementContent" placeholder="내용 입력">
+                    <input type="text" id="practiceImprovementPeriod" placeholder="기간 (예: 2019030120200229)" oninput="formatPeriod(this); calculatePracticeScore();">
+                    <div style="margin-top: 10px;">
+                        <label>점수: </label>
+                        <input type="text" id="practiceImprovementScore" readonly style="width: 80px; background: #f0f0f0;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. 추가 입력 항목 -->
+            <div class="section">
+                <h2 class="section-title">6. 추가 입력 항목</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>과원 전보 내신자 희망</label>
+                        <select id="overStaffHope">
+                            <option value="">해당 없음</option>
+                            <option value="과원이 해소될 경우, 희망학교 전보희망">과원이 해소될 경우, 희망학교 전보희망</option>
+                            <option value="과원이 해소될 경우, 현임교 계속 근무 희망">과원이 해소될 경우, 현임교 계속 근무 희망</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>전보우선 사유</label>
+                        <select id="transferPriorityReason">
+                            <option value="">해당 없음</option>
+                            <option value="연구·시범학교 운영과 체육 진흥 등 교육 시책 추진상 학교장의 요청에 의하여 특히 필요하다고 인정되는 자">1. 연구·시범학교 운영과 체육 진흥 등 교육 시책 추진상 학교장의 요청에 의하여 특히 필요하다고 인정되는 자</option>
+                            <option value="정원의 변경으로 인한 과원이 발생한 경우, 비경합지에 우선 전보할 수 있다.">2. 정원의 변경으로 인한 과원이 발생한 경우, 비경합지에 우선 전보할 수 있다.</option>
+                            <option value="특수교육지원센터에서 3년 이상 근무한 특수교사">3. 특수교육지원센터에서 3년 이상 근무한 특수교사</option>
+                            <option value="교육지원청 Wee센터에서 4년 이상 근무한 전문상담교사">4. 교육지원청 Wee센터에서 4년 이상 근무한 전문상담교사</option>
+                            <option value="공모교장 임기가 만료되어 교사로 임용되는 자">5. 공모교장 임기가 만료되어 교사로 임용되는 자</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>전보유예 사유</label>
+                        <select id="transferDeferReason">
+                            <option value="">해당 없음</option>
+                            <option value="도 지정 이상의 연구·실험·시범학교 근무자로서 연구가 완료되지 아니한 학교의 교원 중 교감, 업무 주무 교사">1. 도 지정 이상의 연구·실험·시범학교 근무자로서 연구가 완료되지 아니한 학교의 교원 중 교감, 업무 주무 교사</option>
+                            <option value="정년퇴임 1년 이내인 교감, 교사">2. 정년퇴임 1년 이내인 교감, 교사</option>
+                            <option value="특수학급 담당 교사(단, 특수교사 자격증 소지자로서 전보 희망자가 없을 경우에 한함)">3. 특수학급 담당 교사(단, 특수교사 자격증 소지자로서 전보 희망자가 없을 경우에 한함)</option>
+                            <option value="학교경영 상 꼭 필요한 특수영역의 우수 교사">4. 학교경영 상 꼭 필요한 특수영역의 우수 교사</option>
+                            <option value="전국소년체육대회 금메달 획득 지도교사 및 전국소년체전 단체종목 우승학교 교감">5. 전국소년체육대회 금메달 획득 지도교사 및 전국소년체전 단체종목 우승학교 교감</option>
+                            <option value="행복(나눔)학교 운영상 꼭 필요한 핵심 교사(2명 이내)">6. 행복(나눔)학교 운영상 꼭 필요한 핵심 교사(2명 이내)</option>
+                            <option value="다자녀 교원(3자녀 이상) 중 미취학 아동이 있는 교감, 교사">7. 다자녀 교원(3자녀 이상) 중 미취학 아동이 있는 교감, 교사</option>
+                            <option value="교육전문직 선발 공개전형 최종 합격 후 임용 발령을 받지 아니한 교사">8. 교육전문직 선발 공개전형 최종 합격 후 임용 발령을 받지 아니한 교사</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>부부 교직원 성명</label>
+                        <input type="text" id="spouseName">
+                    </div>
+                    <div class="form-group">
+                        <label>부부 교직원 소속</label>
+                        <input type="text" id="spouseSchool" placeholder="석산, 신주 등">
+                    </div>
+                    <div class="form-group">
+                        <label>직계존비속 교직원1 성명</label>
+                        <input type="text" id="relative1Name">
+                    </div>
+                    <div class="form-group">
+                        <label>직계존비속 교직원1 소속</label>
+                        <input type="text" id="relative1School" placeholder="석산, 신주 등">
+                    </div>
+                    <div class="form-group">
+                        <label>직계존비속 교직원2 성명</label>
+                        <input type="text" id="relative2Name">
+                    </div>
+                    <div class="form-group">
+                        <label>직계존비속 교직원2 소속</label>
+                        <input type="text" id="relative2School" placeholder="석산, 신주 등">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. 점수 계산 결과 -->
+            <div class="section">
+                <h2 class="section-title">7. 점수 계산</h2>
+                <div class="score-display">
+                    <div class="score-item">
+                        <span>학교경력점:</span>
+                        <span id="careerScore">0.00점</span>
+                    </div>
+                    <div class="score-item">
+                        <span>가산점:</span>
+                        <span id="bonusScore">0.000점</span>
+                    </div>
+                    <div class="score-item">
+                        <span>교육실습협력학교 가산점:</span>
+                        <span id="practiceScore">0.000점</span>
+                    </div>
+                    <div class="score-item">
+                        <span>총점:</span>
+                        <span id="totalScore">0.000점</span>
+                    </div>
+                    <div class="score-item">
+                        <span>실습교 보정총점:</span>
+                        <span id="practiceAdjustedScore">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 액션 버튼 -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="saveData()">💾 임시 저장</button>
+                <button class="btn btn-success" onclick="downloadJSON()">📥 JSON 다운로드</button>
+                <button class="btn btn-success" onclick="downloadExcel()">📊 엑셀 다운로드</button>
+                <button class="btn btn-primary" onclick="loadData()">📂 불러오기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const gradeData = {
+    "가남": {
+        "2017": "나",
+        "2018": "가",
+        "2019": "가",
+        "2020": "가",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "가",
+        "2025": "가"
+    },
+    "가양": {
+        "2018": "나",
+        "2019": "가",
+        "2020": "가",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "가",
+        "2025": "가"
+    },
+    "가촌": {
+        "2020": "나",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "가",
+        "2025": "가"
+    },
+    "금송": {
+        "2025": "다"
+    },
+    "금오": {
+        "2020": "나",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "가",
+        "2025": "가"
+    },
+    "대운": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "덕계": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "동면": {
+        "2022": "다",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "동산": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "물금": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "백동": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "라",
+        "2023": "라",
+        "2024": "라",
+        "2025": "라"
+    },
+    "범어": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "북정": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "다",
+        "2025": "다"
+    },
+    "사송": {
+        "2024": "다",
+        "2025": "나"
+    },
+    "삼성": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "삽량": {
+        "2017": "가",
+        "2018": "가",
+        "2019": "가",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "상북": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "서남": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "서창": {
+        "2017": "라",
+        "2018": "라",
+        "2019": "라",
+        "2020": "라",
+        "2021": "라",
+        "2022": "라",
+        "2023": "라",
+        "2024": "라",
+        "2025": "라"
+    },
+    "석산": {
+        "2017": "가",
+        "2018": "가",
+        "2019": "가",
+        "2020": "가",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "가",
+        "2025": "가"
+    },
+    "성산": {
+        "2017": "가",
+        "2018": "가",
+        "2019": "가",
+        "2020": "가",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "가",
+        "2025": "가"
+    },
+    "소토": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "신기": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "신명": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "신양": {
+        "2017": "가",
+        "2018": "가",
+        "2019": "가",
+        "2020": "가",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "나",
+        "2025": "나"
+    },
+    "신주": {
+        "2017": "가",
+        "2018": "가",
+        "2019": "가",
+        "2020": "가",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "가",
+        "2025": "가"
+    },
+    "양산": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "양주": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "어곡": {
+        "2017": "라",
+        "2018": "라",
+        "2019": "라",
+        "2020": "라",
+        "2021": "라",
+        "2022": "라",
+        "2023": "라",
+        "2024": "라",
+        "2025": "라"
+    },
+    "영천": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "오봉": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "다"
+    },
+    "용연": {
+        "2017": "라",
+        "2018": "라",
+        "2019": "라",
+        "2020": "라",
+        "2021": "라",
+        "2022": "라",
+        "2023": "라",
+        "2024": "라",
+        "2025": "라"
+    },
+    "웅상": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "원동": {
+        "2017": "라",
+        "2018": "라",
+        "2019": "라",
+        "2020": "라",
+        "2021": "라",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "이천": {
+        "2017": "라",
+        "2018": "라",
+        "2019": "라",
+        "2020": "라",
+        "2021": "라",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "좌삼": {
+        "2017": "라",
+        "2018": "라",
+        "2019": "라",
+        "2020": "라",
+        "2021": "라",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "중부": {
+        "2017": "가",
+        "2018": "가",
+        "2019": "가",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "증산": {
+        "2017": "가",
+        "2018": "가",
+        "2019": "가",
+        "2020": "가",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "가",
+        "2025": "가"
+    },
+    "천성": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "다",
+        "2023": "다",
+        "2024": "다",
+        "2025": "다"
+    },
+    "평산": {
+        "2017": "나",
+        "2018": "나",
+        "2019": "나",
+        "2020": "나",
+        "2021": "나",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    },
+    "하북": {
+        "2017": "다",
+        "2018": "다",
+        "2019": "다",
+        "2020": "다",
+        "2021": "다",
+        "2022": "다",
+        "2023": "다",
+        "2024": "라",
+        "2025": "라"
+    },
+    "화제": {
+        "2017": "라",
+        "2018": "라",
+        "2019": "라",
+        "2020": "라",
+        "2021": "라",
+        "2022": "라",
+        "2023": "라",
+        "2024": "라",
+        "2025": "라"
+    },
+    "황산": {
+        "2017": "가",
+        "2018": "가",
+        "2019": "가",
+        "2020": "가",
+        "2021": "가",
+        "2022": "가",
+        "2023": "가",
+        "2024": "가",
+        "2025": "가"
+    },
+    "회야": {
+        "2021": "다",
+        "2022": "나",
+        "2023": "나",
+        "2024": "나",
+        "2025": "나"
+    }
+};
+        const schools = Object.keys(gradeData).sort();
+
+        let careerCounter = 0;
+        let bonusCounter = 0;
+        let practiceClassCounter = 0;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initSchoolSelects();
+            addCareer();
+            loadFromLocalStorage();
+        });
+
+        function initSchoolSelects() {
+            ['currentSchool', 'firstChoice', 'secondChoice', 'thirdChoice'].forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (selectId === 'firstChoice') {
+                    const integOption = document.createElement('option');
+                    integOption.value = '통합';
+                    integOption.textContent = '통합';
+                    select.appendChild(integOption);
+                }
+                schools.forEach(school => {
+                    const option = document.createElement('option');
+                    option.value = school;
+                    option.textContent = school;
+                    select.appendChild(option);
+                });
+            });
+        }
+
+        function toggleIntegratedSection() {
+            const firstChoice = document.getElementById('firstChoice').value;
+            const section = document.getElementById('integratedSection');
+            if (firstChoice === '통합') {
+                section.classList.remove('hidden');
+            } else {
+                section.classList.add('hidden');
+            }
+        }
+
+        function addCareer() {
+            careerCounter++;
+            const list = document.getElementById('careerList');
+            const item = document.createElement('div');
+            item.className = 'item-box';
+            item.id = `career-${careerCounter}`;
+            item.innerHTML = `
+                <div class="item-header">
+                    <span class="item-number">경력 ${careerCounter}</span>
+                    <button class="btn btn-danger" onclick="removeItem('career-${careerCounter}')">삭제</button>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>학교명</label>
+                        <select id="career-school-${careerCounter}" onchange="calculateScore()">
+                            <option value="">선택하세요</option>
+                            ${schools.map(s => `<option value="${s}">${s}</option>`).join('')}
+                        </select>
+                        <div class="help-text">타지역: 지역명+학교명 (예: 통영죽림)</div>
+                    </div>
+                    <div class="form-group">
+                        <label>근무기간</label>
+                        <input type="text" id="career-period-${careerCounter}" placeholder="2021.03.01~2025.02.28" onchange="calculateCareerYears(${careerCounter})">
+                        <div class="help-text">형식: yyyy.mm.dd~yyyy.mm.dd</div>
+                    </div>
+                    <div class="form-group">
+                        <label>급지(점수)</label>
+                        <select id="career-grade-${careerCounter}" onchange="calculateScore()">
+                            <option value="">선택하세요</option>
+                            <option value="가(6)">가(6) - 2018.3.1 이전</option>
+                            <option value="가(7.5)">가(7.5) - 2018.3.1 이후</option>
+                            <option value="나(7)">나(7) - 2018.3.1 이전</option>
+                            <option value="나(8)">나(8) - 2018.3.1 이후</option>
+                            <option value="다(8)">다(8) - 2018.3.1 이전</option>
+                            <option value="다(8.5)">다(8.5) - 2018.3.1 이후</option>
+                            <option value="라(9)">라(9)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>근무연수</label>
+                        <input type="text" id="career-years-${careerCounter}" placeholder="4.00" readonly style="background: #f0f0f0;">
+                        <div class="help-text">형식: y.mm (자동계산)</div>
+                    </div>
+                    <div class="form-group">
+                        <label>점수</label>
+                        <input type="number" id="career-score-${careerCounter}" step="0.01" readonly style="background: #f0f0f0;">
+                    </div>
+                </div>
+            `;
+            list.appendChild(item);
+        }
+
+        function calculateCareerYears(id) {
+            const periodInput = document.getElementById(`career-period-${id}`);
+            const yearsInput = document.getElementById(`career-years-${id}`);
+            const period = periodInput.value;
+            
+            if (period.includes('~')) {
+                const [start, end] = period.split('~');
+                const startDate = new Date(start.replace(/\./g, '-'));
+                const endDate = new Date(end.replace(/\./g, '-'));
+                
+                if (startDate && endDate && endDate > startDate) {
+                    const months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
+                    const years = Math.floor(months / 12);
+                    const remainingMonths = months % 12;
+                    yearsInput.value = `${years}.${String(remainingMonths).padStart(2, '0')}`;
+                    calculateScore();
+                }
+            }
+        }
+
+        const bonusTable = {
+          "표창": [
+            {
+              "id": "표창1",
+              "name": "1. 교육감 표창 이상, 훈포장",
+              "score": 1.0,
+              "note": "4년간 2회 적용 / <span style='color: blue;'>모범공무원 표창 포함</span>",
+              "inputType": "date"
+            },
+            {
+              "id": "표창2",
+              "name": "2. 타 부처 장관 표창",
+              "score": 1.0,
+              "note": "4년간 2회 적용 / <span style='color: blue;'>학생지도 및 학교 과제해결에 한함</span>",
+              "inputType": "date"
+            },
+            {
+              "id": "표창3",
+              "name": "3. 교육장 표창",
+              "score": 0.7,
+              "note": "4년간 2회 적용",
+              "inputType": "date"
+            },
+            {
+              "id": "표창4",
+              "name": "4. 직속 기관장 표창",
+              "score": 0.5,
+              "note": "4년간 2회 적용",
+              "inputType": "date"
+            }
+          ],
+          "근무실적": [
+            {
+              "id": "근무1",
+              "name": "1. 도교육청 지정 이상 연구(시범, 실험) 학교 근무자",
+              "score": 0.25,
+              "unit": "6개월마다",
+              "note": "동일 학년도 중복 경우 택일 적용 / <span style='color: blue;'>교육협력 실습학교 포함</span>",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.25
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 0.75
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 1.0
+                },
+                {
+                  "label": "2년 6개월",
+                  "months": 30,
+                  "score": 1.25
+                },
+                {
+                  "label": "3년",
+                  "months": 36,
+                  "score": 1.5
+                },
+                {
+                  "label": "3년 6개월",
+                  "months": 42,
+                  "score": 1.75
+                },
+                {
+                  "label": "4년",
+                  "months": 48,
+                  "score": 2.0
+                }
+              ]
+            },
+            {
+              "id": "근무2",
+              "name": "2. 2년간 복식학급 담당교사",
+              "score": 0.5,
+              "unit": "6개월마다",
+              "note": "4년간 누가 적용",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 1.0
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 1.5
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 2.0
+                }
+              ]
+            },
+            {
+              "id": "근무3",
+              "name": "3. 2년간 원어민 영어보조교사 코-티처",
+              "score": 0,
+              "unit": "",
+              "note": "4년간 누가 적용 / <span style='color: blue;'>2025.2.28 이전 실적: 6개월마다 0.25,<br>2025.3.1 이후 실적: 1개월마다 0.04, 1년이면 0.5,<br>1개월 미만의 경우, 15일 이상 근무할 시 1개월로 인정</span>",
+              "inputType": "periodButtonDual",
+              "periodOptionsBefore": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.25
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 0.75
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 1.0
+                }
+              ],
+              "periodOptionsAfter": [
+                {
+                  "label": "1개월",
+                  "months": 1,
+                  "score": 0.04
+                },
+                {
+                  "label": "2개월",
+                  "months": 2,
+                  "score": 0.08
+                },
+                {
+                  "label": "3개월",
+                  "months": 3,
+                  "score": 0.12
+                },
+                {
+                  "label": "4개월",
+                  "months": 4,
+                  "score": 0.16
+                },
+                {
+                  "label": "5개월",
+                  "months": 5,
+                  "score": 0.2
+                },
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.24
+                },
+                {
+                  "label": "7개월",
+                  "months": 7,
+                  "score": 0.28
+                },
+                {
+                  "label": "8개월",
+                  "months": 8,
+                  "score": 0.32
+                },
+                {
+                  "label": "9개월",
+                  "months": 9,
+                  "score": 0.36
+                },
+                {
+                  "label": "10개월",
+                  "months": 10,
+                  "score": 0.4
+                },
+                {
+                  "label": "11개월",
+                  "months": 11,
+                  "score": 0.44
+                },
+                {
+                  "label": "12개월",
+                  "months": 12,
+                  "score": 0.5
+                }
+              ]
+            },
+            {
+              "id": "근무4",
+              "name": "4. 2년간 지자체 지원 원어민 영어보조교사 코-티처",
+              "score": 0.25,
+              "unit": "6개월마다",
+              "note": "4년간 누가 적용",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.25
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 0.75
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 1.0
+                }
+              ]
+            },
+            {
+              "id": "근무5",
+              "name": "5. 2년간 교과전담 및 순회교사",
+              "score": 0.5,
+              "unit": "6개월마다",
+              "note": "4년간 누가 적용 / <span style='color: red;'>5항, 9항은 동일학년도 중복의 경우 택일 적용</span> / <span style='color: blue;'>특수교사의 경우, 특수학급 및 특수학교만 해당</span>",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 1.0
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 1.5
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 2.0
+                }
+              ]
+            },
+            {
+              "id": "근무6",
+              "name": "6. 최근 4년간 (도내) 파견 근무자",
+              "score": 0.25,
+              "unit": "6개월마다",
+              "note": "4년간 누가 적용",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.25
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 0.75
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 1.0
+                },
+                {
+                  "label": "2년 6개월",
+                  "months": 30,
+                  "score": 1.25
+                },
+                {
+                  "label": "3년",
+                  "months": 36,
+                  "score": 1.5
+                },
+                {
+                  "label": "3년 6개월",
+                  "months": 42,
+                  "score": 1.75
+                },
+                {
+                  "label": "4년",
+                  "months": 48,
+                  "score": 2.0
+                }
+              ]
+            },
+            {
+              "id": "근무7",
+              "name": "7. 병설유치원, 특수학급 연구․시범학교 근무자",
+              "score": 0.3,
+              "unit": "1년마다",
+              "note": "동일 학년도 중복 경우 택일 적용 / <span style='color: blue;'>교감, 교무, 연구부장(주무)</span>",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 0.3
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 0.6
+                },
+                {
+                  "label": "3년",
+                  "months": 36,
+                  "score": 0.9
+                },
+                {
+                  "label": "4년",
+                  "months": 48,
+                  "score": 1.2
+                }
+              ]
+            },
+            {
+              "id": "근무8",
+              "name": "8. 2년간 특수교육 대상 아동을 맡은 통합학급 담임교사 또는 복지 카드 1~3급 소지 학생의 담임",
+              "score": 0.25,
+              "unit": "6개월마다",
+              "note": "4년간 누가 적용",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.25
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 0.75
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 1.0
+                }
+              ]
+            },
+            {
+              "id": "근무9",
+              "name": "9. 1·6학년 담임",
+              "score": 0.25,
+              "unit": "6개월마다",
+              "note": "4년간 누가 적용 / <span style='color: blue;'>단 1학년은 2021.3.1. 이후 실적</span>",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.25
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 0.75
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 1.0
+                }
+              ]
+            },
+            {
+              "id": "근무10",
+              "name": "10. 2년간 부장교사",
+              "score": 0.5,
+              "unit": "6개월마다",
+              "note": "4년간 누가 적용 / <span style='color: blue;'>2019.3.1. 이후 실적</span>",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 1.0
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 1.5
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 2.0
+                }
+              ]
+            },
+            {
+              "id": "근무11",
+              "name": "11. 전국소년체육대회 및 전국동계체육대회 입상 유공자",
+              "score": 0,
+              "note": "4년간 누가 적용 (동일 학년도 중복 경우 택일) / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+              "inputType": "dateWithMedal",
+              "medalOptions": [
+                {
+                  "label": "금메달",
+                  "score": 5.0
+                },
+                {
+                  "label": "은메달",
+                  "score": 2.5
+                },
+                {
+                  "label": "동메달",
+                  "score": 1.5
+                }
+              ]
+            },
+            {
+              "id": "근무12",
+              "name": "12. 직무수행과 관련되는 공적으로 전국 규모의 대회에서 국무총리 이상의 상장 수상자 또는 국무총리 이상의 지도자상 수상자",
+              "score": 5.0,
+              "note": "4년간 누가 적용 (동일 학년도 중복 경우 택일) / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+              "inputType": "dateMultiple"
+            },
+            {
+              "id": "근무13",
+              "name": "13. 2년간 초·중학교 종합체육대회 입상 유공자 (도 대회)",
+              "score": 0,
+              "note": "해당 실적 인정은 유공자 1인에 한함 / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+              "inputType": "dateWithRank",
+              "rankOptions": [
+                {
+                  "label": "1위",
+                  "score": 0.5
+                },
+                {
+                  "label": "2위",
+                  "score": 0.3
+                },
+                {
+                  "label": "3위",
+                  "score": 0.1
+                }
+              ]
+            },
+            {
+              "id": "근무14",
+              "name": "14. 청렴도 향상에 기여한 자",
+              "score": 0.5,
+              "note": "현임교 1회만 인정 / <span style='color: blue;'>조사기관에 신고하여 금품수수 10만원 이상, 공금횡령·유용 100만원 이상 위반 행위 발견에 기여한 경우</span>",
+              "inputType": "date"
+            },
+            {
+              "id": "근무15",
+              "name": "15. 교감 미배치 교의 교감 업무 대행자",
+              "score": 0.25,
+              "unit": "6개월마다",
+              "note": "4년간 누가 적용 / <span style='color: blue;'>1인만 인정</span> / <span style='color: blue;'>2018.3.1. 이후 실적</span>",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.25
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 0.75
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 1.0
+                },
+                {
+                  "label": "2년 6개월",
+                  "months": 30,
+                  "score": 1.25
+                },
+                {
+                  "label": "3년",
+                  "months": 36,
+                  "score": 1.5
+                },
+                {
+                  "label": "3년 6개월",
+                  "months": 42,
+                  "score": 1.75
+                },
+                {
+                  "label": "4년",
+                  "months": 48,
+                  "score": 2.0
+                }
+              ]
+            },
+            {
+              "id": "근무16",
+              "name": "16. 동지역 농산어촌승진가산점 미부여 학교",
+              "score": 0,
+              "note": "",
+              "inputType": "gradeWithPeriod",
+              "gradeOptions": [
+                {
+                  "label": "'가·나' 급지 동일 학교에서 연속하여 3년 이상 근무한 자",
+                  "score": 0.75
+                },
+                {
+                  "label": "'다·라' 급지 동일 학교에서 연속하여 3년 이상 근무한 자",
+                  "score": 0.25
+                }
+              ]
+            },
+            {
+              "id": "근무17",
+              "name": "17. 교육지원청 근무 전문상담교사",
+              "score": 0,
+              "unit": "6개월마다",
+              "note": "",
+              "inputType": "periodButtonDual",
+              "cutoffDate": "2025-03-01",
+              "periodOptionsBefore": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 1.0
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 1.5
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 2.0
+                },
+                {
+                  "label": "2년 6개월",
+                  "months": 30,
+                  "score": 2.5
+                },
+                {
+                  "label": "3년",
+                  "months": 36,
+                  "score": 3.0
+                },
+                {
+                  "label": "3년 6개월",
+                  "months": 42,
+                  "score": 3.5
+                },
+                {
+                  "label": "4년",
+                  "months": 48,
+                  "score": 4.0
+                }
+              ],
+              "periodOptionsAfter": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 1.0
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 2.0
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 3.0
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 4.0
+                },
+                {
+                  "label": "2년 6개월",
+                  "months": 30,
+                  "score": 5.0
+                },
+                {
+                  "label": "3년",
+                  "months": 36,
+                  "score": 6.0
+                },
+                {
+                  "label": "3년 6개월",
+                  "months": 42,
+                  "score": 7.0
+                },
+                {
+                  "label": "4년",
+                  "months": 48,
+                  "score": 8.0
+                }
+              ]
+            },
+            {
+              "id": "근무18",
+              "name": "18. 경상남도교육청 특수교육원 파견근무",
+              "score": 0,
+              "unit": "6개월마다",
+              "note": "",
+              "inputType": "periodButtonDual",
+              "cutoffDate": "2023-03-01",
+              "periodOptionsBefore": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 1.0
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 1.5
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 2.0
+                },
+                {
+                  "label": "2년 6개월",
+                  "months": 30,
+                  "score": 2.5
+                },
+                {
+                  "label": "3년",
+                  "months": 36,
+                  "score": 3.0
+                },
+                {
+                  "label": "3년 6개월",
+                  "months": 42,
+                  "score": 3.5
+                },
+                {
+                  "label": "4년",
+                  "months": 48,
+                  "score": 4.0
+                }
+              ],
+              "periodOptionsAfter": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 1.0
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 2.0
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 3.0
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 4.0
+                },
+                {
+                  "label": "2년 6개월",
+                  "months": 30,
+                  "score": 5.0
+                },
+                {
+                  "label": "3년",
+                  "months": 36,
+                  "score": 6.0
+                },
+                {
+                  "label": "3년 6개월",
+                  "months": 42,
+                  "score": 7.0
+                },
+                {
+                  "label": "4년",
+                  "months": 48,
+                  "score": 8.0
+                }
+              ]
+            },
+            {
+              "id": "근무19",
+              "name": "19. 2년간 대규모 학교 근무 전문상담교사",
+              "score": 0,
+              "unit": "6개월마다",
+              "note": "2025.3.1. 이후 실적부터",
+              "inputType": "periodWithClassSize",
+              "classSizeOptions": [
+                {
+                  "label": "36학급 이상 42학급 이하",
+                  "periodOptions": [
+                    {"label": "6개월", "months": 6, "score": 0.25},
+                    {"label": "1년", "months": 12, "score": 0.5},
+                    {"label": "1년 6개월", "months": 18, "score": 0.75},
+                    {"label": "2년", "months": 24, "score": 1.0}
+                  ]
+                },
+                {
+                  "label": "43학급 이상",
+                  "periodOptions": [
+                    {"label": "6개월", "months": 6, "score": 0.3},
+                    {"label": "1년", "months": 12, "score": 0.6},
+                    {"label": "1년 6개월", "months": 18, "score": 0.9},
+                    {"label": "2년", "months": 24, "score": 1.2}
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "근무20",
+              "name": "20. 전문상담교사 관련 자격증",
+              "score": 0.5,
+              "unit": "평정 기간에 취득한 것",
+              "note": "2025.3.1 이후 실적부터. 청소년 상담사(여성가족부), 임상심리사/직업상담사(한국산업인력공단), 사회복지사(보건복지부)",
+              "inputType": "date"
+            }
+          ],
+          "연구실적": [
+            {
+              "id": "연구1",
+              "name": "1. 전국 단위 입상자",
+              "score": 1.0,
+              "note": "4년간 누가 적용 (동일 학년도 중복 경우 택일) / <span style='color: blue;'>학생지도 실적 포함-경남교육청 추천 대회에 한함</span> / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+              "inputType": "dateMultiple"
+            },
+            {
+              "id": "연구2",
+              "name": "2. 도 단위 입상자",
+              "score": 0.5,
+              "note": "4년간 누가 적용 (동일 학년도 중복 경우 택일) / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+              "inputType": "dateMultiple"
+            },
+            {
+              "id": "연구3",
+              "name": "3. 개인 작품 발표자",
+              "score": 0.2,
+              "note": "2024.3.1 전보부터 4년간 2회 적용 / <span style='color: blue;'>2017.3.1～2020.2.29 실적에 한함</span> / 2인 이내 저서 발표자 포함",
+              "inputType": "dateMultiple"
+            },
+            {
+              "id": "연구4",
+              "name": "4. 학습지도 연구대회 도대회 입상자, 수업연구교사",
+              "score": 0.75,
+              "note": "4년간 누가 적용 / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+              "inputType": "dateMultiple"
+            },
+            {
+              "id": "연구5",
+              "name": "5. 수업명사",
+              "score": 1.0,
+              "note": "4년간 누가 적용 / <span style='color: blue;'>2018.3.1. 수업명사 인증까지</span> / <span style='color: blue;'>취득 후 10년간</span>",
+              "inputType": "date"
+            },
+            {
+              "id": "연구6",
+              "name": "6. 한국사능력검정시험 3급 이상",
+              "score": 0.3,
+              "note": "<span style='color: blue;'>임용 전 자격취득 포함</span>",
+              "inputType": "date"
+            }
+          ],
+          "우우조건": [
+            {
+              "id": "우우1",
+              "name": "1. 국가유공자와 동 부양자(배우자와 직접 부양하는 자녀와 그 배우자), 순직한 교육공무원의 배우자, 자녀와 그 배우자",
+              "score": 1.0,
+              "note": "우우조건 1 ~ 3 택일 적용 / <span style='color: blue;'>부양기간 입력</span>",
+              "inputType": "period"
+            },
+            {
+              "id": "우우2",
+              "name": "2. 부모(배우자 부모 포함)를 인사 당해 학년도 말일 기준으로 1년 이상 연속하여 직접 봉양하고 있는 자",
+              "score": 0.5,
+              "note": "우우조건 1 ~ 3 택일 적용 / <span style='color: blue;'>부양기간 입력</span>",
+              "inputType": "period"
+            },
+            {
+              "id": "우우3",
+              "name": "3. 장애인 (1년 이상 장애 증명 소지자 ) 본인 및 배우자 , 본인 및 배우자의 직계 존비속 중 장애인 (장애 증명 소지자 )을 인사 당해 학년도 말일 기준으로 1년 이상 연속하여 직접 부양하고 있는 자",
+              "score": 1.0,
+              "note": "우우조건 1 ~ 3 택일 적용 / <span style='color: blue;'>부양기간 입력</span>",
+              "inputType": "period"
+            },
+            {
+              "id": "우우4",
+              "name": "4. 55세 이상 교사",
+              "score": 1.0,
+              "note": "<span style='color: blue;'>기본 정보의 생년월일을 입력하면 자동으로 입력됩니다.</span>",
+              "inputType": "date"
+            },
+            {
+              "id": "우우5",
+              "name": "5. 만 2세 미만의 자녀가 있는 교원",
+              "score": 1.0,
+              "note": "우우조건 5 ~ 7 택일 적용 / <span style='color: blue;'>(준)벽지 전보 희망자 제외</span>",
+              "inputType": "none"
+            },
+            {
+              "id": "우우6",
+              "name": "6. 자녀가 3명 이상인 교사",
+              "score": 1.0,
+              "note": "우우조건 5 ~ 7 택일 적용",
+              "inputType": "none"
+            },
+            {
+              "id": "우우7",
+              "name": "7. 자녀가 2명인 교사",
+              "score": 0.5,
+              "note": "우우조건 5 ~ 7 택일 적용 / <span style='color: blue;'>2021.3.1. 전보부터 적용</span>",
+              "inputType": "none"
+            }
+          ]
+        };
+
+        // 점수 포맷팅 (불필요한 0 제거)
+        function formatScore(score) {
+            const num = parseFloat(score);
+            // 소수점 이하가 0이면 정수로, 아니면 소수점 표시
+            if (num % 1 === 0) {
+                return num.toFixed(1); // 1.0, 2.0 형식
+            } else {
+                // 소수점 이하 값이 있으면 불필요한 0 제거
+                return num.toString();
+            }
+        }
+
+        // 근무실적 기간 행 추가 함수
+        let periodRowCounter = 0;
+        function addPeriodRow(bonusId) {
+            periodRowCounter++;
+            const periodsListContainer = document.getElementById(`bonus-periods-list-${bonusId}`);
+            const itemSelect = document.getElementById(`bonus-item-${bonusId}`);
+            const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+
+            if (!selectedOption || !selectedOption.value) {
+                alert('먼저 평정 대상을 선택하세요.');
+                return;
+            }
+
+            const inputType = selectedOption.dataset.inputType;
+            const originalName = selectedOption.dataset.originalName;
+            const rowId = `period-row-${bonusId}-${periodRowCounter}`;
+
+            // 기간 행 컨테이너 생성
+            const rowDiv = document.createElement('div');
+            rowDiv.id = rowId;
+            rowDiv.className = 'period-row';
+            rowDiv.style.cssText = 'display: flex; gap: 12px; align-items: flex-start; padding: 12px; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9;';
+
+            if (inputType === 'periodButton') {
+                // 일반 드롭다운 (근무1, 2, 4~10)
+                const periodOptions = selectedOption.dataset.periodOptions ?
+                    JSON.parse(selectedOption.dataset.periodOptions) : [];
+
+                const selectWrapper = document.createElement('div');
+                selectWrapper.style.cssText = 'flex: 0 0 200px; display: flex; flex-direction: column; gap: 4px;';
+
+                const selectLabel = document.createElement('label');
+                selectLabel.textContent = '기간 선택:';
+                selectLabel.style.cssText = 'font-size: 13px; font-weight: 500; min-height: 18.5px;';
+
+                const select = document.createElement('select');
+                select.className = 'period-select';
+                select.dataset.bonusId = bonusId;
+                select.dataset.rowId = rowId;
+                select.style.cssText = 'width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;';
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '선택하세요';
+                select.appendChild(defaultOption);
+
+                periodOptions.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = JSON.stringify(option);
+                    opt.textContent = option.label;
+                    select.appendChild(opt);
+                });
+
+                select.onchange = function() {
+                    recalculateMultiplePeriods(bonusId);
+                };
+
+                // 높이 맞추기 위한 빈 도움말 영역
+                const selectHelp = document.createElement('div');
+                selectHelp.className = 'help-text';
+                selectHelp.innerHTML = '&nbsp;'; // 공백 유지
+                selectHelp.style.cssText = 'font-size: 12px; color: #666; margin-top: 2px; min-height: 18px;';
+
+                selectWrapper.appendChild(selectLabel);
+                selectWrapper.appendChild(select);
+                selectWrapper.appendChild(selectHelp);
+                rowDiv.appendChild(selectWrapper);
+
+            } else if (inputType === 'periodButtonDual') {
+                // 이중 드롭다운 (근무3, 17, 18)
+                const periodOptionsBefore = selectedOption.dataset.periodOptionsBefore ?
+                    JSON.parse(selectedOption.dataset.periodOptionsBefore) : null;
+                const periodOptionsAfter = selectedOption.dataset.periodOptionsAfter ?
+                    JSON.parse(selectedOption.dataset.periodOptionsAfter) : null;
+
+                // cutoffDate 읽기 (예: "2025-03-01" 또는 "2023-03-01")
+                const cutoffDate = selectedOption.dataset.cutoffDate || '2025-03-01';
+                const cutoffParts = cutoffDate.split('-');
+                const cutoffYear = cutoffParts[0];
+                const cutoffMonth = cutoffParts[1];
+                const cutoffDay = cutoffParts[2];
+
+                // 이전 날짜 계산 (cutoffDate - 1일)
+                const beforeDate = new Date(cutoffDate);
+                beforeDate.setDate(beforeDate.getDate() - 1);
+                const beforeYear = beforeDate.getFullYear();
+                const beforeMonth = String(beforeDate.getMonth() + 1).padStart(2, '0');
+                const beforeDay = String(beforeDate.getDate()).padStart(2, '0');
+
+                const dualWrapper = document.createElement('div');
+                dualWrapper.style.cssText = 'flex: 0 0 280px; display: flex; flex-direction: column; gap: 8px;';
+
+                // 이전 드롭다운
+                if (periodOptionsBefore) {
+                    const beforeDiv = document.createElement('div');
+                    beforeDiv.style.display = 'flex';
+                    beforeDiv.style.flexDirection = 'column';
+                    beforeDiv.style.gap = '4px';
+
+                    const beforeLabel = document.createElement('label');
+                    beforeLabel.textContent = `${beforeYear}.${beforeMonth}.${beforeDay} 이전:`;
+                    beforeLabel.style.fontSize = '13px';
+                    beforeLabel.style.fontWeight = '500';
+
+                    const selectBefore = document.createElement('select');
+                    selectBefore.className = 'period-select-before';
+                    selectBefore.dataset.bonusId = bonusId;
+                    selectBefore.dataset.rowId = rowId;
+                    selectBefore.style.cssText = 'padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;';
+
+                    const defaultOptionBefore = document.createElement('option');
+                    defaultOptionBefore.value = '';
+                    defaultOptionBefore.textContent = '선택하세요';
+                    selectBefore.appendChild(defaultOptionBefore);
+
+                    periodOptionsBefore.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = JSON.stringify(option);
+                        opt.textContent = option.label;
+                        selectBefore.appendChild(opt);
+                    });
+
+                    selectBefore.onchange = function() {
+                        recalculateMultiplePeriods(bonusId);
+                    };
+
+                    beforeDiv.appendChild(beforeLabel);
+                    beforeDiv.appendChild(selectBefore);
+                    dualWrapper.appendChild(beforeDiv);
+                }
+
+                // 이후 드롭다운
+                if (periodOptionsAfter) {
+                    const afterDiv = document.createElement('div');
+                    afterDiv.style.display = 'flex';
+                    afterDiv.style.flexDirection = 'column';
+                    afterDiv.style.gap = '4px';
+
+                    const afterLabel = document.createElement('label');
+                    afterLabel.textContent = `${cutoffYear}.${cutoffMonth}.${cutoffDay} 이후:`;
+                    afterLabel.style.fontSize = '13px';
+                    afterLabel.style.fontWeight = '500';
+
+                    const selectAfter = document.createElement('select');
+                    selectAfter.className = 'period-select-after';
+                    selectAfter.dataset.bonusId = bonusId;
+                    selectAfter.dataset.rowId = rowId;
+                    selectAfter.style.cssText = 'padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;';
+
+                    const defaultOptionAfter = document.createElement('option');
+                    defaultOptionAfter.value = '';
+                    defaultOptionAfter.textContent = '선택하세요';
+                    selectAfter.appendChild(defaultOptionAfter);
+
+                    periodOptionsAfter.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = JSON.stringify(option);
+                        opt.textContent = option.label;
+                        selectAfter.appendChild(opt);
+                    });
+
+                    selectAfter.onchange = function() {
+                        recalculateMultiplePeriods(bonusId);
+                    };
+
+                    afterDiv.appendChild(afterLabel);
+                    afterDiv.appendChild(selectAfter);
+                    dualWrapper.appendChild(afterDiv);
+                }
+
+                // 높이 맞추기 위한 빈 도움말 영역
+                const dualHelp = document.createElement('div');
+                dualHelp.className = 'help-text';
+                dualHelp.innerHTML = '&nbsp;'; // 공백 유지
+                dualHelp.style.cssText = 'font-size: 12px; color: #666; margin-top: 2px; min-height: 18px;';
+                dualWrapper.appendChild(dualHelp);
+
+                rowDiv.appendChild(dualWrapper);
+            } else if (inputType === 'dateWithMedal') {
+                // 메달 선택 드롭다운 (근무11)
+                const medalOptions = selectedOption.dataset.medalOptions ?
+                    JSON.parse(selectedOption.dataset.medalOptions) : [];
+
+                const medalWrapper = document.createElement('div');
+                medalWrapper.style.cssText = 'flex: 0 0 200px; display: flex; flex-direction: column; gap: 4px;';
+
+                const medalLabel = document.createElement('label');
+                medalLabel.textContent = '메달 선택:';
+                medalLabel.style.cssText = 'font-size: 13px; font-weight: 500; min-height: 18.5px;';
+
+                const medalSelect = document.createElement('select');
+                medalSelect.className = 'medal-select';
+                medalSelect.dataset.bonusId = bonusId;
+                medalSelect.dataset.rowId = rowId;
+                medalSelect.style.cssText = 'width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;';
+
+                const defaultMedalOption = document.createElement('option');
+                defaultMedalOption.value = '';
+                defaultMedalOption.textContent = '선택하세요';
+                medalSelect.appendChild(defaultMedalOption);
+
+                medalOptions.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = JSON.stringify(option);
+                    opt.textContent = option.label;
+                    medalSelect.appendChild(opt);
+                });
+
+                medalSelect.onchange = function() {
+                    recalculateMultiplePeriods(bonusId);
+                };
+
+                const medalHelp = document.createElement('div');
+                medalHelp.className = 'help-text';
+                medalHelp.innerHTML = '&nbsp;';
+                medalHelp.style.cssText = 'font-size: 12px; color: #666; margin-top: 2px; min-height: 18px;';
+
+                medalWrapper.appendChild(medalLabel);
+                medalWrapper.appendChild(medalSelect);
+                medalWrapper.appendChild(medalHelp);
+                rowDiv.appendChild(medalWrapper);
+            } else if (inputType === 'dateWithRank') {
+                // 순위 선택 드롭다운 (근무13)
+                const rankOptions = selectedOption.dataset.rankOptions ?
+                    JSON.parse(selectedOption.dataset.rankOptions) : [];
+
+                const rankWrapper = document.createElement('div');
+                rankWrapper.style.cssText = 'flex: 0 0 200px; display: flex; flex-direction: column; gap: 4px;';
+
+                const rankLabel = document.createElement('label');
+                rankLabel.textContent = '순위 선택:';
+                rankLabel.style.cssText = 'font-size: 13px; font-weight: 500; min-height: 18.5px;';
+
+                const rankSelect = document.createElement('select');
+                rankSelect.className = 'rank-select';
+                rankSelect.dataset.bonusId = bonusId;
+                rankSelect.dataset.rowId = rowId;
+                rankSelect.style.cssText = 'width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;';
+
+                const defaultRankOption = document.createElement('option');
+                defaultRankOption.value = '';
+                defaultRankOption.textContent = '선택하세요';
+                rankSelect.appendChild(defaultRankOption);
+
+                rankOptions.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = JSON.stringify(option);
+                    opt.textContent = option.label;
+                    rankSelect.appendChild(opt);
+                });
+
+                rankSelect.onchange = function() {
+                    recalculateMultiplePeriods(bonusId);
+                };
+
+                const rankHelp = document.createElement('div');
+                rankHelp.className = 'help-text';
+                rankHelp.innerHTML = '&nbsp;';
+                rankHelp.style.cssText = 'font-size: 12px; color: #666; margin-top: 2px; min-height: 18px;';
+
+                rankWrapper.appendChild(rankLabel);
+                rankWrapper.appendChild(rankSelect);
+                rankWrapper.appendChild(rankHelp);
+                rowDiv.appendChild(rankWrapper);
+            } else if (inputType === 'periodWithGrade') {
+                // 급지 선택 드롭다운 (근무16)
+                const gradeOptions = selectedOption.dataset.gradeOptions ?
+                    JSON.parse(selectedOption.dataset.gradeOptions) : [];
+
+                const gradeWrapper = document.createElement('div');
+                gradeWrapper.style.cssText = 'flex: 0 0 350px; display: flex; flex-direction: column; gap: 4px;';
+
+                const gradeLabel = document.createElement('label');
+                gradeLabel.textContent = '급지 선택:';
+                gradeLabel.style.cssText = 'font-size: 13px; font-weight: 500; min-height: 18.5px;';
+
+                const gradeSelect = document.createElement('select');
+                gradeSelect.className = 'grade-select';
+                gradeSelect.dataset.bonusId = bonusId;
+                gradeSelect.dataset.rowId = rowId;
+                gradeSelect.style.cssText = 'width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;';
+
+                const defaultGradeOption = document.createElement('option');
+                defaultGradeOption.value = '';
+                defaultGradeOption.textContent = '선택하세요';
+                gradeSelect.appendChild(defaultGradeOption);
+
+                gradeOptions.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = JSON.stringify(option);
+                    opt.textContent = option.label;
+                    gradeSelect.appendChild(opt);
+                });
+
+                gradeSelect.onchange = function() {
+                    recalculateMultiplePeriods(bonusId);
+                };
+
+                const gradeHelp = document.createElement('div');
+                gradeHelp.className = 'help-text';
+                gradeHelp.innerHTML = '&nbsp;';
+                gradeHelp.style.cssText = 'font-size: 12px; color: #666; margin-top: 2px; min-height: 18px;';
+
+                gradeWrapper.appendChild(gradeLabel);
+                gradeWrapper.appendChild(gradeSelect);
+                gradeWrapper.appendChild(gradeHelp);
+                rowDiv.appendChild(gradeWrapper);
+            } else if (inputType === 'periodWithClassSize') {
+                // 학급 규모 선택 + 기간 선택 드롭다운 (근무19)
+                const classSizeOptions = selectedOption.dataset.classSizeOptions ?
+                    JSON.parse(selectedOption.dataset.classSizeOptions) : [];
+
+                // 학급 규모 선택 드롭다운
+                const classSizeWrapper = document.createElement('div');
+                classSizeWrapper.style.cssText = 'flex: 0 0 250px; display: flex; flex-direction: column; gap: 4px;';
+
+                const classSizeLabel = document.createElement('label');
+                classSizeLabel.textContent = '학급 규모:';
+                classSizeLabel.style.cssText = 'font-size: 13px; font-weight: 500; min-height: 18.5px;';
+
+                const classSizeSelect = document.createElement('select');
+                classSizeSelect.className = 'classsize-select';
+                classSizeSelect.dataset.bonusId = bonusId;
+                classSizeSelect.dataset.rowId = rowId;
+                classSizeSelect.style.cssText = 'width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;';
+
+                const defaultClassSizeOption = document.createElement('option');
+                defaultClassSizeOption.value = '';
+                defaultClassSizeOption.textContent = '선택하세요';
+                classSizeSelect.appendChild(defaultClassSizeOption);
+
+                classSizeOptions.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = JSON.stringify(option);
+                    opt.textContent = option.label;
+                    classSizeSelect.appendChild(opt);
+                });
+
+                const classSizeHelp = document.createElement('div');
+                classSizeHelp.className = 'help-text';
+                classSizeHelp.innerHTML = '&nbsp;';
+                classSizeHelp.style.cssText = 'font-size: 12px; color: #666; margin-top: 2px; min-height: 18px;';
+
+                classSizeWrapper.appendChild(classSizeLabel);
+                classSizeWrapper.appendChild(classSizeSelect);
+                classSizeWrapper.appendChild(classSizeHelp);
+                rowDiv.appendChild(classSizeWrapper);
+
+                // 기간 선택 드롭다운
+                const periodSelectWrapper = document.createElement('div');
+                periodSelectWrapper.style.cssText = 'flex: 0 0 180px; display: flex; flex-direction: column; gap: 4px;';
+
+                const periodSelectLabel = document.createElement('label');
+                periodSelectLabel.textContent = '기간:';
+                periodSelectLabel.style.cssText = 'font-size: 13px; font-weight: 500; min-height: 18.5px;';
+
+                const periodSelectDropdown = document.createElement('select');
+                periodSelectDropdown.className = 'period-select';
+                periodSelectDropdown.dataset.bonusId = bonusId;
+                periodSelectDropdown.dataset.rowId = rowId;
+                periodSelectDropdown.style.cssText = 'width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;';
+                periodSelectDropdown.disabled = true; // 학급 규모 선택 전까지 비활성화
+
+                const defaultPeriodOption = document.createElement('option');
+                defaultPeriodOption.value = '';
+                defaultPeriodOption.textContent = '선택하세요';
+                periodSelectDropdown.appendChild(defaultPeriodOption);
+
+                periodSelectDropdown.onchange = function() {
+                    recalculateMultiplePeriods(bonusId);
+                };
+
+                const periodSelectHelp = document.createElement('div');
+                periodSelectHelp.className = 'help-text';
+                periodSelectHelp.innerHTML = '&nbsp;';
+                periodSelectHelp.style.cssText = 'font-size: 12px; color: #666; margin-top: 2px; min-height: 18px;';
+
+                periodSelectWrapper.appendChild(periodSelectLabel);
+                periodSelectWrapper.appendChild(periodSelectDropdown);
+                periodSelectWrapper.appendChild(periodSelectHelp);
+                rowDiv.appendChild(periodSelectWrapper);
+
+                // 학급 규모 선택 시 기간 드롭다운 옵션 변경
+                classSizeSelect.onchange = function() {
+                    periodSelectDropdown.innerHTML = '';
+                    const emptyOption = document.createElement('option');
+                    emptyOption.value = '';
+                    emptyOption.textContent = '선택하세요';
+                    periodSelectDropdown.appendChild(emptyOption);
+
+                    if (this.value) {
+                        const selectedClassSize = JSON.parse(this.value);
+                        const periodOptions = selectedClassSize.periodOptions || [];
+
+                        periodOptions.forEach(option => {
+                            const opt = document.createElement('option');
+                            opt.value = JSON.stringify(option);
+                            opt.textContent = option.label;
+                            periodSelectDropdown.appendChild(opt);
+                        });
+
+                        periodSelectDropdown.disabled = false;
+                    } else {
+                        periodSelectDropdown.disabled = true;
+                    }
+
+                    recalculateMultiplePeriods(bonusId);
+                };
+            }
+
+            // 기간/날짜 입력 필드
+            const inputWrapper = document.createElement('div');
+            inputWrapper.style.cssText = 'flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 4px;';
+
+            const inputLabel = document.createElement('label');
+            if (inputType === 'dateWithMedal' || inputType === 'dateWithRank' || inputType === 'dateMultiple') {
+                inputLabel.textContent = '날짜:';
+            } else {
+                inputLabel.textContent = '근무 기간:';
+            }
+            inputLabel.style.cssText = 'font-size: 13px; font-weight: 500; min-height: 18.5px;';
+
+            const periodInput = document.createElement('input');
+            periodInput.type = 'text';
+            periodInput.className = 'period-input';
+            if (inputType === 'dateWithMedal' || inputType === 'dateWithRank' || inputType === 'dateMultiple') {
+                periodInput.placeholder = '20210301';
+            } else {
+                periodInput.placeholder = '2021030120250228';
+            }
+            periodInput.style.cssText = 'padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;';
+            periodInput.oninput = function() {
+                if (inputType === 'dateWithMedal' || inputType === 'dateWithRank' || inputType === 'dateMultiple') {
+                    formatDate(this);
+                    // 날짜가 완성되면 (8자리) 점수 재계산
+                    const digits = this.value.replace(/[^0-9]/g, '');
+                    if (digits.length === 8) {
+                        recalculateMultiplePeriods(bonusId);
+                    }
+                } else {
+                    formatPeriod(this);
+                    // 기간이 완성되면 (16자리) 점수 재계산 (periodButton, periodButtonDual)
+                    const digits = this.value.replace(/[^0-9]/g, '');
+                    if (digits.length === 16) {
+                        recalculateMultiplePeriods(bonusId);
+                    }
+                }
+            };
+
+            const periodHelp = document.createElement('div');
+            periodHelp.className = 'help-text';
+            if (inputType === 'dateWithMedal' || inputType === 'dateWithRank' || inputType === 'dateMultiple') {
+                periodHelp.textContent = '예: 20210301 → 2021.03.01 (자동 변환)';
+            } else {
+                periodHelp.textContent = '예: 2021030120250228 → 2021.03.01~2025.02.28 (자동 변환)';
+            }
+            periodHelp.style.cssText = 'font-size: 12px; color: #666; margin-top: 2px; min-height: 18px;';
+
+            inputWrapper.appendChild(inputLabel);
+            inputWrapper.appendChild(periodInput);
+            inputWrapper.appendChild(periodHelp);
+            rowDiv.appendChild(inputWrapper);
+
+            // 삭제 버튼
+            const deleteBtnWrapper = document.createElement('div');
+            deleteBtnWrapper.style.cssText = 'flex: 0 0 auto; display: flex; flex-direction: column; gap: 4px;';
+
+            // 빈 레이블 (높이 맞추기)
+            const deleteLabel = document.createElement('label');
+            deleteLabel.innerHTML = '&nbsp;';
+            deleteLabel.style.cssText = 'font-size: 13px; min-height: 18.5px;';
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.textContent = '삭제';
+            deleteBtn.className = 'btn btn-danger';
+            deleteBtn.style.cssText = 'padding: 6px 12px;';
+            deleteBtn.onclick = function() {
+                rowDiv.remove();
+                recalculateMultiplePeriods(bonusId);
+            };
+
+            // 빈 도움말 (높이 맞추기)
+            const deleteHelp = document.createElement('div');
+            deleteHelp.className = 'help-text';
+            deleteHelp.innerHTML = '&nbsp;';
+            deleteHelp.style.cssText = 'font-size: 12px; color: #666; margin-top: 2px; min-height: 18px;';
+
+            deleteBtnWrapper.appendChild(deleteLabel);
+            deleteBtnWrapper.appendChild(deleteBtn);
+            deleteBtnWrapper.appendChild(deleteHelp);
+            rowDiv.appendChild(deleteBtnWrapper);
+
+            periodsListContainer.appendChild(rowDiv);
+        }
+
+        // 여러 기간의 점수 및 이름 재계산
+        function recalculateMultiplePeriods(bonusId) {
+            const itemSelect = document.getElementById(`bonus-item-${bonusId}`);
+            const scoreInput = document.getElementById(`bonus-score-${bonusId}`);
+            const periodsListContainer = document.getElementById(`bonus-periods-list-${bonusId}`);
+            const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+
+            if (!selectedOption || !selectedOption.value) return;
+
+            const originalName = selectedOption.dataset.originalName;
+            const inputType = selectedOption.dataset.inputType;
+            let totalScore = 0;
+            let totalMonths = 0;
+
+            // 모든 기간 행을 순회하며 점수와 개월 수 합산
+            const periodRows = periodsListContainer.querySelectorAll('.period-row');
+
+            periodRows.forEach(row => {
+                if (inputType === 'periodButton') {
+                    const select = row.querySelector('.period-select');
+                    const periodInput = row.querySelector('.period-input');
+                    // 드롭박스 선택하고 날짜도 입력되어야 점수 계산
+                    if (select && select.value && periodInput && periodInput.value.trim()) {
+                        const option = JSON.parse(select.value);
+                        totalScore += option.score;
+                        totalMonths += option.months;
+                    }
+                } else if (inputType === 'periodButtonDual') {
+                    const selectBefore = row.querySelector('.period-select-before');
+                    const selectAfter = row.querySelector('.period-select-after');
+                    const periodInput = row.querySelector('.period-input');
+
+                    // 드롭박스 선택하고 기간도 입력되어야 점수 계산
+                    if (periodInput && periodInput.value.trim()) {
+                        if (selectBefore && selectBefore.value) {
+                            const option = JSON.parse(selectBefore.value);
+                            totalScore += option.score;
+                            totalMonths += option.months;
+                        }
+                        if (selectAfter && selectAfter.value) {
+                            const option = JSON.parse(selectAfter.value);
+                            totalScore += option.score;
+                            totalMonths += option.months;
+                        }
+                    }
+                } else if (inputType === 'dateWithMedal') {
+                    const medalSelect = row.querySelector('.medal-select');
+                    const periodInput = row.querySelector('.period-input');
+                    // 메달 선택하고 날짜도 입력되어야 점수 계산
+                    if (medalSelect && medalSelect.value && periodInput && periodInput.value.trim()) {
+                        const option = JSON.parse(medalSelect.value);
+                        totalScore += option.score;
+                    }
+                } else if (inputType === 'dateWithRank') {
+                    const rankSelect = row.querySelector('.rank-select');
+                    const periodInput = row.querySelector('.period-input');
+                    // 순위 선택하고 날짜도 입력되어야 점수 계산
+                    if (rankSelect && rankSelect.value && periodInput && periodInput.value.trim()) {
+                        const option = JSON.parse(rankSelect.value);
+                        totalScore += option.score;
+                    }
+                } else if (inputType === 'dateMultiple') {
+                    // 날짜만 있는 경우 (근무12) - 날짜가 입력되면 기본 점수 추가
+                    const periodInput = row.querySelector('.period-input');
+                    if (periodInput && periodInput.value.trim()) {
+                        const baseScore = parseFloat(selectedOption.dataset.score);
+                        totalScore += baseScore;
+                    }
+                } else if (inputType === 'periodWithGrade') {
+                    // 급지 선택 + 기간 입력 (근무16)
+                    const gradeSelect = row.querySelector('.grade-select');
+                    const periodInput = row.querySelector('.period-input');
+                    // 급지 선택하고 기간도 입력되어야 점수 계산
+                    if (gradeSelect && gradeSelect.value && periodInput && periodInput.value.trim()) {
+                        const option = JSON.parse(gradeSelect.value);
+                        totalScore += option.score;
+                    }
+                } else if (inputType === 'periodWithClassSize') {
+                    // 학급 규모 선택 + 기간 선택 + 기간 입력 (근무19)
+                    const classSizeSelect = row.querySelector('.classsize-select');
+                    const periodSelect = row.querySelector('.period-select');
+                    const periodInput = row.querySelector('.period-input');
+                    // 학급 규모, 기간 선택, 기간 입력 모두 있어야 점수 계산
+                    if (classSizeSelect && classSizeSelect.value &&
+                        periodSelect && periodSelect.value &&
+                        periodInput && periodInput.value.trim()) {
+                        const option = JSON.parse(periodSelect.value);
+                        totalScore += option.score;
+                        totalMonths += option.months;
+                    }
+                }
+            });
+
+            // 점수 및 이름 업데이트
+            if (inputType === 'dateWithMedal' || inputType === 'dateWithRank' || inputType === 'dateMultiple' || inputType === 'periodWithGrade') {
+                // 날짜 타입은 개월 수 표시 없이 점수만
+                if (totalScore > 0) {
+                    scoreInput.value = formatScore(totalScore);
+                } else {
+                    scoreInput.value = '';
+                }
+                selectedOption.textContent = originalName;
+            } else if (totalMonths > 0) {
+                scoreInput.value = formatScore(totalScore);
+                // 개월을 년/개월로 변환
+                const years = Math.floor(totalMonths / 12);
+                const months = totalMonths % 12;
+                let periodText = '';
+                if (years > 0 && months > 0) {
+                    periodText = `${years}년 ${months}개월`;
+                } else if (years > 0) {
+                    periodText = `${years}년`;
+                } else {
+                    periodText = `${months}개월`;
+                }
+                selectedOption.textContent = originalName + ' ' + periodText;
+            } else {
+                scoreInput.value = '';
+                selectedOption.textContent = originalName;
+            }
+
+            // 전체 점수 재계산
+            calculateScore();
+        }
+
+        // 날짜 자동 포맷팅 (yyyy.mm.dd)
+        function formatDate(input) {
+            // 이전 포맷된 문자열 전체 저장
+            const oldFormatted = input.dataset.prevValue || '';
+
+            // 현재 커서 위치 저장
+            const cursorPos = input.selectionStart;
+
+            // 현재 입력값 저장 (포맷팅 전)
+            const currentRaw = input.value;
+
+            // 숫자만 추출
+            let value = input.value.replace(/[^0-9]/g, '');
+
+            if (value.length === 0) {
+                input.value = '';
+                input.dataset.prevValue = '';
+                return;
+            }
+
+            let formatted = '';
+            if (value.length >= 8) {
+                value = value.substring(0, 8);
+                formatted = value.substring(0, 4) + '.' + value.substring(4, 6) + '.' + value.substring(6, 8);
+            } else if (value.length >= 6) {
+                formatted = value.substring(0, 4) + '.' + value.substring(4, 6) + '.' + value.substring(6);
+            } else if (value.length >= 4) {
+                formatted = value.substring(0, 4) + '.' + value.substring(4);
+            } else {
+                formatted = value;
+            }
+
+            input.value = formatted;
+            input.dataset.prevValue = formatted;
+
+            // 커서 위치 계산 및 복원
+            let newPos;
+
+            // 원본 문자열 길이로 백스페이스 감지 (포맷팅 전 비교)
+            if (currentRaw.length < oldFormatted.length) {
+                // 백스페이스: 커서 위치 유지 (단, 범위 내로 제한)
+                newPos = Math.min(cursorPos, formatted.length);
+            } else {
+                // 입력: 커서를 맨 뒤로
+                newPos = formatted.length;
+            }
+
+            input.setSelectionRange(newPos, newPos);
+        }
+
+        // 생년월일 변경 시 우우4 자동 업데이트
+        function updateWoo4Birthdate() {
+            const birthdate = document.getElementById('birthdate').value;
+            // 생년월일이 완성되지 않았으면 리턴
+            const digits = birthdate.replace(/[^0-9]/g, '');
+            if (digits.length !== 8) return;
+
+            // 모든 가산점 항목 확인
+            const bonusItems = document.querySelectorAll('[id^="bonus-item-"]');
+            bonusItems.forEach(itemSelect => {
+                const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+                if (selectedOption && selectedOption.value === '우우4') {
+                    // 우우4가 선택된 경우
+                    const id = itemSelect.id.replace('bonus-item-', '');
+                    const periodInput = document.getElementById(`bonus-period-${id}`);
+                    if (periodInput) {
+                        periodInput.value = birthdate;
+                        // 점수 재계산
+                        calculateBonusScore(id);
+                    }
+                }
+            });
+        }
+
+        // 기간 자동 포맷팅 (yyyy.mm.dd~yyyy.mm.dd)
+        function formatPeriod(input) {
+            // 이전 포맷된 문자열 전체 저장
+            const oldFormatted = input.dataset.prevValue || '';
+
+            // 현재 커서 위치 저장
+            const cursorPos = input.selectionStart;
+
+            // 현재 입력값 저장 (포맷팅 전)
+            const currentRaw = input.value;
+
+            // 숫자만 추출
+            let value = input.value.replace(/[^0-9]/g, '');
+
+            if (value.length === 0) {
+                input.value = '';
+                input.dataset.prevValue = '';
+                return;
+            }
+
+            let formatted = '';
+            if (value.length >= 16) {
+                value = value.substring(0, 16);
+                formatted = value.substring(0, 4) + '.' + value.substring(4, 6) + '.' + value.substring(6, 8) +
+                             '~' + value.substring(8, 12) + '.' + value.substring(12, 14) + '.' + value.substring(14, 16);
+            } else if (value.length >= 8) {
+                const part1 = value.substring(0, 4) + '.' + value.substring(4, 6) + '.' + value.substring(6, 8);
+                const part2 = value.substring(8);
+                if (part2.length >= 6) {
+                    formatted = part1 + '~' + part2.substring(0, 4) + '.' + part2.substring(4, 6) + '.' + part2.substring(6);
+                } else if (part2.length >= 4) {
+                    formatted = part1 + '~' + part2.substring(0, 4) + '.' + part2.substring(4);
+                } else if (part2.length > 0) {
+                    formatted = part1 + '~' + part2;
+                } else {
+                    formatted = part1;
+                }
+            } else if (value.length >= 6) {
+                formatted = value.substring(0, 4) + '.' + value.substring(4, 6) + '.' + value.substring(6);
+            } else if (value.length >= 4) {
+                formatted = value.substring(0, 4) + '.' + value.substring(4);
+            } else {
+                formatted = value;
+            }
+
+            input.value = formatted;
+            input.dataset.prevValue = formatted;
+
+            // 커서 위치 계산 및 복원
+            let newPos;
+
+            // 원본 문자열 길이로 백스페이스 감지 (포맷팅 전 비교)
+            if (currentRaw.length < oldFormatted.length) {
+                // 백스페이스: 커서 위치 유지 (단, 범위 내로 제한)
+                newPos = Math.min(cursorPos, formatted.length);
+            } else {
+                // 입력: 커서를 맨 뒤로
+                newPos = formatted.length;
+            }
+
+            input.setSelectionRange(newPos, newPos);
+        }
+
+        // 기간 계산 (개월 수)
+        function calculatePeriodMonths(periodStr) {
+            if (!periodStr || !periodStr.includes('~')) return 0;
+
+            const [start, end] = periodStr.split('~');
+            const startDate = new Date(start.replace(/\./g, '-'));
+            const endDate = new Date(end.replace(/\./g, '-'));
+
+            if (isNaN(startDate) || isNaN(endDate) || endDate < startDate) return 0;
+
+            const months = (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+                          (endDate.getMonth() - startDate.getMonth()) +
+                          (endDate.getDate() >= startDate.getDate() ? 1 : 0);
+
+            return Math.max(0, months);
+        }
+
+        function addBonus() {
+            console.log('addBonus 함수 호출됨', bonusCounter);
+            try {
+                bonusCounter++;
+                const list = document.getElementById('bonusList');
+                if (!list) {
+                    alert('bonusList 요소를 찾을 수 없습니다!');
+                    console.error('bonusList 요소를 찾을 수 없습니다');
+                    return;
+                }
+                const item = document.createElement('div');
+                item.className = 'item-box';
+                item.id = `bonus-${bonusCounter}`;
+                item.innerHTML = `
+                <div class="item-header">
+                    <span class="item-number">가산점 ${bonusCounter}</span>
+                    <button class="btn btn-danger" onclick="removeItem('bonus-${bonusCounter}')">삭제</button>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>종별 <span class="required">*</span></label>
+                        <select id="bonus-type-${bonusCounter}" onchange="updateBonusItems(${bonusCounter})">
+                            <option value="">선택하세요</option>
+                            <option value="표창">표창</option>
+                            <option value="근무실적">근무실적</option>
+                            <option value="연구실적">연구실적</option>
+                            <option value="우우조건">우우조건</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>평정 대상 <span class="required">*</span></label>
+                        <select id="bonus-item-${bonusCounter}" onchange="updateBonusScore(${bonusCounter})" style="width: 100%;">
+                            <option value="">먼저 종별을 선택하세요</option>
+                        </select>
+                        <div id="bonus-note-${bonusCounter}" class="help-text" style="margin-top: 8px; padding: 8px; background: #fff9e6; border-radius: 4px; display: none;"></div>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1; display: none;" id="bonus-periods-container-${bonusCounter}">
+                        <label>근무 기간 <span class="required">*</span></label>
+                        <div id="bonus-periods-list-${bonusCounter}" style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;"></div>
+                        <button type="button" class="btn btn-secondary" onclick="addPeriodRow(${bonusCounter})" style="margin-top: 8px; width: fit-content;">기간 추가</button>
+                    </div>
+                    <div class="form-group" id="bonus-period-group-${bonusCounter}">
+                        <label id="bonus-period-label-${bonusCounter}">기간/연월일</label>
+                        <input type="text" id="bonus-period-${bonusCounter}" placeholder="날짜 입력" oninput="handlePeriodInput(${bonusCounter})" onblur="calculateBonusScore(${bonusCounter})">
+                        <div class="help-text" id="bonus-period-help-${bonusCounter}">평정대상을 먼저 선택하세요</div>
+                    </div>
+                    <div class="form-group">
+                        <label>점수</label>
+                        <input type="number" id="bonus-score-${bonusCounter}" step="0.001" placeholder="0.000" readonly style="background: #f0f0f0;">
+                        <div class="help-text">자동 계산됨</div>
+                    </div>
+                </div>
+            `;
+                list.appendChild(item);
+                console.log('가산점 항목 추가 완료:', bonusCounter);
+            } catch (error) {
+                console.error('addBonus 오류:', error);
+                alert('가산점 추가 중 오류 발생: ' + error.message);
+            }
+        }
+
+        function updateBonusItems(id) {
+            const typeSelect = document.getElementById(`bonus-type-${id}`);
+            const itemSelect = document.getElementById(`bonus-item-${id}`);
+            const scoreInput = document.getElementById(`bonus-score-${id}`);
+            const noteDiv = document.getElementById(`bonus-note-${id}`);
+            const periodGroup = document.getElementById(`bonus-period-group-${id}`);
+            const periodInput = document.getElementById(`bonus-period-${id}`);
+
+            const selectedType = typeSelect.value;
+
+            // 초기화
+            itemSelect.innerHTML = '<option value="">선택하세요</option>';
+            scoreInput.value = '';
+            noteDiv.style.display = 'none';
+            noteDiv.textContent = '';
+            periodInput.value = '';
+            periodGroup.style.display = 'flex'; // 일단 표시
+
+            // 이전에 생성된 급지 선택 컨테이너 제거 (gradeOnly용)
+            const oldGradeContainer = document.getElementById(`bonus-grade-container-${id}`);
+            if (oldGradeContainer) {
+                oldGradeContainer.remove();
+            }
+
+            if (selectedType && bonusTable[selectedType]) {
+                bonusTable[selectedType].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    option.dataset.score = item.score;
+                    option.dataset.note = item.note || '';
+                    option.dataset.unit = item.unit || '';
+                    option.dataset.inputType = item.inputType || 'period';
+                    // periodOptions가 있으면 저장
+                    if (item.periodOptions) {
+                        option.dataset.periodOptions = JSON.stringify(item.periodOptions);
+                    }
+                    // periodOptionsBefore와 periodOptionsAfter가 있으면 저장 (근무3, 17, 18용)
+                    if (item.periodOptionsBefore) {
+                        option.dataset.periodOptionsBefore = JSON.stringify(item.periodOptionsBefore);
+                    }
+                    if (item.periodOptionsAfter) {
+                        option.dataset.periodOptionsAfter = JSON.stringify(item.periodOptionsAfter);
+                    }
+                    // cutoffDate가 있으면 저장 (근무3, 17, 18용)
+                    if (item.cutoffDate) {
+                        option.dataset.cutoffDate = item.cutoffDate;
+                    }
+                    // medalOptions가 있으면 저장 (근무11용)
+                    if (item.medalOptions) {
+                        option.dataset.medalOptions = JSON.stringify(item.medalOptions);
+                    }
+                    // rankOptions가 있으면 저장 (근무13용)
+                    if (item.rankOptions) {
+                        option.dataset.rankOptions = JSON.stringify(item.rankOptions);
+                    }
+                    // gradeOptions가 있으면 저장 (근무16용)
+                    if (item.gradeOptions) {
+                        option.dataset.gradeOptions = JSON.stringify(item.gradeOptions);
+                    }
+                    // classSizeOptions가 있으면 저장 (근무19용)
+                    if (item.classSizeOptions) {
+                        option.dataset.classSizeOptions = JSON.stringify(item.classSizeOptions);
+                    }
+                    // 원래 항목 이름 저장 (버튼 선택 시 이름에 기간 추가하기 위함)
+                    option.dataset.originalName = item.name;
+                    itemSelect.appendChild(option);
+                });
+            }
+        }
+
+        function updateBonusScore(id) {
+            const itemSelect = document.getElementById(`bonus-item-${id}`);
+            const scoreInput = document.getElementById(`bonus-score-${id}`);
+            const noteDiv = document.getElementById(`bonus-note-${id}`);
+            const periodLabel = document.getElementById(`bonus-period-label-${id}`);
+            const periodInput = document.getElementById(`bonus-period-${id}`);
+            const periodHelp = document.getElementById(`bonus-period-help-${id}`);
+            const periodGroup = document.getElementById(`bonus-period-group-${id}`);
+            const periodsContainer = document.getElementById(`bonus-periods-container-${id}`);
+            const periodsListContainer = document.getElementById(`bonus-periods-list-${id}`);
+
+            const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+
+            scoreInput.value = '';
+
+            // 여러 기간 컨테이너 초기화
+            if (periodsContainer) {
+                periodsContainer.style.display = 'none';
+            }
+            if (periodsListContainer) {
+                periodsListContainer.innerHTML = '';
+            }
+
+            // 이전에 생성된 급지 선택 컨테이너 제거 (gradeOnly용)
+            const oldGradeContainer = document.getElementById(`bonus-grade-container-${id}`);
+            if (oldGradeContainer) {
+                oldGradeContainer.remove();
+            }
+
+            if (selectedOption && selectedOption.value) {
+                const itemId = selectedOption.value;
+
+                // 우우조건 중복 체크
+                if (itemId.startsWith('우우')) {
+                    const group1_3 = ['우우1', '우우2', '우우3'];
+                    const group5_7 = ['우우5', '우우6', '우우7'];
+
+                    let conflictGroup = null;
+                    if (group1_3.includes(itemId)) {
+                        conflictGroup = group1_3;
+                    } else if (group5_7.includes(itemId)) {
+                        conflictGroup = group5_7;
+                    }
+
+                    if (conflictGroup) {
+                        // 다른 가산점 항목들 체크
+                        const allBonusItems = document.querySelectorAll('[id^="bonus-item-"]');
+                        for (const otherItemSelect of allBonusItems) {
+                            // 현재 항목은 제외
+                            if (otherItemSelect.id === `bonus-item-${id}`) continue;
+
+                            const otherSelectedOption = otherItemSelect.options[otherItemSelect.selectedIndex];
+                            if (otherSelectedOption && otherSelectedOption.value) {
+                                const otherItemId = otherSelectedOption.value;
+
+                                // 같은 그룹에서 이미 선택된 항목이 있으면 경고
+                                if (conflictGroup.includes(otherItemId) && otherItemId !== itemId) {
+                                    alert(`우우조건은 중복 선택할 수 없습니다.\n이미 "${otherSelectedOption.textContent}"이(가) 선택되어 있습니다.`);
+                                    itemSelect.selectedIndex = 0;
+                                    scoreInput.value = '';
+                                    periodGroup.style.display = 'none';
+                                    calculateScore();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                const score = selectedOption.dataset.score;
+                const note = selectedOption.dataset.note;
+                const unit = selectedOption.dataset.unit;
+                const inputType = selectedOption.dataset.inputType;
+
+                // 입력 타입에 따라 레이블 및 placeholder 변경
+                if (inputType === 'date') {
+                    periodGroup.style.display = 'flex';
+                    periodLabel.textContent = '연월일 *';
+                    periodInput.placeholder = '20230813 (숫자만 입력)';
+                    periodHelp.textContent = '예: 20230813 → 2023.08.13 (자동 변환)';
+
+                    // 우우4인 경우 생년월일 자동 입력
+                    if (itemId === '우우4') {
+                        const birthdate = document.getElementById('birthdate').value;
+                        if (birthdate) {
+                            periodInput.value = birthdate;
+                            // 점수 자동 계산
+                            calculateBonusScore(id);
+                        } else {
+                            periodInput.value = '';
+                            alert('기본정보의 생년월일을 먼저 입력해주세요.');
+                        }
+                    } else {
+                        periodInput.value = '';
+                    }
+                } else if (inputType === 'period') {
+                    periodGroup.style.display = 'flex';
+                    periodLabel.textContent = '기간 *';
+                    periodInput.placeholder = '2021030120250228 (숫자만 입력)';
+                    periodHelp.textContent = '예: 2021030120250228 → 2021.03.01~2025.02.28 (자동 변환)';
+                    periodInput.value = '';
+                } else if (inputType === 'periodButton' || inputType === 'periodButtonDual') {
+                    // 근무실적 - 여러 기간 선택 가능
+                    periodGroup.style.display = 'none'; // 기존 단일 입력 필드 숨김
+
+                    // 여러 기간 컨테이너 표시
+                    if (periodsContainer) {
+                        periodsContainer.style.display = 'block';
+                        // 첫 번째 기간 행 자동 추가
+                        addPeriodRow(id);
+                    }
+                } else if (inputType === 'dateWithMedal' || inputType === 'dateWithRank') {
+                    // 근무실적 11, 13 - 날짜 + 메달/순위 선택 (여러 개 추가 가능)
+                    periodGroup.style.display = 'none'; // 기존 단일 입력 필드 숨김
+
+                    // 여러 기간 컨테이너 표시
+                    if (periodsContainer) {
+                        periodsContainer.style.display = 'block';
+                        // 첫 번째 행 자동 추가
+                        addPeriodRow(id);
+                    }
+                } else if (inputType === 'periodWithClassSize') {
+                    // 근무실적 19 - 학급 규모 선택 + 기간 선택 + 기간 입력 (여러 개 추가 가능)
+                    periodGroup.style.display = 'none'; // 기존 단일 입력 필드 숨김
+
+                    // 여러 기간 컨테이너 표시
+                    if (periodsContainer) {
+                        periodsContainer.style.display = 'block';
+                        // 첫 번째 행 자동 추가
+                        addPeriodRow(id);
+                    }
+                } else if (inputType === 'dateMultiple') {
+                    // 근무실적 12 - 날짜만 입력 (여러 개 추가 가능)
+                    periodGroup.style.display = 'none'; // 기존 단일 입력 필드 숨김
+
+                    // 여러 기간 컨테이너 표시
+                    if (periodsContainer) {
+                        periodsContainer.style.display = 'block';
+                        // 첫 번째 행 자동 추가
+                        addPeriodRow(id);
+                    }
+                } else if (inputType === 'gradeWithPeriod') {
+                    // 근무실적 16 - 급지 선택 + 단일 기간 입력
+                    // 급지 선택 드롭다운 생성
+                    const gradeOptions = selectedOption.dataset.gradeOptions ?
+                        JSON.parse(selectedOption.dataset.gradeOptions) : [];
+
+                    if (gradeOptions.length > 0) {
+                        const gradeContainer = document.createElement('div');
+                        gradeContainer.className = 'form-group';
+                        gradeContainer.style.gridColumn = '1 / -1';
+                        gradeContainer.id = `bonus-grade-container-${id}`;
+
+                        const gradeLabel = document.createElement('label');
+                        gradeLabel.innerHTML = '급지 선택 <span class="required">*</span>';
+
+                        const gradeSelect = document.createElement('select');
+                        gradeSelect.id = `bonus-grade-select-${id}`;
+                        gradeSelect.style.width = '100%';
+
+                        const emptyOption = document.createElement('option');
+                        emptyOption.value = '';
+                        emptyOption.textContent = '급지를 선택하세요';
+                        gradeSelect.appendChild(emptyOption);
+
+                        gradeOptions.forEach(opt => {
+                            const option = document.createElement('option');
+                            option.value = JSON.stringify(opt);
+                            option.textContent = `${opt.label} (${opt.score}점)`;
+                            gradeSelect.appendChild(option);
+                        });
+
+                        gradeSelect.onchange = function() {
+                            calculateBonusScore(id);
+                        };
+
+                        gradeContainer.appendChild(gradeLabel);
+                        gradeContainer.appendChild(gradeSelect);
+
+                        // noteDiv 앞에 삽입
+                        const parentGrid = periodGroup.parentElement;
+                        const noteGroup = noteDiv.parentElement;
+                        parentGrid.insertBefore(gradeContainer, noteGroup.nextSibling);
+                    }
+
+                    // 기간 입력 필드 표시
+                    periodGroup.style.display = 'flex';
+                    periodLabel.textContent = '기간 *';
+                    periodInput.placeholder = '2021030120250228 (숫자만 입력)';
+                    periodHelp.textContent = '예: 2021030120250228 → 2021.03.01~2025.02.28 (자동 변환)';
+                    periodInput.value = '';
+                } else if (inputType === 'periodWithGrade') {
+                    // 근무실적 - 급지 선택 + 기간 입력 (여러 개 추가 가능)
+                    periodGroup.style.display = 'none'; // 기존 단일 입력 필드 숨김
+
+                    // 여러 기간 컨테이너 표시
+                    if (periodsContainer) {
+                        periodsContainer.style.display = 'block';
+                        // 첫 번째 행 자동 추가
+                        addPeriodRow(id);
+                    }
+                } else if (inputType === 'none') {
+                    // 우우조건 5, 6, 7, 8은 입력 필드 숨기고 바로 점수 표시
+                    periodGroup.style.display = 'none';
+                    scoreInput.value = formatScore(score);
+                    calculateScore();
+                }
+
+                let noteText = '';
+                if (unit) noteText += `[${unit}] `;
+                if (note) noteText += note;
+
+                if (noteText) {
+                    noteDiv.innerHTML = '📌 ' + noteText;
+                    noteDiv.style.display = 'block';
+                } else {
+                    noteDiv.style.display = 'none';
+                }
+            }
+        }
+
+        function handlePeriodInput(id) {
+            const itemSelect = document.getElementById(`bonus-item-${id}`);
+            const periodInput = document.getElementById(`bonus-period-${id}`);
+            const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+
+            if (!selectedOption || !selectedOption.value) return;
+
+            const inputType = selectedOption.dataset.inputType;
+            const itemId = selectedOption.value;
+
+            // 포맷팅 적용
+            if (inputType === 'date') {
+                formatDate(periodInput);
+                // 날짜 형식이 완성되면(8자리) 점수 계산
+                const digits = periodInput.value.replace(/[^0-9]/g, '');
+                if (digits.length === 8) {
+                    calculateBonusScore(id);
+                }
+            } else if (inputType === 'period' || inputType === 'gradeWithPeriod') {
+                formatPeriod(periodInput);
+                // 기간 형식이 완성되면(16자리) 점수 계산
+                const digits = periodInput.value.replace(/[^0-9]/g, '');
+                if (digits.length === 16) {
+                    calculateBonusScore(id);
+                }
+            }
+        }
+
+        function calculateBonusScore(id) {
+            const itemSelect = document.getElementById(`bonus-item-${id}`);
+            const periodInput = document.getElementById(`bonus-period-${id}`);
+            const scoreInput = document.getElementById(`bonus-score-${id}`);
+            const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+
+            if (!selectedOption || !selectedOption.value) return;
+
+            const baseScore = parseFloat(selectedOption.dataset.score);
+            const unit = selectedOption.dataset.unit;
+            const inputType = selectedOption.dataset.inputType;
+            const periodValue = periodInput.value.trim();
+
+            // inputType이 none이면 이미 점수가 설정됨
+            if (inputType === 'none') return;
+
+            // gradeWithPeriod: 급지 선택 + 기간 입력
+            if (inputType === 'gradeWithPeriod') {
+                const gradeSelect = document.getElementById(`bonus-grade-select-${id}`);
+                if (!gradeSelect || !gradeSelect.value || !periodValue) {
+                    scoreInput.value = '';
+                    calculateScore();
+                    return;
+                }
+
+                // 기간 형식 검증
+                if (!/^\d{4}\.\d{2}\.\d{2}~\d{4}\.\d{2}\.\d{2}$/.test(periodValue)) {
+                    scoreInput.value = '';
+                    calculateScore();
+                    return;
+                }
+
+                const selectedGrade = JSON.parse(gradeSelect.value);
+                scoreInput.value = formatScore(selectedGrade.score);
+                calculateScore();
+                return;
+            }
+
+            // 기간/연월일이 입력되지 않으면 점수 0
+            if (!periodValue) {
+                scoreInput.value = '';
+                calculateScore();
+                return;
+            }
+
+            // date 타입은 기본 점수 그대로
+            if (inputType === 'date') {
+                // 날짜 형식 검증 (yyyy.mm.dd)
+                if (/^\d{4}\.\d{2}\.\d{2}$/.test(periodValue)) {
+                    scoreInput.value = formatScore(baseScore);
+                } else {
+                    scoreInput.value = '';
+                }
+                calculateScore();
+                return;
+            }
+
+            // period 타입은 기간 계산
+            if (inputType === 'period' && unit) {
+                // 우우2, 우우3는 "yyyy.mm.dd~현재" 형식 검증 후 점수 표시
+                const itemId = itemSelect.value;
+                if (itemId === '우우2' || itemId === '우우3') {
+                    // 기간 형식 검증 (yyyy.mm.dd~현재)
+                    if (!/^\d{4}\.\d{2}\.\d{2}~현재$/.test(periodValue)) {
+                        scoreInput.value = '';
+                        calculateScore();
+                        return;
+                    }
+                    scoreInput.value = formatScore(baseScore);
+                    calculateScore();
+                    return;
+                }
+
+                // 기간 형식 검증 (yyyy.mm.dd~yyyy.mm.dd)
+                if (!/^\d{4}\.\d{2}\.\d{2}~\d{4}\.\d{2}\.\d{2}$/.test(periodValue)) {
+                    scoreInput.value = '';
+                    calculateScore();
+                    return;
+                }
+
+                const months = calculatePeriodMonths(periodValue);
+                let finalScore = 0;
+
+                if (unit.includes('6개월마다')) {
+                    const periods = Math.floor(months / 6);
+                    finalScore = baseScore * periods;
+
+                    // "2년간" 제한 확인
+                    const itemName = selectedOption.textContent;
+                    if (itemName.includes('2년간')) {
+                        const maxPeriods = 4; // 2년 = 24개월 = 4 × 6개월
+                        finalScore = Math.min(finalScore, baseScore * maxPeriods);
+                    }
+                } else if (unit.includes('1개월마다')) {
+                    finalScore = baseScore * months;
+
+                    // "2년간" 제한
+                    const itemName = selectedOption.textContent;
+                    if (itemName.includes('2년간')) {
+                        const maxMonths = 24;
+                        finalScore = Math.min(finalScore, baseScore * maxMonths);
+                    }
+                } else if (unit.includes('1년마다')) {
+                    const years = Math.floor(months / 12);
+                    finalScore = baseScore * years;
+
+                    // "2년간" 제한
+                    const itemName = selectedOption.textContent;
+                    if (itemName.includes('2년간')) {
+                        finalScore = Math.min(finalScore, baseScore * 2);
+                    }
+                } else {
+                    // 단위가 명시되지 않은 경우 기본 점수
+                    finalScore = baseScore;
+                }
+
+                scoreInput.value = formatScore(finalScore);
+            } else {
+                // 단위가 없으면 기본 점수
+                scoreInput.value = formatScore(baseScore);
+            }
+
+            calculateScore();
+        }
+
+        function removeItem(id) {
+            document.getElementById(id).remove();
+            calculateScore();
+        }
+
+        function calculateScore() {
+            let careerTotal = 0;
+            let bonusTotal = 0;
+            let practiceTotal = 0;
+
+            // 경력점 계산
+            document.querySelectorAll('[id^="career-"]').forEach(item => {
+                if (item.id.includes('career-score-')) {
+                    const id = item.id.split('-')[2];
+                    const gradeSelect = document.getElementById(`career-grade-${id}`);
+                    const yearsInput = document.getElementById(`career-years-${id}`);
+                    const scoreInput = item;
+                    
+                    if (gradeSelect && yearsInput && gradeSelect.value && yearsInput.value) {
+                        const gradeMatch = gradeSelect.value.match(/\(([\d.]+)\)/);
+                        const gradeScore = gradeMatch ? parseFloat(gradeMatch[1]) : 0;
+                        const years = parseFloat(yearsInput.value);
+                        const score = gradeScore * years / 12;
+                        scoreInput.value = formatScore(score);
+                        careerTotal += score;
+                    }
+                }
+            });
+
+            // 가산점 계산
+            document.querySelectorAll('[id^="bonus-score-"]').forEach(input => {
+                const score = parseFloat(input.value) || 0;
+                bonusTotal += score;
+            });
+
+            // 교육실습협력학교 가산점
+            ['practiceClassScore', 'practiceResearchScore', 'practiceFutureScore', 'practiceImprovementScore'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    practiceTotal += parseFloat(input.value) || 0;
+                }
+            });
+
+            const total = careerTotal + bonusTotal;
+            const practiceAdjusted = careerTotal + practiceTotal;
+
+            document.getElementById('careerScore').textContent = careerTotal.toFixed(2) + '점';
+            document.getElementById('bonusScore').textContent = bonusTotal.toFixed(3) + '점';
+            document.getElementById('practiceScore').textContent = practiceTotal.toFixed(3) + '점';
+            document.getElementById('totalScore').textContent = total.toFixed(3) + '점';
+            document.getElementById('practiceAdjustedScore').textContent = practiceAdjusted.toFixed(3) + '점';
+        }
+
+        // 교육실습협력학교 - 수업 실적 추가
+        function addPracticeClass() {
+            if (practiceClassCounter >= 3) {
+                alert('수업 실적은 최대 3개까지만 추가할 수 있습니다.');
+                return;
+            }
+
+            const id = ++practiceClassCounter;
+            const container = document.getElementById('practiceClassList');
+
+            const div = document.createElement('div');
+            div.id = `practiceClass-${id}`;
+            div.style.cssText = 'border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 4px; background: #f9f9f9;';
+            div.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <strong>수업 실적 ${id}</strong>
+                    <button class="btn btn-remove" onclick="removePracticeClass(${id})" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">삭제</button>
+                </div>
+                <input type="text" id="practiceClassContent-${id}" placeholder="내용 입력" style="width: 100%; margin-bottom: 10px; padding: 8px; box-sizing: border-box;">
+                <input type="text" id="practiceClassDate-${id}" placeholder="날짜 (예: 20130509)" oninput="formatDate(this); calculatePracticeScore();" style="width: 100%; padding: 8px; box-sizing: border-box;">
+            `;
+
+            container.appendChild(div);
+
+            // 3개가 되면 추가 버튼 비활성화
+            if (practiceClassCounter >= 3) {
+                document.getElementById('addPracticeClassBtn').disabled = true;
+                document.getElementById('addPracticeClassBtn').style.opacity = '0.5';
+                document.getElementById('addPracticeClassBtn').style.cursor = 'not-allowed';
+            }
+
+            calculatePracticeScore();
+        }
+
+        // 교육실습협력학교 - 수업 실적 제거
+        function removePracticeClass(id) {
+            const element = document.getElementById(`practiceClass-${id}`);
+            if (element) {
+                element.remove();
+                practiceClassCounter--;
+
+                // 3개 미만이면 추가 버튼 다시 활성화
+                if (practiceClassCounter < 3) {
+                    document.getElementById('addPracticeClassBtn').disabled = false;
+                    document.getElementById('addPracticeClassBtn').style.opacity = '1';
+                    document.getElementById('addPracticeClassBtn').style.cursor = 'pointer';
+                }
+
+                calculatePracticeScore();
+            }
+        }
+
+        // 교육실습협력학교 가산점 점수 계산
+        function calculatePracticeScore() {
+            // 1~3. 수업 실적 점수 계산
+            let classCount = 0;
+            for (let i = 1; i <= 3; i++) {
+                const contentInput = document.getElementById(`practiceClassContent-${i}`);
+                const dateInput = document.getElementById(`practiceClassDate-${i}`);
+                if (contentInput && dateInput) {
+                    const content = contentInput.value.trim();
+                    const date = dateInput.value.trim();
+                    const digits = date.replace(/[^0-9]/g, '');
+                    if (content && digits.length === 8) {
+                        classCount++;
+                    }
+                }
+            }
+            const classScore = classCount * 2.0;
+            document.getElementById('practiceClassScore').value = classScore.toFixed(2);
+
+            // 4. 연구 실적 점수 계산
+            const researchContent = document.getElementById('practiceResearchContent').value.trim();
+            const researchDate = document.getElementById('practiceResearchDate').value.trim();
+            const researchDigits = researchDate.replace(/[^0-9]/g, '');
+            const researchScore = (researchContent && researchDigits.length === 8) ? 2.0 : 0;
+            document.getElementById('practiceResearchScore').value = researchScore.toFixed(2);
+
+            // 5. 미래교육 실적 점수 계산
+            const futureContent = document.getElementById('practiceFutureContent').value.trim();
+            const futurePeriod = document.getElementById('practiceFuturePeriod').value.trim();
+            const futureDigits = futurePeriod.replace(/[^0-9]/g, '');
+            const futureScore = (futureContent && futureDigits.length === 16) ? 2.0 : 0;
+            document.getElementById('practiceFutureScore').value = futureScore.toFixed(2);
+
+            // 6. 교육력 제고 실적 점수 계산
+            const improvementContent = document.getElementById('practiceImprovementContent').value.trim();
+            const improvementPeriod = document.getElementById('practiceImprovementPeriod').value.trim();
+            const improvementDigits = improvementPeriod.replace(/[^0-9]/g, '');
+            const improvementScore = (improvementContent && improvementDigits.length === 16) ? 2.0 : 0;
+            document.getElementById('practiceImprovementScore').value = improvementScore.toFixed(2);
+
+            // 전체 점수 재계산 (calculateScore 함수 호출 - 이미 존재하는 함수)
+            // calculateScore(); 대신 직접 업데이트
+            updateTotalScore();
+        }
+
+        // 교육실습협력학교 - 수업 실적 데이터 수집
+        function getPracticeClassData() {
+            const items = [];
+            for (let i = 1; i <= 3; i++) {
+                const contentInput = document.getElementById(`practiceClassContent-${i}`);
+                const dateInput = document.getElementById(`practiceClassDate-${i}`);
+                if (contentInput && dateInput) {
+                    const content = contentInput.value.trim();
+                    const date = dateInput.value.trim();
+                    const digits = date.replace(/[^0-9]/g, '');
+                    if (content && digits.length === 8) {
+                        items.push({ content, date });
+                    }
+                }
+            }
+
+            // 날짜 기준으로 내림차순 정렬 (최신이 위로)
+            items.sort((a, b) => {
+                const dateA = a.date.replace(/\./g, '');
+                const dateB = b.date.replace(/\./g, '');
+                return dateB.localeCompare(dateA);
+            });
+
+            // 내용과 날짜를 줄바꿈으로 합치기
+            const contents = items.map(item => item.content).join('\n');
+            const dates = items.map(item => item.date).join('\n');
+
+            return { contents, dates };
+        }
+
+        // 교육실습협력학교 - 연구 실적 데이터 수집
+        function getPracticeResearchData() {
+            const content = document.getElementById('practiceResearchContent').value.trim();
+            const date = document.getElementById('practiceResearchDate').value.trim();
+            const digits = date.replace(/[^0-9]/g, '');
+
+            if (content && digits.length === 8) {
+                return { content, date };
+            }
+            return { content: '', date: '' };
+        }
+
+        // 교육실습협력학교 - 미래교육 실적 데이터 수집
+        function getPracticeFutureData() {
+            const content = document.getElementById('practiceFutureContent').value.trim();
+            const period = document.getElementById('practiceFuturePeriod').value.trim();
+            const digits = period.replace(/[^0-9]/g, '');
+
+            if (content && digits.length === 16) {
+                return { content, period };
+            }
+            return { content: '', period: '' };
+        }
+
+        // 교육실습협력학교 - 교육력 제고 실적 데이터 수집
+        function getPracticeImprovementData() {
+            const content = document.getElementById('practiceImprovementContent').value.trim();
+            const period = document.getElementById('practiceImprovementPeriod').value.trim();
+            const digits = period.replace(/[^0-9]/g, '');
+
+            if (content && digits.length === 16) {
+                return { content, period };
+            }
+            return { content: '', period: '' };
+        }
+
+        // 전체 점수 업데이트
+        function updateTotalScore() {
+            let careerTotal = 0;
+            let bonusTotal = 0;
+            let practiceTotal = 0;
+
+            // 경력 점수
+            document.querySelectorAll('[id^="career-score-"]').forEach(input => {
+                careerTotal += parseFloat(input.textContent) || 0;
+            });
+
+            // 가산점
+            document.querySelectorAll('[id^="bonus-score-"]').forEach(input => {
+                const score = parseFloat(input.value) || 0;
+                bonusTotal += score;
+            });
+
+            // 교육실습협력학교 가산점
+            ['practiceClassScore', 'practiceResearchScore', 'practiceFutureScore', 'practiceImprovementScore'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    practiceTotal += parseFloat(input.value) || 0;
+                }
+            });
+
+            const total = careerTotal + bonusTotal;
+            const practiceAdjusted = careerTotal + practiceTotal;
+
+            document.getElementById('careerScore').textContent = careerTotal.toFixed(2) + '점';
+            document.getElementById('bonusScore').textContent = bonusTotal.toFixed(3) + '점';
+            document.getElementById('practiceScore').textContent = practiceTotal.toFixed(3) + '점';
+            document.getElementById('totalScore').textContent = total.toFixed(3) + '점';
+            document.getElementById('practiceAdjustedScore').textContent = practiceAdjusted.toFixed(3) + '점';
+        }
+
+        function validateRequired() {
+            const required = {
+                'name': '성명', 'gender': '성별', 'birthdate': '생년월일',
+                'currentSchool': '현임교', 'currentSchoolYears': '현임교근무연수',
+                'residence': '생활근거지', 'qualification': '소지자격',
+                'promotionCandidate': '승진후보자', 'transferType': '전보구분',
+                'firstChoice': '1희망'
+            };
+
+            for (const [id, label] of Object.entries(required)) {
+                const value = document.getElementById(id).value;
+                if (!value) {
+                    alert(`⚠️ ${label}은(는) 필수 항목입니다!`);
+                    document.getElementById(id).focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function collectData() {
+            const careers = [];
+            document.querySelectorAll('[id^="career-"][id*="-school-"]').forEach(input => {
+                const id = input.id.split('-')[2];
+                careers.push({
+                    school: document.getElementById(`career-school-${id}`).value,
+                    period: document.getElementById(`career-period-${id}`).value,
+                    grade: document.getElementById(`career-grade-${id}`).value,
+                    years: document.getElementById(`career-years-${id}`).value,
+                    score: document.getElementById(`career-score-${id}`).value
+                });
+            });
+
+            const bonuses = [];
+            document.querySelectorAll('[id^="bonus-"][id*="-type-"]').forEach(input => {
+                const id = input.id.split('-')[2];
+                const itemSelect = document.getElementById(`bonus-item-${id}`);
+                const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+
+                // 여러 기간을 수집 (근무실적 1~10번의 경우)
+                let periodValue = '';
+                const periodsListContainer = document.getElementById(`bonus-periods-list-${id}`);
+                if (periodsListContainer && periodsListContainer.children.length > 0) {
+                    // 여러 기간이 있는 경우
+                    const periodInputs = periodsListContainer.querySelectorAll('.period-input');
+                    const periods = [];
+                    periodInputs.forEach(input => {
+                        if (input.value.trim()) {
+                            periods.push(input.value.trim());
+                        }
+                    });
+
+                    // 날짜 순으로 정렬 (최신 날짜가 위로)
+                    periods.sort((a, b) => {
+                        // 기간 형식: yyyy.mm.dd~yyyy.mm.dd 또는 날짜 형식: yyyy.mm.dd
+                        // 종료 날짜(또는 단일 날짜)를 기준으로 내림차순 정렬
+                        const getEndDate = (period) => {
+                            // 기간 형식 (yyyy.mm.dd~yyyy.mm.dd)
+                            let match = period.match(/~(\d{4})\.(\d{2})\.(\d{2})/);
+                            if (match) {
+                                return new Date(match[1], parseInt(match[2]) - 1, match[3]);
+                            }
+                            // 날짜 형식 (yyyy.mm.dd)
+                            match = period.match(/^(\d{4})\.(\d{2})\.(\d{2})$/);
+                            if (match) {
+                                return new Date(match[1], parseInt(match[2]) - 1, match[3]);
+                            }
+                            return new Date(0); // 파싱 실패 시 가장 오래된 날짜
+                        };
+
+                        const dateA = getEndDate(a);
+                        const dateB = getEndDate(b);
+                        return dateB - dateA; // 내림차순 (최신이 위)
+                    });
+
+                    periodValue = periods.join('\n'); // 줄바꿈으로 연결
+                } else {
+                    // 단일 기간인 경우
+                    const periodInput = document.getElementById(`bonus-period-${id}`);
+                    periodValue = periodInput ? periodInput.value : '';
+                }
+
+                bonuses.push({
+                    type: document.getElementById(`bonus-type-${id}`).value,
+                    itemId: itemSelect.value,
+                    itemName: selectedOption ? selectedOption.textContent : '',
+                    period: periodValue,
+                    score: document.getElementById(`bonus-score-${id}`).value,
+                    note: selectedOption ? selectedOption.dataset.note : '',
+                    unit: selectedOption ? selectedOption.dataset.unit : ''
+                });
+            });
+
+            // 가산점 정렬: 종별 순서(표창, 근무실적, 연구실적, 우우조건) + 각 종별 내 숫자 순서
+            bonuses.sort((a, b) => {
+                // 종별 우선순위
+                const typeOrder = { '표창': 1, '근무실적': 2, '연구실적': 3, '우우조건': 4 };
+                const typeA = typeOrder[a.type] || 999;
+                const typeB = typeOrder[b.type] || 999;
+
+                if (typeA !== typeB) {
+                    return typeA - typeB; // 종별 순서로 정렬
+                }
+
+                // 같은 종별 내에서는 itemId의 숫자로 정렬
+                // itemId 형식: "표창1", "근무2", "연구3", "우우1" 등
+                const getNumber = (itemId) => {
+                    const match = itemId.match(/\d+/);
+                    return match ? parseInt(match[0]) : 999;
+                };
+
+                return getNumber(a.itemId) - getNumber(b.itemId);
+            });
+
+            return {
+                name: document.getElementById('name').value,
+                gender: document.getElementById('gender').value,
+                birthdate: document.getElementById('birthdate').value,
+                currentSchool: document.getElementById('currentSchool').value,
+                currentSchoolYears: document.getElementById('currentSchoolYears').value,
+                residence: document.getElementById('residence').value,
+                qualification: document.getElementById('qualification').value,
+                otherCity: document.getElementById('otherCity').value,
+                otherProvince: document.getElementById('otherProvince').value,
+                promotionCandidate: document.getElementById('promotionCandidate').value,
+                tieBreaker: document.getElementById('tieBreaker').value,
+                remarks: document.getElementById('remarks').value,
+                transferType: document.getElementById('transferType').value,
+                firstChoice: document.getElementById('firstChoice').value,
+                secondChoice: document.getElementById('secondChoice').value,
+                thirdChoice: document.getElementById('thirdChoice').value,
+                integrated1: document.getElementById('integrated1').value,
+                integrated2: document.getElementById('integrated2').value,
+                integrated3: document.getElementById('integrated3').value,
+                careers: careers,
+                bonuses: bonuses,
+                // 교육실습협력학교 가산점 - 1~3. 수업 실적
+                practiceClass: getPracticeClassData(),
+                practiceClassScore: document.getElementById('practiceClassScore').value,
+                // 교육실습협력학교 가산점 - 4. 연구 실적
+                practiceResearch: getPracticeResearchData(),
+                practiceResearchScore: document.getElementById('practiceResearchScore').value,
+                // 교육실습협력학교 가산점 - 5. 미래교육 실적
+                practiceFuture: getPracticeFutureData(),
+                practiceFutureScore: document.getElementById('practiceFutureScore').value,
+                // 교육실습협력학교 가산점 - 6. 교육력 제고 실적
+                practiceImprovement: getPracticeImprovementData(),
+                practiceImprovementScore: document.getElementById('practiceImprovementScore').value,
+                overStaffHope: document.getElementById('overStaffHope').value,
+                transferPriorityReason: document.getElementById('transferPriorityReason').value,
+                transferDeferReason: document.getElementById('transferDeferReason').value,
+                spouseName: document.getElementById('spouseName').value,
+                spouseSchool: document.getElementById('spouseSchool').value,
+                relative1Name: document.getElementById('relative1Name').value,
+                relative1School: document.getElementById('relative1School').value,
+                relative2Name: document.getElementById('relative2Name').value,
+                relative2School: document.getElementById('relative2School').value,
+                careerScore: document.getElementById('careerScore').textContent,
+                bonusScore: document.getElementById('bonusScore').textContent,
+                practiceScore: document.getElementById('practiceScore').textContent,
+                totalScore: document.getElementById('totalScore').textContent,
+                practiceAdjustedScore: document.getElementById('practiceAdjustedScore').textContent
+            };
+        }
+
+        function saveData() {
+            const data = collectData();
+            localStorage.setItem('transferApplication', JSON.stringify(data));
+            alert('✅ 임시 저장되었습니다!');
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('transferApplication');
+            if (saved) {
+                // TODO: 데이터 로드 로직
+            }
+        }
+
+        function loadData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const data = JSON.parse(event.target.result);
+                    // TODO: 데이터 로드 로직
+                    alert('✅ 데이터를 불러왔습니다!');
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function downloadJSON() {
+            if (!validateRequired()) return;
+            const data = collectData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `전보신청서_${data.name}_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('✅ JSON 파일이 다운로드되었습니다!');
+        }
+
+        function downloadExcel() {
+            if (!validateRequired()) return;
+            const data = collectData();
+            
+            const wb = XLSX.utils.book_new();
+            
+            const basicInfo = [
+                ['2026학년도 관내전보 내신자 조사서'],
+                [],
+                ['■ 기본 정보'],
+                ['성명', data.name],
+                ['성별', data.gender],
+                ['생년월일', data.birthdate],
+                ['현임교', data.currentSchool],
+                ['현임교근무연수', data.currentSchoolYears],
+                ['생활근거지', data.residence],
+                ['소지자격', data.qualification],
+                ['타시군내신', data.otherCity],
+                ['타시도내신', data.otherProvince],
+                ['승진후보자', data.promotionCandidate],
+                ['비고', data.remarks],
+                [],
+                ['■ 전보 정보'],
+                ['전보구분', data.transferType],
+                ['1희망', data.firstChoice],
+                ['2희망', data.secondChoice],
+                ['3희망', data.thirdChoice],
+                ['통합1희망', data.integrated1],
+                ['통합2희망', data.integrated2],
+                ['통합3희망', data.integrated3],
+                [],
+                ['■ 점수'],
+                ['학교경력점', data.careerScore],
+                ['가산점', data.bonusScore],
+                ['교육실습협력학교 가산점', data.practiceScore],
+                ['총점', data.totalScore],
+                ['실습교 보정총점', data.practiceAdjustedScore]
+            ];
+            
+            const careerData = [
+                ['■ 경력 사항'],
+                ['순번', '학교명', '근무기간', '급지(점수)', '근무연수', '점수']
+            ];
+            data.careers.forEach((c, i) => {
+                careerData.push([i+1, c.school, c.period, c.grade, c.years, c.score]);
+            });
+            
+            const bonusData = [
+                ['■ 가산점'],
+                ['순번', '종별', '평정대상', '기간/연월일', '점수', '비고']
+            ];
+            data.bonuses.forEach((b, i) => {
+                bonusData.push([i+1, b.type, b.itemName, b.period, b.score, b.note]);
+            });
+            
+            const practiceData = [
+                ['■ 교육실습협력학교 가산점'],
+                ['항목', '내용', '기간/연월일', '점수'],
+                ['1~3. 수업 실적', data.practiceClass.contents, data.practiceClass.dates, data.practiceClassScore],
+                ['4. 연구 실적', data.practiceResearch.content, data.practiceResearch.date, data.practiceResearchScore],
+                ['5. 미래교육 실적', data.practiceFuture.content, data.practiceFuture.period, data.practiceFutureScore],
+                ['6. 교육력 제고 실적', data.practiceImprovement.content, data.practiceImprovement.period, data.practiceImprovementScore]
+            ];
+            
+            const additionalData = [
+                ['■ 추가 입력 항목'],
+                ['과원 전보 내신자 희망', data.overStaffHope],
+                ['전보우선 사유', data.transferPriorityReason],
+                ['전보유예 사유', data.transferDeferReason],
+                ['부부 교직원 성명', data.spouseName],
+                ['부부 교직원 소속', data.spouseSchool],
+                ['직계존비속 교직원1 성명', data.relative1Name],
+                ['직계존비속 교직원1 소속', data.relative1School],
+                ['직계존비속 교직원2 성명', data.relative2Name],
+                ['직계존비속 교직원2 소속', data.relative2School]
+            ];
+            
+            const allData = [...basicInfo, [], ...careerData, [], ...bonusData, [], ...practiceData, [], ...additionalData];
+            const ws = XLSX.utils.aoa_to_sheet(allData);
+            XLSX.utils.book_append_sheet(wb, ws, '전보신청서');
+            
+            XLSX.writeFile(wb, `전보신청서_${data.name}_${new Date().toISOString().split('T')[0]}.xlsx`);
+            alert('✅ 엑셀 파일이 다운로드되었습니다!');
+        }
+    </script>
+</body>
+</html>

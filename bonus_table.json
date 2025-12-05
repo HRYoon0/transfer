@@ -1,0 +1,876 @@
+{
+  "표창": [
+    {
+      "id": "표창1",
+      "name": "1. 교육감 표창 이상, 훈포장",
+      "score": 1.0,
+      "note": "4년간 2회 적용 / <span style='color: blue;'>모범공무원 표창 포함</span>",
+      "inputType": "date"
+    },
+    {
+      "id": "표창2",
+      "name": "2. 타 부처 장관 표창",
+      "score": 1.0,
+      "note": "4년간 2회 적용 / <span style='color: blue;'>학생지도 및 학교 과제해결에 한함</span>",
+      "inputType": "date"
+    },
+    {
+      "id": "표창3",
+      "name": "3. 교육장 표창",
+      "score": 0.7,
+      "note": "4년간 2회 적용",
+      "inputType": "date"
+    },
+    {
+      "id": "표창4",
+      "name": "4. 직속 기관장 표창",
+      "score": 0.5,
+      "note": "4년간 2회 적용",
+      "inputType": "date"
+    }
+  ],
+  "근무실적": [
+    {
+      "id": "근무1",
+      "name": "1. 도교육청 지정 이상 연구(시범, 실험) 학교 근무자",
+      "score": 0.25,
+      "unit": "6개월마다",
+      "note": "동일 학년도 중복 경우 택일 적용 / <span style='color: blue;'>교육협력 실습학교 포함</span>",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.25
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 0.5
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 0.75
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 1.0
+        },
+        {
+          "label": "2년 6개월",
+          "months": 30,
+          "score": 1.25
+        },
+        {
+          "label": "3년",
+          "months": 36,
+          "score": 1.5
+        },
+        {
+          "label": "3년 6개월",
+          "months": 42,
+          "score": 1.75
+        },
+        {
+          "label": "4년",
+          "months": 48,
+          "score": 2.0
+        }
+      ]
+    },
+    {
+      "id": "근무2",
+      "name": "2. 2년간 복식학급 담당교사",
+      "score": 0.5,
+      "unit": "6개월마다",
+      "note": "4년간 누가 적용",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.5
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 1.0
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 1.5
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 2.0
+        }
+      ]
+    },
+    {
+      "id": "근무3",
+      "name": "3. 2년간 원어민 영어보조교사 코-티처",
+      "score": 0,
+      "unit": "",
+      "note": "4년간 누가 적용 / <span style='color: blue;'>2025.2.28 이전 실적: 6개월마다 0.25,<br>2025.3.1 이후 실적: 1개월마다 0.04, 1년이면 0.5,<br>1개월 미만의 경우, 15일 이상 근무할 시 1개월로 인정</span>",
+      "inputType": "periodButtonDual",
+      "periodOptionsBefore": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.25
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 0.5
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 0.75
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 1.0
+        }
+      ],
+      "periodOptionsAfter": [
+        {
+          "label": "1개월",
+          "months": 1,
+          "score": 0.04
+        },
+        {
+          "label": "2개월",
+          "months": 2,
+          "score": 0.08
+        },
+        {
+          "label": "3개월",
+          "months": 3,
+          "score": 0.12
+        },
+        {
+          "label": "4개월",
+          "months": 4,
+          "score": 0.16
+        },
+        {
+          "label": "5개월",
+          "months": 5,
+          "score": 0.2
+        },
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.24
+        },
+        {
+          "label": "7개월",
+          "months": 7,
+          "score": 0.28
+        },
+        {
+          "label": "8개월",
+          "months": 8,
+          "score": 0.32
+        },
+        {
+          "label": "9개월",
+          "months": 9,
+          "score": 0.36
+        },
+        {
+          "label": "10개월",
+          "months": 10,
+          "score": 0.4
+        },
+        {
+          "label": "11개월",
+          "months": 11,
+          "score": 0.44
+        },
+        {
+          "label": "12개월",
+          "months": 12,
+          "score": 0.5
+        }
+      ]
+    },
+    {
+      "id": "근무4",
+      "name": "4. 2년간 지자체 지원 원어민 영어보조교사 코-티처",
+      "score": 0.25,
+      "unit": "6개월마다",
+      "note": "4년간 누가 적용",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.25
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 0.5
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 0.75
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 1.0
+        }
+      ]
+    },
+    {
+      "id": "근무5",
+      "name": "5. 2년간 교과전담 및 순회교사",
+      "score": 0.5,
+      "unit": "6개월마다",
+      "note": "4년간 누가 적용 / <span style='color: red;'>5항, 9항은 동일학년도 중복의 경우 택일 적용</span> / <span style='color: blue;'>특수교사의 경우, 특수학급 및 특수학교만 해당</span>",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.5
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 1.0
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 1.5
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 2.0
+        }
+      ]
+    },
+    {
+      "id": "근무6",
+      "name": "6. 최근 4년간 (도내) 파견 근무자",
+      "score": 0.25,
+      "unit": "6개월마다",
+      "note": "4년간 누가 적용",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.25
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 0.5
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 0.75
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 1.0
+        },
+        {
+          "label": "2년 6개월",
+          "months": 30,
+          "score": 1.25
+        },
+        {
+          "label": "3년",
+          "months": 36,
+          "score": 1.5
+        },
+        {
+          "label": "3년 6개월",
+          "months": 42,
+          "score": 1.75
+        },
+        {
+          "label": "4년",
+          "months": 48,
+          "score": 2.0
+        }
+      ]
+    },
+    {
+      "id": "근무7",
+      "name": "7. 병설유치원, 특수학급 연구․시범학교 근무자",
+      "score": 0.3,
+      "unit": "1년마다",
+      "note": "동일 학년도 중복 경우 택일 적용 / <span style='color: blue;'>교감, 교무, 연구부장(주무)</span>",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 0.3
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 0.6
+        },
+        {
+          "label": "3년",
+          "months": 36,
+          "score": 0.9
+        },
+        {
+          "label": "4년",
+          "months": 48,
+          "score": 1.2
+        }
+      ]
+    },
+    {
+      "id": "근무8",
+      "name": "8. 2년간 특수교육 대상 아동을 맡은 통합학급 담임교사 또는 복지 카드 1~3급 소지 학생의 담임",
+      "score": 0.25,
+      "unit": "6개월마다",
+      "note": "4년간 누가 적용",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.25
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 0.5
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 0.75
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 1.0
+        }
+      ]
+    },
+    {
+      "id": "근무9",
+      "name": "9. 1·6학년 담임",
+      "score": 0.25,
+      "unit": "6개월마다",
+      "note": "4년간 누가 적용 / <span style='color: blue;'>단 1학년은 2021.3.1. 이후 실적</span>",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.25
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 0.5
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 0.75
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 1.0
+        }
+      ]
+    },
+    {
+      "id": "근무10",
+      "name": "10. 2년간 부장교사",
+      "score": 0.5,
+      "unit": "6개월마다",
+      "note": "4년간 누가 적용 / <span style='color: blue;'>2019.3.1. 이후 실적</span>",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.5
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 1.0
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 1.5
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 2.0
+        }
+      ]
+    },
+    {
+      "id": "근무11",
+      "name": "11. 전국소년체육대회 및 전국동계체육대회 입상 유공자",
+      "score": 0,
+      "note": "4년간 누가 적용 (동일 학년도 중복 경우 택일) / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+      "inputType": "dateWithMedal",
+      "medalOptions": [
+        {
+          "label": "금메달",
+          "score": 5.0
+        },
+        {
+          "label": "은메달",
+          "score": 2.5
+        },
+        {
+          "label": "동메달",
+          "score": 1.5
+        }
+      ]
+    },
+    {
+      "id": "근무12",
+      "name": "12. 직무수행과 관련되는 공적으로 전국 규모의 대회에서 국무총리 이상의 상장 수상자 또는 국무총리 이상의 지도자상 수상자",
+      "score": 5.0,
+      "note": "4년간 누가 적용 (동일 학년도 중복 경우 택일) / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+      "inputType": "dateMultiple"
+    },
+    {
+      "id": "근무13",
+      "name": "13. 2년간 초·중학교 종합체육대회 입상 유공자 (도 대회)",
+      "score": 0,
+      "note": "해당 실적 인정은 유공자 1인에 한함 / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+      "inputType": "dateWithRank",
+      "rankOptions": [
+        {
+          "label": "1위",
+          "score": 0.5
+        },
+        {
+          "label": "2위",
+          "score": 0.3
+        },
+        {
+          "label": "3위",
+          "score": 0.1
+        }
+      ]
+    },
+    {
+      "id": "근무14",
+      "name": "14. 청렴도 향상에 기여한 자",
+      "score": 0.5,
+      "note": "현임교 1회만 인정 / <span style='color: blue;'>조사기관에 신고하여 금품수수 10만원 이상, 공금횡령·유용 100만원 이상 위반 행위 발견에 기여한 경우</span>",
+      "inputType": "date"
+    },
+    {
+      "id": "근무15",
+      "name": "15. 교감 미배치 교의 교감 업무 대행자",
+      "score": 0.25,
+      "unit": "6개월마다",
+      "note": "4년간 누가 적용 / <span style='color: blue;'>1인만 인정</span> / <span style='color: blue;'>2018.3.1. 이후 실적</span>",
+      "inputType": "periodButton",
+      "periodOptions": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.25
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 0.5
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 0.75
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 1.0
+        },
+        {
+          "label": "2년 6개월",
+          "months": 30,
+          "score": 1.25
+        },
+        {
+          "label": "3년",
+          "months": 36,
+          "score": 1.5
+        },
+        {
+          "label": "3년 6개월",
+          "months": 42,
+          "score": 1.75
+        },
+        {
+          "label": "4년",
+          "months": 48,
+          "score": 2.0
+        }
+      ]
+    },
+    {
+      "id": "근무16",
+      "name": "16. 동지역 농산어촌승진가산점 미부여 학교",
+      "score": 0,
+      "note": "",
+      "inputType": "gradeWithPeriod",
+      "gradeOptions": [
+        {
+          "label": "'가·나' 급지 동일 학교에서 연속하여 3년 이상 근무한 자",
+          "score": 0.75
+        },
+        {
+          "label": "'다·라' 급지 동일 학교에서 연속하여 3년 이상 근무한 자",
+          "score": 0.25
+        }
+      ]
+    },
+    {
+      "id": "근무17",
+      "name": "17. 교육지원청 근무 전문상담교사",
+      "score": 0,
+      "unit": "6개월마다",
+      "note": "",
+      "inputType": "periodButtonDual",
+      "cutoffDate": "2025-03-01",
+      "periodOptionsBefore": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.5
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 1.0
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 1.5
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 2.0
+        },
+        {
+          "label": "2년 6개월",
+          "months": 30,
+          "score": 2.5
+        },
+        {
+          "label": "3년",
+          "months": 36,
+          "score": 3.0
+        },
+        {
+          "label": "3년 6개월",
+          "months": 42,
+          "score": 3.5
+        },
+        {
+          "label": "4년",
+          "months": 48,
+          "score": 4.0
+        }
+      ],
+      "periodOptionsAfter": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 1.0
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 2.0
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 3.0
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 4.0
+        },
+        {
+          "label": "2년 6개월",
+          "months": 30,
+          "score": 5.0
+        },
+        {
+          "label": "3년",
+          "months": 36,
+          "score": 6.0
+        },
+        {
+          "label": "3년 6개월",
+          "months": 42,
+          "score": 7.0
+        },
+        {
+          "label": "4년",
+          "months": 48,
+          "score": 8.0
+        }
+      ]
+    },
+    {
+      "id": "근무18",
+      "name": "18. 경상남도교육청 특수교육원 파견근무",
+      "score": 0,
+      "unit": "6개월마다",
+      "note": "",
+      "inputType": "periodButtonDual",
+      "cutoffDate": "2023-03-01",
+      "periodOptionsBefore": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 0.5
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 1.0
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 1.5
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 2.0
+        },
+        {
+          "label": "2년 6개월",
+          "months": 30,
+          "score": 2.5
+        },
+        {
+          "label": "3년",
+          "months": 36,
+          "score": 3.0
+        },
+        {
+          "label": "3년 6개월",
+          "months": 42,
+          "score": 3.5
+        },
+        {
+          "label": "4년",
+          "months": 48,
+          "score": 4.0
+        }
+      ],
+      "periodOptionsAfter": [
+        {
+          "label": "6개월",
+          "months": 6,
+          "score": 1.0
+        },
+        {
+          "label": "1년",
+          "months": 12,
+          "score": 2.0
+        },
+        {
+          "label": "1년 6개월",
+          "months": 18,
+          "score": 3.0
+        },
+        {
+          "label": "2년",
+          "months": 24,
+          "score": 4.0
+        },
+        {
+          "label": "2년 6개월",
+          "months": 30,
+          "score": 5.0
+        },
+        {
+          "label": "3년",
+          "months": 36,
+          "score": 6.0
+        },
+        {
+          "label": "3년 6개월",
+          "months": 42,
+          "score": 7.0
+        },
+        {
+          "label": "4년",
+          "months": 48,
+          "score": 8.0
+        }
+      ]
+    },
+    {
+      "id": "근무19",
+      "name": "19. 2년간 대규모 학교 근무 전문상담교사",
+      "score": 0,
+      "unit": "6개월마다",
+      "note": "2025.3.1. 이후 실적부터",
+      "inputType": "periodWithClassSize",
+      "classSizeOptions": [
+        {
+          "label": "36학급 이상 42학급 이하",
+          "periodOptions": [
+            {"label": "6개월", "months": 6, "score": 0.25},
+            {"label": "1년", "months": 12, "score": 0.5},
+            {"label": "1년 6개월", "months": 18, "score": 0.75},
+            {"label": "2년", "months": 24, "score": 1.0}
+          ]
+        },
+        {
+          "label": "43학급 이상",
+          "periodOptions": [
+            {"label": "6개월", "months": 6, "score": 0.3},
+            {"label": "1년", "months": 12, "score": 0.6},
+            {"label": "1년 6개월", "months": 18, "score": 0.9},
+            {"label": "2년", "months": 24, "score": 1.2}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "근무20",
+      "name": "20. 전문상담교사 관련 자격증",
+      "score": 0.5,
+      "unit": "평정 기간에 취득한 자",
+      "note": "2025.3.1 이후 실적부터. 청소년 상담사(여성가족부), 임상심리사/직업상담사(한국산업인력공단), 사회복지사(보건복지부)",
+      "inputType": "date"
+    }
+  ],
+  "연구실적": [
+    {
+      "id": "연구1",
+      "name": "1. 전국 단위 입상자",
+      "score": 1.0,
+      "note": "4년간 누가 적용 (동일 학년도 중복 경우 택일) / <span style='color: blue;'>학생지도 실적 포함-경남교육청 추천 대회에 한함</span> / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+      "inputType": "dateMultiple"
+    },
+    {
+      "id": "연구2",
+      "name": "2. 도 단위 입상자",
+      "score": 0.5,
+      "note": "4년간 누가 적용 (동일 학년도 중복 경우 택일) / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+      "inputType": "dateMultiple"
+    },
+    {
+      "id": "연구3",
+      "name": "3. 개인 작품 발표자",
+      "score": 0.2,
+      "note": "2024.3.1 전보부터 4년간 2회 적용 / <span style='color: blue;'>2017.3.1～2020.2.29 실적에 한함</span> / 2인 이내 저서 발표자 포함",
+      "inputType": "dateMultiple"
+    },
+    {
+      "id": "연구4",
+      "name": "4. 학습지도 연구대회 도대회 입상자, 수업연구교사",
+      "score": 0.75,
+      "note": "4년간 누가 적용 / <span style='color: blue;'>2024.3.1 전보부터 4년간 2회 적용</span>",
+      "inputType": "dateMultiple"
+    },
+    {
+      "id": "연구5",
+      "name": "5. 수업명사",
+      "score": 1.0,
+      "note": "4년간 누가 적용 / <span style='color: blue;'>2018.3.1. 수업명사 인증까지</span> / <span style='color: blue;'>취득 후 10년간</span>",
+      "inputType": "date"
+    },
+    {
+      "id": "연구6",
+      "name": "6. 한국사능력검정시험 3급 이상",
+      "score": 0.3,
+      "note": "<span style='color: blue;'>임용 전 자격취득 포함</span>",
+      "inputType": "date"
+    }
+  ],
+  "우우조건": [
+    {
+      "id": "우우1",
+      "name": "1. 국가유공자와 동 부양자(배우자와 직접 부양하는 자녀와 그 배우자), 순직한 교육공무원의 배우자, 자녀와 그 배우자",
+      "score": 1.0,
+      "note": "택일 적용 / <span style='color: blue;'>부양기간 입력</span>",
+      "inputType": "period"
+    },
+    {
+      "id": "우우2",
+      "name": "2. 부모를 인사 당해 학년도 말일 기준으로 1년 이상 연속하여 직접 봉양하고 있는 자",
+      "score": 0.5,
+      "note": "택일 적용 (증빙서류 첨부) / <span style='color: blue;'>배우자 부모 포함</span> / <span style='color: blue;'>부양기간 입력</span>",
+      "inputType": "period"
+    },
+    {
+      "id": "우우3",
+      "name": "3. 장애인 본인 및 배우자, 본인 및 배우자의 직계 존비속 중 장애인을 인사 당해 학년도 말일 기준으로 1년 이상 연속하여 직접 부양하고 있는 자",
+      "score": 1.0,
+      "note": "택일 적용 / <span style='color: blue;'>1년 이상 장애 증명 소지자</span> / <span style='color: blue;'>부양기간 입력</span>",
+      "inputType": "period"
+    },
+    {
+      "id": "우우4",
+      "name": "4. 55세 이상 교사",
+      "score": 1.0,
+      "note": "<span style='color: blue;'>기본 정보의 생년월일을 입력하면 자동으로 입력됩니다.</span>",
+      "inputType": "date"
+    },
+    {
+      "id": "우우5",
+      "name": "5. 만 2세 미만의 자녀가 있는 교원",
+      "score": 1.0,
+      "note": "택일 적용 / <span style='color: blue;'>(준)벽지 전보 희망자 제외</span>",
+      "inputType": "none"
+    },
+    {
+      "id": "우우6",
+      "name": "6. 자녀가 3명 이상인 교사",
+      "score": 1.0,
+      "note": "택일 적용",
+      "inputType": "none"
+    },
+    {
+      "id": "우우7",
+      "name": "7. 자녀가 2명인 교사",
+      "score": 0.5,
+      "note": "택일 적용 / <span style='color: blue;'>2021.3.1. 전보부터 적용</span>",
+      "inputType": "none"
+    }
+  ]
+}

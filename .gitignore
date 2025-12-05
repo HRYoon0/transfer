@@ -1,0 +1,11 @@
+# 엑셀 임시 파일
+~$*.xlsx
+~$*.xls
+
+# 백업 파일
+*_backup.html
+*_backup.js
+*_backup.json
+
+# macOS
+.DS_Store
