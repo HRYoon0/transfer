@@ -58,6 +58,18 @@
         .career-table td input:focus, .career-table td select:focus { outline: none; border-color: #667eea; }
         .career-table td input[readonly] { background: #f0f0f0; cursor: not-allowed; }
         .career-table .delete-btn { padding: 6px 12px; font-size: 12px; }
+        /* 모달 스타일 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; overflow-y: auto; }
+        .modal.active { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: white; border-radius: 16px; max-width: 900px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3); margin: 20px; }
+        .modal-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 30px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { margin: 0; font-size: 20px; }
+        .modal-close { background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height: 1; padding: 0; width: 30px; height: 30px; }
+        .modal-close:hover { opacity: 0.7; }
+        .modal-body { padding: 30px; }
+        .modal-footer { padding: 20px 30px; border-top: 1px solid #e0e0e0; display: flex; gap: 10px; justify-content: flex-end; }
+        .temp-career-item { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #e0e0e0; position: relative; }
+        .temp-career-item .remove-temp-btn { position: absolute; top: 10px; right: 10px; padding: 4px 10px; font-size: 12px; }
         @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .action-buttons { flex-direction: column; } }
     </style>
 </head>
@@ -233,6 +245,7 @@
                 <h2 class="section-title">2. 경력 사항 (최근 4년)</h2>
                 <div class="alert alert-warning">
                     <strong>주의:</strong> 최근 근무기간부터 4년간 기재. 휴직기간이 있으면 전후로 구분하여 입력하고 휴직기간만큼 소급하여 이전 근무경력 포함.
+                    <br><strong>TIP:</strong> 경력 추가 버튼을 눌러 여러 경력을 입력한 후 저장하면, 전체 근무기간이 4년을 초과할 경우 자동으로 조정됩니다.
                 </div>
                 <table class="career-table">
                     <thead>
@@ -243,7 +256,7 @@
                             <th rowspan="2">급지(점수)</th>
                             <th rowspan="2">근무연수</th>
                             <th rowspan="2">점수</th>
-                            <th rowspan="2">소계</th>
+                            <th rowspan="2">삭제</th>
                         </tr>
                     </thead>
                     <tbody id="careerList">
@@ -252,7 +265,28 @@
                         </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-add" onclick="addCareer()">+ 경력 추가</button>
+                <button class="btn btn-add" onclick="openCareerModal()">+ 경력 추가</button>
+            </div>
+
+            <!-- 경력 추가 모달 -->
+            <div id="careerModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>경력 입력</h3>
+                        <button class="modal-close" onclick="closeCareerModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info" style="margin-bottom: 20px;">
+                            <strong>안내:</strong> 여러 경력을 추가한 후 저장 버튼을 누르면 전체 경력이 확정됩니다. 전체 근무기간이 4년을 초과하면 자동으로 조정됩니다.
+                        </div>
+                        <div id="tempCareerList"></div>
+                        <button class="btn btn-add" onclick="addTempCareer()" style="margin-bottom: 20px;">+ 경력 항목 추가</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" onclick="closeCareerModal()">취소</button>
+                        <button class="btn btn-success" onclick="saveAllCareers()">저장</button>
+                    </div>
+                </div>
             </div>
 
             <!-- 3. 가산점 -->
@@ -879,10 +913,12 @@
         let careerCounter = 0;
         let bonusCounter = 0;
         let practiceClassCounter = 0;
+        let tempCareerCounter = 0;  // 모달 내 임시 경력 카운터
+        let tempCareers = [];  // 모달 내 임시 경력 목록
+        let savedCareers = [];  // 저장된 경력 목록
 
         document.addEventListener('DOMContentLoaded', function() {
             initSchoolSelects();
-            addCareer();
             loadFromLocalStorage();
         });
 
@@ -1058,59 +1094,288 @@
             });
         }
 
-        function addCareer() {
-            careerCounter++;
-            const list = document.getElementById('careerList');
+        // ==================== 경력 관리 시스템 ====================
 
-            // 첫 경력 추가 시 안내 문구 제거
-            if (list.querySelector('td[colspan="7"]')) {
-                list.innerHTML = '';
-            }
-
-            const row = document.createElement('tr');
-            row.id = `career-${careerCounter}`;
-            row.innerHTML = `
-                <td>경력 ${careerCounter}</td>
-                <td>
-                    <div class="searchable-select">
-                        <input type="text" id="career-school-${careerCounter}" placeholder="학교명 입력..." autocomplete="off" oninput="calculateCareerGradeAndScore(${careerCounter})">
-                        <div id="career-school-${careerCounter}-dropdown" class="searchable-dropdown hidden"></div>
-                    </div>
-                </td>
-                <td>
-                    <input type="text" id="career-period-${careerCounter}" placeholder="2021.03.01~2025.02.28" oninput="formatPeriod(this); calculateCareerGradeAndScore(${careerCounter})">
-                </td>
-                <td>
-                    <input type="text" id="career-grade-${careerCounter}" readonly style="background: #f0f0f0;">
-                </td>
-                <td>
-                    <input type="text" id="career-years-${careerCounter}" readonly style="background: #f0f0f0;">
-                </td>
-                <td>
-                    <input type="text" id="career-score-${careerCounter}" readonly style="background: #f0f0f0;">
-                </td>
-                <td>
-                    <button class="btn btn-danger delete-btn" onclick="removeCareer(${careerCounter})">삭제</button>
-                </td>
-            `;
-            list.appendChild(row);
-
-            // 경력 학교명에 검색 가능한 드롭다운 설정
-            const schoolsWithEdu = [...schools, '양산교육지원청'];
-            setupSearchableSelect(`career-school-${careerCounter}`, schoolsWithEdu, () => calculateCareerGradeAndScore(careerCounter), '-dropdown');
+        // 모달 열기
+        function openCareerModal() {
+            const modal = document.getElementById('careerModal');
+            modal.classList.add('active');
+            // 모달을 열 때마다 임시 경력 초기화
+            tempCareers = [];
+            tempCareerCounter = 0;
+            renderTempCareerList();
+            // 첫 번째 경력 항목 자동 추가
+            addTempCareer();
         }
 
-        function removeCareer(id) {
-            const row = document.getElementById(`career-${id}`);
-            if (row) {
-                row.remove();
-                calculateScore();
+        // 모달 닫기
+        function closeCareerModal() {
+            const modal = document.getElementById('careerModal');
+            modal.classList.remove('active');
+            tempCareers = [];
+            tempCareerCounter = 0;
+        }
+
+        // 모달 내 임시 경력 추가
+        function addTempCareer() {
+            tempCareerCounter++;
+            const tempCareer = {
+                id: tempCareerCounter,
+                school: '',
+                period: '',
+                startDate: null,
+                endDate: null,
+                months: 0
+            };
+            tempCareers.push(tempCareer);
+            renderTempCareerList();
+        }
+
+        // 임시 경력 삭제
+        function removeTempCareer(id) {
+            tempCareers = tempCareers.filter(c => c.id !== id);
+            renderTempCareerList();
+        }
+
+        // 임시 경력 목록 렌더링
+        function renderTempCareerList() {
+            const container = document.getElementById('tempCareerList');
+            if (tempCareers.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">경력 항목 추가 버튼을 눌러 경력을 입력하세요.</p>';
+                return;
             }
 
-            // 경력이 모두 삭제되면 안내 문구 표시
+            container.innerHTML = tempCareers.map(career => `
+                <div class="temp-career-item" id="temp-career-${career.id}">
+                    <button class="btn btn-danger remove-temp-btn" onclick="removeTempCareer(${career.id})">삭제</button>
+                    <div class="form-grid" style="gap: 15px;">
+                        <div class="form-group">
+                            <label>학교명 <span class="required">*</span></label>
+                            <div class="searchable-select">
+                                <input type="text" id="temp-school-${career.id}" placeholder="학교명 입력..." autocomplete="off" value="${career.school}" oninput="updateTempCareer(${career.id}, 'school', this.value)">
+                                <div id="temp-school-${career.id}-dropdown" class="searchable-dropdown hidden"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>근무기간 <span class="required">*</span></label>
+                            <input type="text" id="temp-period-${career.id}" placeholder="2021.03.01~2025.02.28" value="${career.period}" oninput="formatPeriod(this); updateTempCareer(${career.id}, 'period', this.value)">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // 검색 가능한 드롭다운 설정
+            const schoolsWithEdu = [...schools, '양산교육지원청'];
+            tempCareers.forEach(career => {
+                setupSearchableSelect(`temp-school-${career.id}`, schoolsWithEdu, () => {}, '-dropdown');
+            });
+        }
+
+        // 임시 경력 데이터 업데이트
+        function updateTempCareer(id, field, value) {
+            const career = tempCareers.find(c => c.id === id);
+            if (!career) return;
+
+            career[field] = value;
+
+            // 기간이 업데이트되면 날짜 파싱
+            if (field === 'period') {
+                const periodPattern = /^\d{4}\.\d{2}\.\d{2}[~-]\d{4}\.\d{2}\.\d{2}$/;
+                if (periodPattern.test(value)) {
+                    const parts = value.split(/[~-]/);
+                    career.startDate = new Date(parts[0].replace(/\./g, '-'));
+                    career.endDate = new Date(parts[1].replace(/\./g, '-'));
+                    career.months = calculateMonthsBetween(career.startDate, career.endDate);
+                } else {
+                    career.startDate = null;
+                    career.endDate = null;
+                    career.months = 0;
+                }
+            }
+        }
+
+        // 두 날짜 사이의 개월 수 계산 (15일 이상 올림)
+        function calculateMonthsBetween(startDate, endDate) {
+            if (!startDate || !endDate || isNaN(startDate) || isNaN(endDate) || endDate <= startDate) {
+                return 0;
+            }
+
+            let years = endDate.getFullYear() - startDate.getFullYear();
+            let months = endDate.getMonth() - startDate.getMonth();
+            let days = endDate.getDate() - startDate.getDate();
+
+            if (days < 0) {
+                months--;
+                const prevMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+                days += prevMonth.getDate();
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // 15일 이상이면 올림
+            if (days >= 15) {
+                months++;
+                if (months >= 12) {
+                    years++;
+                    months -= 12;
+                }
+            }
+
+            return years * 12 + months;
+        }
+
+        // 모든 경력 저장 및 48개월 제한 적용
+        function saveAllCareers() {
+            // 입력 검증
+            const invalidCareers = tempCareers.filter(c => !c.school || !c.period || c.months === 0);
+            if (invalidCareers.length > 0) {
+                alert('모든 경력의 학교명과 근무기간을 올바르게 입력해주세요.');
+                return;
+            }
+
+            // 총 개월 수 계산
+            const totalMonths = tempCareers.reduce((sum, c) => sum + c.months, 0);
+
+            // 48개월 제한 적용
+            const adjustedCareers = adjustCareersTo48Months([...tempCareers], totalMonths);
+
+            // 저장된 경력 목록에 추가 (최신순 정렬)
+            savedCareers = [...adjustedCareers, ...savedCareers];
+
+            // 테이블 렌더링
+            renderSavedCareers();
+
+            // 모달 닫기
+            closeCareerModal();
+
+            // 점수 재계산
+            calculateScore();
+        }
+
+        // 48개월 제한 적용 로직
+        function adjustCareersTo48Months(careers, totalMonths) {
+            if (totalMonths <= 48) {
+                // 48개월 이하면 그대로 반환
+                return careers.map(c => ({...c, adjustedMonths: c.months}));
+            }
+
+            // 최신순 정렬 (종료일 기준)
+            careers.sort((a, b) => b.endDate - a.endDate);
+
+            let remainingMonths = 48;
+            const result = [];
+
+            for (const career of careers) {
+                if (remainingMonths <= 0) break;
+
+                const adjustedMonths = Math.min(career.months, remainingMonths);
+                const adjustedCareer = {...career, adjustedMonths};
+
+                // 조정된 기간으로 시작일 재계산
+                if (adjustedMonths < career.months) {
+                    const newStartDate = new Date(career.endDate);
+                    const yearsToSubtract = Math.floor(adjustedMonths / 12);
+                    const monthsToSubtract = adjustedMonths % 12;
+
+                    newStartDate.setFullYear(newStartDate.getFullYear() - yearsToSubtract);
+                    newStartDate.setMonth(newStartDate.getMonth() - monthsToSubtract);
+                    newStartDate.setDate(newStartDate.getDate() + 1);
+
+                    adjustedCareer.startDate = newStartDate;
+
+                    // period 문자열 업데이트
+                    const startStr = formatDateToString(newStartDate);
+                    const endStr = formatDateToString(career.endDate);
+                    adjustedCareer.period = `${startStr}~${endStr}`;
+                }
+
+                result.push(adjustedCareer);
+                remainingMonths -= adjustedMonths;
+            }
+
+            return result;
+        }
+
+        // Date 객체를 yyyy.mm.dd 형식 문자열로 변환
+        function formatDateToString(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}.${month}.${day}`;
+        }
+
+        // 저장된 경력 목록 렌더링
+        function renderSavedCareers() {
             const list = document.getElementById('careerList');
-            if (list.children.length === 0) {
+
+            if (savedCareers.length === 0) {
                 list.innerHTML = '<tr><td colspan="7" style="padding: 20px; text-align: center; color: #999;">경력 추가 버튼을 클릭하여 경력을 입력하세요.</td></tr>';
+                return;
+            }
+
+            list.innerHTML = savedCareers.map((career, index) => {
+                const grade = findGrade(career.school, career.startDate);
+                const scoreTable = determineScoreTable(career.startDate);
+                const {years, months} = calculateServiceYearsFromMonths(career.adjustedMonths);
+                const score = calculateScoreForCareer(grade, years, months, scoreTable);
+                const monthlyScore = scoreTable[grade] ? scoreTable[grade][11] : 0;
+
+                return `
+                    <tr id="saved-career-${index}">
+                        <td>경력 ${index + 1}</td>
+                        <td>${career.school}</td>
+                        <td>${career.period}</td>
+                        <td>${grade}(${monthlyScore.toFixed(2)})</td>
+                        <td>${years}.${String(months).padStart(2, '0')}</td>
+                        <td>${score.toFixed(2)}</td>
+                        <td><button class="btn btn-danger delete-btn" onclick="removeSavedCareer(${index})">삭제</button></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // 개월 수를 년.월 형식으로 변환
+        function calculateServiceYearsFromMonths(totalMonths) {
+            const years = Math.floor(totalMonths / 12);
+            const months = totalMonths % 12;
+            return {years, months};
+        }
+
+        // 학교 급지 찾기
+        function findGrade(schoolName, startDate) {
+            const year = startDate.getFullYear();
+            if (gradeData[schoolName] && gradeData[schoolName][year]) {
+                return gradeData[schoolName][year];
+            }
+            return '가';  // 기본값
+        }
+
+        // 점수표 결정 (2018.2.28 기준)
+        function determineScoreTable(startDate) {
+            const cutoffDate = new Date('2018-02-28');
+            return startDate <= cutoffDate ? scoreTable2018Old : scoreTable2018New;
+        }
+
+        // 경력 점수 계산
+        function calculateScoreForCareer(grade, years, months, scoreTable) {
+            if (!scoreTable[grade]) return 0;
+
+            const monthlyScoreFor12Months = scoreTable[grade][11];
+            const yearScore = years * monthlyScoreFor12Months;
+            const monthScore = months > 0 ? scoreTable[grade][months - 1] : 0;
+
+            return yearScore + monthScore;
+        }
+
+        // 저장된 경력 삭제
+        function removeSavedCareer(index) {
+            if (confirm('이 경력을 삭제하시겠습니까?')) {
+                savedCareers.splice(index, 1);
+                renderSavedCareers();
+                calculateScore();
             }
         }
 
@@ -3494,9 +3759,12 @@
             let bonusTotal = 0;
             let practiceTotal = 0;
 
-            // 경력점 계산 (이미 calculateCareerGradeAndScore에서 계산된 값 사용)
-            document.querySelectorAll('[id^="career-score-"]').forEach(scoreInput => {
-                const score = parseFloat(scoreInput.value) || 0;
+            // 경력점 계산 (savedCareers 배열에서 계산)
+            savedCareers.forEach(career => {
+                const grade = findGrade(career.school, career.startDate);
+                const scoreTable = determineScoreTable(career.startDate);
+                const {years, months} = calculateServiceYearsFromMonths(career.adjustedMonths);
+                const score = calculateScoreForCareer(grade, years, months, scoreTable);
                 careerTotal += score;
             });
 
