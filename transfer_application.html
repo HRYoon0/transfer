@@ -192,7 +192,7 @@
                     <div class="form-group">
                         <label>현임교근무연수 <span class="required">*</span></label>
                         <input type="text" id="currentSchoolYears" placeholder="4.06">
-                        <div class="help-text">형식: y.mm (예: 4.06 = 4년 6개월, 휴직/파견기간 제외)</div>
+                        <div class="help-text">✨ 경력 사항에서 현임교와 일치하는 경력이 자동 계산됩니다 (잔여일수 버림)</div>
                     </div>
                     <div class="form-group">
                         <label>생활근거지 <span class="required">*</span></label>
@@ -927,7 +927,9 @@
             const schoolsWithEdu = [...schools, '양산교육지원청'];
 
             // 현임교는 검색 가능한 input으로 설정 (schools + 양산교육지원청)
-            setupSearchableSelect('currentSchool', schoolsWithEdu, () => {});
+            setupSearchableSelect('currentSchool', schoolsWithEdu, () => {
+                calculateCurrentSchoolYears();
+            });
 
             // 1~3희망은 검색 가능한 input으로 설정 (이천,원동,좌삼 제외 + 통합, 양산교육지원청 포함)
             setupSearchableSelect('firstChoice', schoolsForChoice, () => {
@@ -1549,6 +1551,9 @@
                     </tr>
                 `;
             }).join('');
+
+            // 현임교 근무연수 자동 계산
+            calculateCurrentSchoolYears();
         }
 
         // 개월 수를 년.월 형식으로 변환
@@ -1556,6 +1561,48 @@
             const years = Math.floor(totalMonths / 12);
             const months = totalMonths % 12;
             return {years, months};
+        }
+
+        // 현임교 근무연수 자동 계산
+        function calculateCurrentSchoolYears() {
+            const currentSchool = document.getElementById('currentSchool').value.trim();
+            if (!currentSchool || savedCareers.length === 0) {
+                return;
+            }
+
+            // 현임교와 일치하는 경력들 필터링
+            const matchingCareers = savedCareers.filter(career => {
+                return career.school === currentSchool;
+            });
+
+            if (matchingCareers.length === 0) {
+                return;
+            }
+
+            // 전체 근무기간 합산 (원본 데이터 사용, 4년 제한 없음)
+            let totalMonths = 0;
+            let totalDays = 0;
+
+            matchingCareers.forEach(career => {
+                const startDate = career.originalStartDate || career.startDate;
+                const endDate = career.originalEndDate || career.endDate;
+
+                // 역에 의한 계산으로 개월 수와 일 수 계산
+                const periodData = calculatePeriodMonthsAndDays(startDate, endDate);
+                totalMonths += periodData.months;
+                totalDays += periodData.days;
+            });
+
+            // 일 수를 개월로 변환하지 않고 버림 (잔여일수 버림)
+            // 30일 = 1개월 규칙은 사용하지 않음
+
+            // 년과 월로 변환
+            const years = Math.floor(totalMonths / 12);
+            const months = totalMonths % 12;
+
+            // y.mm 형식으로 표시
+            const displayValue = `${years}.${String(months).padStart(2, '0')}`;
+            document.getElementById('currentSchoolYears').value = displayValue;
         }
 
         // 학교 급지 찾기
