@@ -1233,7 +1233,7 @@
             return Math.floor(diffTime / (1000 * 60 * 60 * 24));
         }
 
-        // 날짜에서 개월 수 빼기
+        // 날짜에서 개월 수 빼기 (역에 의한 계산 적용)
         function subtractMonthsFromDate(date, months) {
             const result = new Date(date);
             const years = Math.floor(months / 12);
@@ -1242,8 +1242,16 @@
             result.setFullYear(result.getFullYear() - years);
             result.setMonth(result.getMonth() - remainingMonths);
 
+            // 역에 의한 계산: 시작일 = (종료일 - 개월 수) + 1일
+            result.setDate(result.getDate() + 1);
+
             return result;
         }
+
+        // 예: 종료일 2020.06.10, 6개월 빼기
+        //     6개월 전: 2019.12.10
+        //     시작일: 2019.12.11
+        //     검증: 2019.12.11 ~ 2020.06.10 = 6개월
 
         // 48개월을 역에 의한 계산으로 시작일 찾기 (민법 제160조)
         function calculate48MonthsStart(endDate) {
@@ -1289,28 +1297,25 @@
             calculateScore();
         }
 
-        // 48개월 제한 적용 로직 (역에 의한 계산 - 민법 제160조)
+        // 48개월 제한 적용 로직 (순차 누적 방식)
         function adjustCareersTo48Months(careers, totalMonths) {
             // 최신순 정렬 (종료일 기준)
             careers.sort((a, b) => b.endDate - a.endDate);
 
-            // 가장 최근 경력의 종료일 기준으로 48개월 역산 (달력 기준 4년)
-            const latestEndDate = careers[0].endDate;
-            const cutoffStartDate = calculate48MonthsStart(latestEndDate);
-
             const result = [];
+            let remainingMonths = 48; // 48개월 = 4년
 
             for (const career of careers) {
-                const careerStart = career.startDate;
-                const careerEnd = career.endDate;
-
-                // 경력의 종료일이 cutoff 시작일보다 이전이면 제외
-                if (careerEnd < cutoffStartDate) {
-                    continue;
+                if (remainingMonths <= 0) {
+                    // 48개월 초과, 더 이상 경력 포함 안 함
+                    break;
                 }
 
-                // 경력의 시작일과 종료일이 모두 48개월 범위 내에 있으면 조정 없음
-                if (careerStart >= cutoffStartDate && careerEnd <= latestEndDate) {
+                // 이 경력의 개월 수 계산 (30일 = 1개월 방식)
+                const careerMonths = career.months;
+
+                if (careerMonths <= remainingMonths) {
+                    // 전체 경력이 48개월 범위 내에 포함됨 (조정 불필요)
                     result.push({
                         ...career,
                         originalPeriod: career.period,
@@ -1319,10 +1324,12 @@
                         adjustedEndDate: career.endDate,
                         isAdjusted: false
                     });
+                    remainingMonths -= careerMonths;
                 } else {
-                    // 시작일이 cutoff 시작일보다 이전이면 조정 필요
-                    const adjustedStartDate = careerStart < cutoffStartDate ? cutoffStartDate : careerStart;
-                    const adjustedEndDate = careerEnd;
+                    // 일부만 포함 (조정 필요)
+                    // 종료일에서 remainingMonths만큼만 포함
+                    const adjustedEndDate = career.endDate;
+                    const adjustedStartDate = subtractMonthsFromDate(adjustedEndDate, remainingMonths);
 
                     const adjustedPeriodStr = `${formatDateToString(adjustedStartDate)}~${formatDateToString(adjustedEndDate)}`;
 
@@ -1334,6 +1341,7 @@
                         adjustedEndDate: adjustedEndDate,
                         isAdjusted: true
                     });
+                    remainingMonths = 0; // 48개월 모두 사용
                 }
             }
 
@@ -1352,7 +1360,7 @@
         function calculateAdjustedServiceYears() {
             if (savedCareers.length === 0) return [];
 
-            // 근무연수 계산 (30일 = 1개월)
+            // 근무연수 계산 (15일 이상 올림)
             const careerServiceYears = savedCareers.map(career => {
                 const startDate = career.adjustedStartDate || career.startDate;
                 const endDate = career.adjustedEndDate || career.endDate;
@@ -1372,13 +1380,13 @@
                     months += 12;
                 }
 
-                // 30일 = 1개월
-                const additionalMonths = Math.floor(days / 30);
-                months += additionalMonths;
-
-                if (months >= 12) {
-                    years += Math.floor(months / 12);
-                    months = months % 12;
+                // 15일 이상이면 1개월로 올림
+                if (days >= 15) {
+                    months++;
+                    if (months >= 12) {
+                        years++;
+                        months -= 12;
+                    }
                 }
 
                 const totalYears = years + months / 100;
