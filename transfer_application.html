@@ -1884,28 +1884,28 @@
           "표창": [
             {
               "id": "표창1",
-              "name": "1. 교육감 표창 이상, 훈포장",
+              "name": "교육감 표창 이상",
               "score": 1.0,
               "note": "4년간 2회 적용 / <span style='color: blue;'>모범공무원 표창 포함</span>",
               "inputType": "date"
             },
             {
               "id": "표창2",
-              "name": "2. 타 부처 장관 표창",
+              "name": "학생지도실적 인정 타 부처 장관 표창",
               "score": 1.0,
-              "note": "4년간 2회 적용 / <span style='color: blue;'>학생지도 및 학교 과제해결에 한함</span>",
+              "note": "4년간 2회 적용",
               "inputType": "date"
             },
             {
               "id": "표창3",
-              "name": "3. 교육장 표창",
+              "name": "교육장 표창",
               "score": 0.7,
               "note": "4년간 2회 적용",
               "inputType": "date"
             },
             {
               "id": "표창4",
-              "name": "4. 직속 기관장 표창",
+              "name": "직속기관장 표창",
               "score": 0.5,
               "note": "4년간 2회 적용",
               "inputType": "date"
@@ -1914,10 +1914,60 @@
           "근무실적": [
             {
               "id": "근무1",
-              "name": "1. 도교육청 지정 이상 연구(시범, 실험) 학교 근무자",
+              "name": "연구학교 근무자",
               "score": 0.25,
               "unit": "6개월마다",
-              "note": "동일 학년도 중복 경우 택일 적용 / <span style='color: blue;'>교육협력 실습학교 포함</span>",
+              "note": "동일 학년도 중복 경우 택일 적용",
+              "inputType": "periodButton",
+              "periodOptions": [
+                {
+                  "label": "6개월",
+                  "months": 6,
+                  "score": 0.25
+                },
+                {
+                  "label": "1년",
+                  "months": 12,
+                  "score": 0.5
+                },
+                {
+                  "label": "1년 6개월",
+                  "months": 18,
+                  "score": 0.75
+                },
+                {
+                  "label": "2년",
+                  "months": 24,
+                  "score": 1.0
+                },
+                {
+                  "label": "2년 6개월",
+                  "months": 30,
+                  "score": 1.25
+                },
+                {
+                  "label": "3년",
+                  "months": 36,
+                  "score": 1.5
+                },
+                {
+                  "label": "3년 6개월",
+                  "months": 42,
+                  "score": 1.75
+                },
+                {
+                  "label": "4년",
+                  "months": 48,
+                  "score": 2.0
+                }
+              ]
+            },
+            {
+              "id": "근무1b",
+              "name": "교육실습 협력학교 근무자",
+              "score": 0.25,
+              "unit": "6개월마다",
+              "note": "동일 학년도 중복 경우 택일 적용",
               "inputType": "periodButton",
               "periodOptions": [
                 {
