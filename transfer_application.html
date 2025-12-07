@@ -1545,9 +1545,9 @@
                     <tr id="saved-career-${index}">
                         <td>${career.school}</td>
                         <td>${periodDisplay}</td>
-                        <td>${grade}(${monthlyScore.toFixed(2)})</td>
+                        <td>${grade}(${monthlyScore.toFixed(3)})</td>
                         <td>${serviceYearDisplay}</td>
-                        <td>${score.toFixed(2)}</td>
+                        <td>${score.toFixed(3)}</td>
                         <td><button class="btn btn-danger delete-btn" onclick="removeSavedCareer(${index})">삭제</button></td>
                     </tr>
                 `;
@@ -1857,9 +1857,9 @@
                 const totalScore = yearScore + monthScore;
 
                 // 급지(점수)에는 12개월 기준 점수만 표시
-                gradeInput.value = `${grade}(${monthlyScoreFor12Months.toFixed(2)})`;
+                gradeInput.value = `${grade}(${monthlyScoreFor12Months.toFixed(3)})`;
                 // 점수 열에는 실제 총 점수 표시
-                scoreInput.value = totalScore.toFixed(2);
+                scoreInput.value = totalScore.toFixed(3);
             } else {
                 gradeInput.value = grade;
                 scoreInput.value = '';
@@ -4085,7 +4085,7 @@
             const total = careerTotal + bonusTotal;
             const practiceAdjusted = careerTotal + practiceTotal;
 
-            document.getElementById('careerScore').textContent = careerTotal.toFixed(2) + '점';
+            document.getElementById('careerScore').textContent = careerTotal.toFixed(3) + '점';
             document.getElementById('bonusScore').textContent = bonusTotal.toFixed(3) + '점';
             document.getElementById('practiceScore').textContent = practiceTotal.toFixed(3) + '점';
             document.getElementById('totalScore').textContent = total.toFixed(3) + '점';
@@ -4161,28 +4161,28 @@
                 }
             }
             const classScore = classCount * 2.0;
-            document.getElementById('practiceClassScore').value = classScore.toFixed(2);
+            document.getElementById('practiceClassScore').value = classScore.toFixed(3);
 
             // 4. 연구 실적 점수 계산
             const researchContent = document.getElementById('practiceResearchContent').value.trim();
             const researchDate = document.getElementById('practiceResearchDate').value.trim();
             const researchDigits = researchDate.replace(/[^0-9]/g, '');
             const researchScore = (researchContent && researchDigits.length === 8) ? 2.0 : 0;
-            document.getElementById('practiceResearchScore').value = researchScore.toFixed(2);
+            document.getElementById('practiceResearchScore').value = researchScore.toFixed(3);
 
             // 5. 미래교육 실적 점수 계산
             const futureContent = document.getElementById('practiceFutureContent').value.trim();
             const futurePeriod = document.getElementById('practiceFuturePeriod').value.trim();
             const futureDigits = futurePeriod.replace(/[^0-9]/g, '');
             const futureScore = (futureContent && futureDigits.length === 16) ? 2.0 : 0;
-            document.getElementById('practiceFutureScore').value = futureScore.toFixed(2);
+            document.getElementById('practiceFutureScore').value = futureScore.toFixed(3);
 
             // 6. 교육력 제고 실적 점수 계산
             const improvementContent = document.getElementById('practiceImprovementContent').value.trim();
             const improvementPeriod = document.getElementById('practiceImprovementPeriod').value.trim();
             const improvementDigits = improvementPeriod.replace(/[^0-9]/g, '');
             const improvementScore = (improvementContent && improvementDigits.length === 16) ? 2.0 : 0;
-            document.getElementById('practiceImprovementScore').value = improvementScore.toFixed(2);
+            document.getElementById('practiceImprovementScore').value = improvementScore.toFixed(3);
 
             // 전체 점수 재계산 (calculateScore 함수 호출 - 이미 존재하는 함수)
             // calculateScore(); 대신 직접 업데이트
@@ -4283,7 +4283,7 @@
             const total = careerTotal + bonusTotal;
             const practiceAdjusted = careerTotal + practiceTotal;
 
-            document.getElementById('careerScore').textContent = careerTotal.toFixed(2) + '점';
+            document.getElementById('careerScore').textContent = careerTotal.toFixed(3) + '점';
             document.getElementById('bonusScore').textContent = bonusTotal.toFixed(3) + '점';
             document.getElementById('practiceScore').textContent = practiceTotal.toFixed(3) + '점';
             document.getElementById('totalScore').textContent = total.toFixed(3) + '점';
@@ -4331,9 +4331,9 @@
                 return {
                     school: career.school,
                     period: periodDisplay,
-                    grade: `${grade}(${monthlyScore.toFixed(2)})`,
+                    grade: `${grade}(${monthlyScore.toFixed(3)})`,
                     years: serviceYearDisplay,
-                    score: score.toFixed(2)
+                    score: score.toFixed(3)
                 };
             });
 
