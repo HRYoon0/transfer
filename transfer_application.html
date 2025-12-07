@@ -4890,23 +4890,35 @@
                     const row = 18 + index;
                     setCellValue(`C${row}`, bonus.type);
                     setCellValue(`E${row}`, bonus.itemName);
-
-                    // 내용 셀에 텍스트 자동 축소 적용
-                    const contentCell = worksheet.getCell(`E${row}`);
-                    contentCell.alignment = { ...contentCell.alignment, shrinkToFit: true };
-
                     setCellValue(`K${row}`, bonus.period);
                     setCellValue(`O${row}`, parseFloat(bonus.score));
+
+                    // 내용 셀에 텍스트 자동 축소 적용 (setCellValue 후에 적용)
+                    const contentCell = worksheet.getCell(`E${row}`);
+                    const currentAlignment = contentCell.alignment || {};
+                    contentCell.alignment = {
+                        vertical: currentAlignment.vertical || 'middle',
+                        horizontal: currentAlignment.horizontal || 'left',
+                        wrapText: currentAlignment.wrapText,
+                        shrinkToFit: true
+                    };
                 });
 
                 // 교육실습협력학교 가산점 입력 (Row 33-36)
                 // 1~3. 수업 실적 (Row 33)
                 if (data.practiceClass && (data.practiceClass.contents || data.practiceClass.dates)) {
                     setCellValue('E33', data.practiceClass.contents);
+                    setCellValue('K33', data.practiceClass.dates);
+
                     // 내용 셀에 텍스트 자동 축소 적용
                     const cell33 = worksheet.getCell('E33');
-                    cell33.alignment = { ...cell33.alignment, shrinkToFit: true };
-                    setCellValue('K33', data.practiceClass.dates);
+                    const align33 = cell33.alignment || {};
+                    cell33.alignment = {
+                        vertical: align33.vertical || 'middle',
+                        horizontal: align33.horizontal || 'left',
+                        wrapText: align33.wrapText,
+                        shrinkToFit: true
+                    };
                 }
                 if (data.practiceClassScore) {
                     setCellValue('O33', parseFloat(data.practiceClassScore));
@@ -4915,10 +4927,17 @@
                 // 4. 연구 실적 (Row 34)
                 if (data.practiceResearch && (data.practiceResearch.content || data.practiceResearch.date)) {
                     setCellValue('E34', data.practiceResearch.content);
+                    setCellValue('K34', data.practiceResearch.date);
+
                     // 내용 셀에 텍스트 자동 축소 적용
                     const cell34 = worksheet.getCell('E34');
-                    cell34.alignment = { ...cell34.alignment, shrinkToFit: true };
-                    setCellValue('K34', data.practiceResearch.date);
+                    const align34 = cell34.alignment || {};
+                    cell34.alignment = {
+                        vertical: align34.vertical || 'middle',
+                        horizontal: align34.horizontal || 'left',
+                        wrapText: align34.wrapText,
+                        shrinkToFit: true
+                    };
                 }
                 if (data.practiceResearchScore) {
                     setCellValue('O34', parseFloat(data.practiceResearchScore));
@@ -4927,10 +4946,17 @@
                 // 5. 미래교육 실적 (Row 35)
                 if (data.practiceFuture && (data.practiceFuture.content || data.practiceFuture.period)) {
                     setCellValue('E35', data.practiceFuture.content);
+                    setCellValue('K35', data.practiceFuture.period);
+
                     // 내용 셀에 텍스트 자동 축소 적용
                     const cell35 = worksheet.getCell('E35');
-                    cell35.alignment = { ...cell35.alignment, shrinkToFit: true };
-                    setCellValue('K35', data.practiceFuture.period);
+                    const align35 = cell35.alignment || {};
+                    cell35.alignment = {
+                        vertical: align35.vertical || 'middle',
+                        horizontal: align35.horizontal || 'left',
+                        wrapText: align35.wrapText,
+                        shrinkToFit: true
+                    };
                 }
                 if (data.practiceFutureScore) {
                     setCellValue('O35', parseFloat(data.practiceFutureScore));
@@ -4939,10 +4965,17 @@
                 // 6. 교육력 제고 실적 (Row 36)
                 if (data.practiceImprovement && (data.practiceImprovement.content || data.practiceImprovement.period)) {
                     setCellValue('E36', data.practiceImprovement.content);
+                    setCellValue('K36', data.practiceImprovement.period);
+
                     // 내용 셀에 텍스트 자동 축소 적용
                     const cell36 = worksheet.getCell('E36');
-                    cell36.alignment = { ...cell36.alignment, shrinkToFit: true };
-                    setCellValue('K36', data.practiceImprovement.period);
+                    const align36 = cell36.alignment || {};
+                    cell36.alignment = {
+                        vertical: align36.vertical || 'middle',
+                        horizontal: align36.horizontal || 'left',
+                        wrapText: align36.wrapText,
+                        shrinkToFit: true
+                    };
                 }
                 if (data.practiceImprovementScore) {
                     setCellValue('O36', parseFloat(data.practiceImprovementScore));
