@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026학년도 관내전보 내신자 조사서 작성</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Malgun Gothic', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -4516,7 +4516,7 @@
             const data = collectData();
 
             try {
-                // 원본 템플릿 파일 로드 (fetch 사용)
+                // 원본 템플릿 파일 로드
                 const templatePath = 'template.xlsx';
                 const response = await fetch(templatePath);
 
@@ -4525,67 +4525,63 @@
                 }
 
                 const arrayBuffer = await response.arrayBuffer();
-                const wb = XLSX.read(arrayBuffer, {
-                    type: 'array',
-                    cellStyles: true,
-                    cellFormula: true,
-                    cellDates: true
-                });
-                const ws = wb.Sheets[wb.SheetNames[0]];
 
-                // 셀 값 설정 헬퍼 함수 (원본 스타일 보존)
-                const setCellValue = (cellRef, value, type = 's') => {
-                    if (!ws[cellRef]) ws[cellRef] = {};
-                    ws[cellRef].v = value;
-                    ws[cellRef].t = type;
-                };
+                // ExcelJS로 workbook 로드
+                const workbook = new ExcelJS.Workbook();
+                await workbook.xlsx.load(arrayBuffer);
+
+                const worksheet = workbook.getWorksheet(1); // 첫 번째 시트
 
                 // 기본 정보 입력
-                setCellValue('D5', data.transferType);
-                setCellValue('H5', data.firstChoice);
-                setCellValue('M5', data.secondChoice);
-                setCellValue('P5', data.thirdChoice);
-                setCellValue('D6', data.integrated1);
-                setCellValue('H6', data.integrated2);
-                setCellValue('M6', data.integrated3);
-                setCellValue('D7', data.currentSchool);
-                setCellValue('H7', data.name);
-                setCellValue('M7', data.gender);
-                setCellValue('R7', data.residence);
-                setCellValue('D8', data.qualification);
-                setCellValue('H8', data.otherCity);
-                setCellValue('M8', data.otherProvince);
-                setCellValue('R8', data.promotionCandidate);
-                setCellValue('I9', data.currentSchoolYears);
-                setCellValue('P9', data.birthdate);
-                setCellValue('R9', data.remarks);
+                worksheet.getCell('D5').value = data.transferType;
+                worksheet.getCell('H5').value = data.firstChoice;
+                worksheet.getCell('M5').value = data.secondChoice;
+                worksheet.getCell('P5').value = data.thirdChoice;
+                worksheet.getCell('D6').value = data.integrated1;
+                worksheet.getCell('H6').value = data.integrated2;
+                worksheet.getCell('M6').value = data.integrated3;
+                worksheet.getCell('D7').value = data.currentSchool;
+                worksheet.getCell('H7').value = data.name;
+                worksheet.getCell('M7').value = data.gender;
+                worksheet.getCell('R7').value = data.residence;
+                worksheet.getCell('D8').value = data.qualification;
+                worksheet.getCell('H8').value = data.otherCity;
+                worksheet.getCell('M8').value = data.otherProvince;
+                worksheet.getCell('R8').value = data.promotionCandidate;
+                worksheet.getCell('I9').value = data.currentSchoolYears;
+                worksheet.getCell('P9').value = data.birthdate;
+                worksheet.getCell('R9').value = data.remarks;
 
                 // 경력 사항 입력 (Row 12부터 시작)
                 data.careers.forEach((career, index) => {
                     const row = 12 + index;
-                    setCellValue(`E${row}`, career.school);
-                    setCellValue(`H${row}`, career.period);
-                    setCellValue(`M${row}`, career.grade);
-                    setCellValue(`O${row}`, career.years);
-                    setCellValue(`P${row}`, parseFloat(career.score), 'n');
+                    worksheet.getCell(`E${row}`).value = career.school;
+                    worksheet.getCell(`H${row}`).value = career.period;
+                    worksheet.getCell(`M${row}`).value = career.grade;
+                    worksheet.getCell(`O${row}`).value = career.years;
+                    worksheet.getCell(`P${row}`).value = parseFloat(career.score);
                 });
 
-                // 가산점 입력 (Row 18부터 시작 - 실제 위치는 원본 파일 확인 필요)
+                // 가산점 입력 (Row 18부터 시작)
                 data.bonuses.forEach((bonus, index) => {
                     const row = 18 + index;
-                    setCellValue(`C${row}`, bonus.type);
-                    setCellValue(`E${row}`, bonus.itemName);
-                    setCellValue(`K${row}`, bonus.period);
-                    setCellValue(`N${row}`, parseFloat(bonus.score), 'n');
-                    setCellValue(`P${row}`, bonus.note);
+                    worksheet.getCell(`C${row}`).value = bonus.type;
+                    worksheet.getCell(`E${row}`).value = bonus.itemName;
+                    worksheet.getCell(`K${row}`).value = bonus.period;
+                    worksheet.getCell(`N${row}`).value = parseFloat(bonus.score);
+                    worksheet.getCell(`P${row}`).value = bonus.note;
                 });
 
                 // 파일 다운로드
-                XLSX.writeFile(wb, `전보신청서_${data.name}_${new Date().toISOString().split('T')[0]}.xlsx`, {
-                    cellStyles: true,
-                    bookType: 'xlsx',
-                    type: 'binary'
-                });
+                const buffer = await workbook.xlsx.writeBuffer();
+                const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `전보신청서_${data.name}_${new Date().toISOString().split('T')[0]}.xlsx`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+
                 alert('✅ 엑셀 파일이 다운로드되었습니다!');
             } catch (error) {
                 console.error('엑셀 다운로드 오류:', error);
