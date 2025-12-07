@@ -268,7 +268,6 @@
                 <table class="career-table">
                     <thead>
                         <tr>
-                            <th rowspan="2">구분</th>
                             <th rowspan="2">학교명</th>
                             <th rowspan="2">근무기간</th>
                             <th rowspan="2">급지(점수)</th>
@@ -279,7 +278,7 @@
                     </thead>
                     <tbody id="careerList">
                         <tr>
-                            <td colspan="7" style="padding: 20px; text-align: center; color: #999;">경력 추가 버튼을 클릭하여 경력을 입력하세요.</td>
+                            <td colspan="6" style="padding: 20px; text-align: center; color: #999;">경력 추가 버튼을 클릭하여 경력을 입력하세요.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1195,7 +1194,7 @@
             }
         }
 
-        // 두 날짜 사이의 개월 수 계산 (15일 이상 올림)
+        // 두 날짜 사이의 개월 수 계산 (30일 = 1개월)
         function calculateMonthsBetween(startDate, endDate) {
             if (!startDate || !endDate || isNaN(startDate) || isNaN(endDate) || endDate <= startDate) {
                 return 0;
@@ -1216,16 +1215,42 @@
                 months += 12;
             }
 
-            // 15일 이상이면 올림
-            if (days >= 15) {
-                months++;
-                if (months >= 12) {
-                    years++;
-                    months -= 12;
-                }
+            // 잔여일수 30일 = 1개월로 계산
+            const additionalMonths = Math.floor(days / 30);
+            months += additionalMonths;
+
+            if (months >= 12) {
+                years += Math.floor(months / 12);
+                months = months % 12;
             }
 
             return years * 12 + months;
+        }
+
+        // 두 날짜 사이의 일 수 계산
+        function calculateDaysBetween(startDate, endDate) {
+            const diffTime = endDate - startDate;
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        // 날짜에서 개월 수 빼기
+        function subtractMonthsFromDate(date, months) {
+            const result = new Date(date);
+            const years = Math.floor(months / 12);
+            const remainingMonths = months % 12;
+
+            result.setFullYear(result.getFullYear() - years);
+            result.setMonth(result.getMonth() - remainingMonths);
+
+            return result;
+        }
+
+        // 48개월(1460일)을 정확히 계산하여 시작일 찾기
+        function calculate48MonthsStart(endDate) {
+            // 48개월 = 4년 = 1460일 (윤년 고려하지 않음)
+            const result = new Date(endDate);
+            result.setDate(result.getDate() - 1460 + 1); // -1460일 +1일 (시작일 포함)
+            return result;
         }
 
         // 모든 경력 저장 및 48개월 제한 적용
@@ -1256,45 +1281,52 @@
             calculateScore();
         }
 
-        // 48개월 제한 적용 로직
+        // 48개월 제한 적용 로직 (역에 의한 계산)
         function adjustCareersTo48Months(careers, totalMonths) {
-            if (totalMonths <= 48) {
-                // 48개월 이하면 그대로 반환
-                return careers.map(c => ({...c, adjustedMonths: c.months}));
-            }
-
             // 최신순 정렬 (종료일 기준)
             careers.sort((a, b) => b.endDate - a.endDate);
 
-            let remainingMonths = 48;
+            // 가장 최근 경력의 종료일 기준으로 48개월(1460일) 역산
+            const latestEndDate = careers[0].endDate;
+            const cutoffStartDate = calculate48MonthsStart(latestEndDate);
+
             const result = [];
 
             for (const career of careers) {
-                if (remainingMonths <= 0) break;
+                const careerStart = career.startDate;
+                const careerEnd = career.endDate;
 
-                const adjustedMonths = Math.min(career.months, remainingMonths);
-                const adjustedCareer = {...career, adjustedMonths};
-
-                // 조정된 기간으로 시작일 재계산
-                if (adjustedMonths < career.months) {
-                    const newStartDate = new Date(career.endDate);
-                    const yearsToSubtract = Math.floor(adjustedMonths / 12);
-                    const monthsToSubtract = adjustedMonths % 12;
-
-                    newStartDate.setFullYear(newStartDate.getFullYear() - yearsToSubtract);
-                    newStartDate.setMonth(newStartDate.getMonth() - monthsToSubtract);
-                    newStartDate.setDate(newStartDate.getDate() + 1);
-
-                    adjustedCareer.startDate = newStartDate;
-
-                    // period 문자열 업데이트
-                    const startStr = formatDateToString(newStartDate);
-                    const endStr = formatDateToString(career.endDate);
-                    adjustedCareer.period = `${startStr}~${endStr}`;
+                // 경력의 종료일이 cutoff 시작일보다 이전이면 제외
+                if (careerEnd < cutoffStartDate) {
+                    continue;
                 }
 
-                result.push(adjustedCareer);
-                remainingMonths -= adjustedMonths;
+                // 경력의 시작일과 종료일이 모두 48개월 범위 내에 있으면 조정 없음
+                if (careerStart >= cutoffStartDate && careerEnd <= latestEndDate) {
+                    result.push({
+                        ...career,
+                        originalPeriod: career.period,
+                        adjustedPeriod: null,
+                        adjustedStartDate: career.startDate,
+                        adjustedEndDate: career.endDate,
+                        isAdjusted: false
+                    });
+                } else {
+                    // 시작일이 cutoff 시작일보다 이전이면 조정 필요
+                    const adjustedStartDate = careerStart < cutoffStartDate ? cutoffStartDate : careerStart;
+                    const adjustedEndDate = careerEnd;
+
+                    const adjustedPeriodStr = `${formatDateToString(adjustedStartDate)}~${formatDateToString(adjustedEndDate)}`;
+
+                    result.push({
+                        ...career,
+                        originalPeriod: career.period,
+                        adjustedPeriod: adjustedPeriodStr,
+                        adjustedStartDate: adjustedStartDate,
+                        adjustedEndDate: adjustedEndDate,
+                        isAdjusted: true
+                    });
+                }
             }
 
             return result;
@@ -1308,29 +1340,106 @@
             return `${year}.${month}.${day}`;
         }
 
+        // 조정된 근무연수 계산 (공통 함수)
+        function calculateAdjustedServiceYears() {
+            if (savedCareers.length === 0) return [];
+
+            // 근무연수 계산 (30일 = 1개월)
+            const careerServiceYears = savedCareers.map(career => {
+                const startDate = career.adjustedStartDate || career.startDate;
+                const endDate = career.adjustedEndDate || career.endDate;
+
+                let years = endDate.getFullYear() - startDate.getFullYear();
+                let months = endDate.getMonth() - startDate.getMonth();
+                let days = endDate.getDate() - startDate.getDate();
+
+                if (days < 0) {
+                    months--;
+                    const prevMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+                    days += prevMonth.getDate();
+                }
+
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+
+                // 30일 = 1개월
+                const additionalMonths = Math.floor(days / 30);
+                months += additionalMonths;
+
+                if (months >= 12) {
+                    years += Math.floor(months / 12);
+                    months = months % 12;
+                }
+
+                const totalYears = years + months / 100;
+                return { years, months, totalYears };
+            });
+
+            // 전체 근무연수 합계 계산
+            const totalServiceYears = careerServiceYears.reduce((sum, sy) => sum + sy.totalYears, 0);
+
+            // 4.00을 초과하면 가장 오래된 경력(마지막 경력)의 근무연수 조정
+            let adjustedServiceYears = [...careerServiceYears];
+            if (totalServiceYears > 4.00) {
+                const excess = totalServiceYears - 4.00;
+                const oldestIndex = adjustedServiceYears.length - 1;
+                let adjustedTotal = adjustedServiceYears[oldestIndex].totalYears - excess;
+
+                // 음수가 되지 않도록
+                if (adjustedTotal < 0) adjustedTotal = 0;
+
+                const adjustedYears = Math.floor(adjustedTotal);
+                const adjustedMonths = Math.round((adjustedTotal - adjustedYears) * 100);
+
+                adjustedServiceYears[oldestIndex] = {
+                    years: adjustedYears,
+                    months: adjustedMonths,
+                    totalYears: adjustedTotal
+                };
+            }
+
+            return adjustedServiceYears;
+        }
+
         // 저장된 경력 목록 렌더링
         function renderSavedCareers() {
             const list = document.getElementById('careerList');
 
             if (savedCareers.length === 0) {
-                list.innerHTML = '<tr><td colspan="7" style="padding: 20px; text-align: center; color: #999;">경력 추가 버튼을 클릭하여 경력을 입력하세요.</td></tr>';
+                list.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: #999;">경력 추가 버튼을 클릭하여 경력을 입력하세요.</td></tr>';
                 return;
             }
 
+            const adjustedServiceYears = calculateAdjustedServiceYears();
+
             list.innerHTML = savedCareers.map((career, index) => {
-                const grade = findGrade(career.school, career.startDate);
-                const scoreTable = determineScoreTable(career.startDate);
-                const {years, months} = calculateServiceYearsFromMonths(career.adjustedMonths);
-                const score = calculateScoreForCareer(grade, years, months, scoreTable);
+                // 근무기간 표시
+                let periodDisplay = career.originalPeriod;
+                if (career.isAdjusted && career.adjustedPeriod) {
+                    periodDisplay = `${career.originalPeriod} → ${career.adjustedPeriod}`;
+                }
+
+                // 급지 및 점수표 결정
+                const startDate = career.adjustedStartDate || career.startDate;
+                const grade = findGrade(career.school, startDate);
+                const scoreTable = determineScoreTable(startDate);
                 const monthlyScore = scoreTable[grade] ? scoreTable[grade][11] : 0;
+
+                // 조정된 근무연수
+                const serviceYear = adjustedServiceYears[index];
+                const serviceYearDisplay = `${serviceYear.years}.${String(serviceYear.months).padStart(2, '0')}`;
+
+                // 점수 계산 (조정된 근무연수 기반)
+                const score = calculateScoreForCareer(grade, serviceYear.years, serviceYear.months, scoreTable);
 
                 return `
                     <tr id="saved-career-${index}">
-                        <td>경력 ${index + 1}</td>
                         <td>${career.school}</td>
-                        <td>${career.period}</td>
+                        <td>${periodDisplay}</td>
                         <td>${grade}(${monthlyScore.toFixed(2)})</td>
-                        <td>${years}.${String(months).padStart(2, '0')}</td>
+                        <td>${serviceYearDisplay}</td>
                         <td>${score.toFixed(2)}</td>
                         <td><button class="btn btn-danger delete-btn" onclick="removeSavedCareer(${index})">삭제</button></td>
                     </tr>
@@ -3760,13 +3869,17 @@
             let bonusTotal = 0;
             let practiceTotal = 0;
 
-            // 경력점 계산 (savedCareers 배열에서 계산)
-            savedCareers.forEach(career => {
-                const grade = findGrade(career.school, career.startDate);
-                const scoreTable = determineScoreTable(career.startDate);
-                const {years, months} = calculateServiceYearsFromMonths(career.adjustedMonths);
-                const score = calculateScoreForCareer(grade, years, months, scoreTable);
-                careerTotal += score;
+            // 경력점 계산 (조정된 근무연수 기반)
+            const adjustedServiceYears = calculateAdjustedServiceYears();
+            savedCareers.forEach((career, index) => {
+                const startDate = career.adjustedStartDate || career.startDate;
+                const grade = findGrade(career.school, startDate);
+                const scoreTable = determineScoreTable(startDate);
+                const serviceYear = adjustedServiceYears[index];
+                if (serviceYear) {
+                    const score = calculateScoreForCareer(grade, serviceYear.years, serviceYear.months, scoreTable);
+                    careerTotal += score;
+                }
             });
 
             // 가산점 계산
