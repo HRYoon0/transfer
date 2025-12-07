@@ -1125,7 +1125,8 @@
                 period: '',
                 startDate: null,
                 endDate: null,
-                months: 0
+                months: 0,
+                days: 0
             };
             tempCareers.push(tempCareer);
             renderTempCareerList();
@@ -1185,46 +1186,66 @@
                     const parts = value.split(/[~-]/);
                     career.startDate = new Date(parts[0].replace(/\./g, '-'));
                     career.endDate = new Date(parts[1].replace(/\./g, '-'));
-                    career.months = calculateMonthsBetween(career.startDate, career.endDate);
+
+                    // 개월 수와 일 수 계산
+                    const periodData = calculatePeriodMonthsAndDays(career.startDate, career.endDate);
+                    career.months = periodData.months;
+                    career.days = periodData.days;
                 } else {
                     career.startDate = null;
                     career.endDate = null;
                     career.months = 0;
+                    career.days = 0;
                 }
             }
         }
 
-        // 두 날짜 사이의 개월 수 계산 (30일 = 1개월, 48개월 범위 판단용)
-        function calculateMonthsBetween(startDate, endDate) {
+        // 두 날짜 사이의 개월 수와 일 수 계산 (역에 의한 계산: 시작일 포함, 종료일 포함)
+        function calculatePeriodMonthsAndDays(startDate, endDate) {
             if (!startDate || !endDate || isNaN(startDate) || isNaN(endDate) || endDate <= startDate) {
-                return 0;
+                return { months: 0, days: 0 };
             }
 
             let years = endDate.getFullYear() - startDate.getFullYear();
             let months = endDate.getMonth() - startDate.getMonth();
             let days = endDate.getDate() - startDate.getDate();
 
+            // 일수 조정
             if (days < 0) {
                 months--;
                 const prevMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
                 days += prevMonth.getDate();
             }
 
+            // 월수 조정
             if (months < 0) {
                 years--;
                 months += 12;
             }
 
-            // 잔여일수 30일 = 1개월로 계산 (48개월 범위 판단용)
-            const additionalMonths = Math.floor(days / 30);
-            months += additionalMonths;
+            // 역에 의한 계산: 시작일과 종료일 모두 포함하므로 +1일
+            days += 1;
 
+            // 일수가 30일을 넘으면 1개월로 변환 (30일 = 1개월 규칙)
+            if (days >= 30) {
+                const additionalMonths = Math.floor(days / 30);
+                months += additionalMonths;
+                days = days % 30;
+            }
+
+            // 월수가 12개월을 넘으면 년도로 변환
             if (months >= 12) {
                 years += Math.floor(months / 12);
                 months = months % 12;
             }
 
-            return years * 12 + months;
+            return { months: years * 12 + months, days: days };
+        }
+
+        // 두 날짜 사이의 개월 수 계산 (호환성 유지)
+        function calculateMonthsBetween(startDate, endDate) {
+            const result = calculatePeriodMonthsAndDays(startDate, endDate);
+            return result.months;
         }
 
         // 두 날짜 사이의 일 수 계산
@@ -1233,19 +1254,26 @@
             return Math.floor(diffTime / (1000 * 60 * 60 * 24));
         }
 
-        // 날짜에서 개월 수 빼기 (역에 의한 계산 적용)
-        function subtractMonthsFromDate(date, months) {
+        // 날짜에서 개월 수와 일 수 빼기 (역에 의한 계산 적용)
+        function subtractMonthsAndDaysFromDate(date, months, days) {
             const result = new Date(date);
+
+            // 먼저 일 수를 빼기
+            result.setDate(result.getDate() - days);
+
+            // 그 다음 개월 수를 빼기
             const years = Math.floor(months / 12);
             const remainingMonths = months % 12;
 
             result.setFullYear(result.getFullYear() - years);
             result.setMonth(result.getMonth() - remainingMonths);
 
-            // 역에 의한 계산: 시작일 = (종료일 - 개월 수) + 1일
-            result.setDate(result.getDate() + 1);
-
             return result;
+        }
+
+        // 날짜에서 개월 수 빼기 (호환성 유지)
+        function subtractMonthsFromDate(date, months) {
+            return subtractMonthsAndDaysFromDate(date, months, 0);
         }
 
         // 예: 종료일 2020.06.10, 6개월 빼기
@@ -1278,11 +1306,17 @@
                 return;
             }
 
-            // 총 개월 수 계산
-            const totalMonths = tempCareers.reduce((sum, c) => sum + c.months, 0);
+            // 총 개월 수와 일 수 계산 (30일 = 1개월 규칙 적용)
+            let totalMonths = tempCareers.reduce((sum, c) => sum + c.months, 0);
+            let totalDays = tempCareers.reduce((sum, c) => sum + c.days, 0);
+
+            // 일 수를 개월로 변환 (30일 = 1개월)
+            const additionalMonths = Math.floor(totalDays / 30);
+            totalMonths += additionalMonths;
+            totalDays = totalDays % 30;
 
             // 48개월 제한 적용
-            const adjustedCareers = adjustCareersTo48Months([...tempCareers], totalMonths);
+            const adjustedCareers = adjustCareersTo48Months([...tempCareers], totalMonths, totalDays);
 
             // 저장된 경력 목록에 추가 (최신순 정렬)
             savedCareers = [...adjustedCareers, ...savedCareers];
@@ -1298,23 +1332,32 @@
         }
 
         // 48개월 제한 적용 로직 (순차 누적 방식)
-        function adjustCareersTo48Months(careers, totalMonths) {
+        function adjustCareersTo48Months(careers, totalMonths, totalDays) {
             // 최신순 정렬 (종료일 기준)
             careers.sort((a, b) => b.endDate - a.endDate);
 
             const result = [];
             let remainingMonths = 48; // 48개월 = 4년
+            let remainingDays = 0;
+
+            // 총 개월 수가 48개월을 초과하는지 확인
+            const totalExceeds48 = totalMonths > 48 || (totalMonths === 48 && totalDays > 0);
 
             for (const career of careers) {
-                if (remainingMonths <= 0) {
+                if (remainingMonths <= 0 && remainingDays <= 0) {
                     // 48개월 초과, 더 이상 경력 포함 안 함
                     break;
                 }
 
-                // 이 경력의 개월 수 계산 (30일 = 1개월 방식)
+                // 이 경력의 개월 수와 일 수
                 const careerMonths = career.months;
+                const careerDays = career.days;
 
-                if (careerMonths <= remainingMonths) {
+                // 이 경력이 남은 공간에 완전히 포함되는지 확인
+                const fitsCompletely = (careerMonths < remainingMonths) ||
+                                       (careerMonths === remainingMonths && careerDays <= remainingDays);
+
+                if (fitsCompletely) {
                     // 전체 경력이 48개월 범위 내에 포함됨 (조정 불필요)
                     result.push({
                         ...career,
@@ -1324,12 +1367,23 @@
                         adjustedEndDate: career.endDate,
                         isAdjusted: false
                     });
+
+                    // 남은 공간 감소
+                    remainingDays -= careerDays;
+                    if (remainingDays < 0) {
+                        remainingMonths--;
+                        remainingDays += 30;
+                    }
                     remainingMonths -= careerMonths;
                 } else {
                     // 일부만 포함 (조정 필요)
-                    // 종료일에서 remainingMonths만큼만 포함
+                    // 종료일에서 남은 공간만큼만 포함
                     const adjustedEndDate = career.endDate;
-                    const adjustedStartDate = subtractMonthsFromDate(adjustedEndDate, remainingMonths);
+                    const adjustedStartDate = subtractMonthsAndDaysFromDate(
+                        adjustedEndDate,
+                        remainingMonths,
+                        remainingDays
+                    );
 
                     const adjustedPeriodStr = `${formatDateToString(adjustedStartDate)}~${formatDateToString(adjustedEndDate)}`;
 
@@ -1341,7 +1395,9 @@
                         adjustedEndDate: adjustedEndDate,
                         isAdjusted: true
                     });
-                    remainingMonths = 0; // 48개월 모두 사용
+
+                    remainingMonths = 0;
+                    remainingDays = 0;
                 }
             }
 
