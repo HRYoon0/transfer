@@ -4532,44 +4532,52 @@
 
                 const worksheet = workbook.getWorksheet(1); // 첫 번째 시트
 
+                // 헬퍼 함수: 스타일을 유지하면서 값만 설정
+                function setCellValue(cellAddress, value) {
+                    const cell = worksheet.getCell(cellAddress);
+                    const originalStyle = Object.assign({}, cell.style);
+                    cell.value = value;
+                    cell.style = originalStyle;
+                }
+
                 // 기본 정보 입력
-                worksheet.getCell('D5').value = data.transferType;
-                worksheet.getCell('H5').value = data.firstChoice;
-                worksheet.getCell('M5').value = data.secondChoice;
-                worksheet.getCell('P5').value = data.thirdChoice;
-                worksheet.getCell('D6').value = data.integrated1;
-                worksheet.getCell('H6').value = data.integrated2;
-                worksheet.getCell('M6').value = data.integrated3;
-                worksheet.getCell('D7').value = data.currentSchool;
-                worksheet.getCell('H7').value = data.name;
-                worksheet.getCell('M7').value = data.gender;
-                worksheet.getCell('R7').value = data.residence;
-                worksheet.getCell('D8').value = data.qualification;
-                worksheet.getCell('H8').value = data.otherCity;
-                worksheet.getCell('M8').value = data.otherProvince;
-                worksheet.getCell('R8').value = data.promotionCandidate;
-                worksheet.getCell('I9').value = data.currentSchoolYears;
-                worksheet.getCell('P9').value = data.birthdate;
-                worksheet.getCell('R9').value = data.remarks;
+                setCellValue('D5', data.transferType);
+                setCellValue('H5', data.firstChoice);
+                setCellValue('M5', data.secondChoice);
+                setCellValue('P5', data.thirdChoice);
+                setCellValue('D6', data.integrated1);
+                setCellValue('H6', data.integrated2);
+                setCellValue('M6', data.integrated3);
+                setCellValue('D7', data.currentSchool);
+                setCellValue('H7', data.name);
+                setCellValue('M7', data.gender);
+                setCellValue('R7', data.residence);
+                setCellValue('D8', data.qualification);
+                setCellValue('H8', data.otherCity);
+                setCellValue('M8', data.otherProvince);
+                setCellValue('R8', data.promotionCandidate);
+                setCellValue('I9', data.currentSchoolYears);
+                setCellValue('P9', data.birthdate);
+                setCellValue('R9', data.remarks);
 
                 // 경력 사항 입력 (Row 12부터 시작)
                 data.careers.forEach((career, index) => {
                     const row = 12 + index;
-                    worksheet.getCell(`E${row}`).value = career.school;
-                    worksheet.getCell(`H${row}`).value = career.period;
-                    worksheet.getCell(`M${row}`).value = career.grade;
-                    worksheet.getCell(`O${row}`).value = career.years;
-                    worksheet.getCell(`P${row}`).value = parseFloat(career.score);
+                    setCellValue(`E${row}`, career.school);
+                    setCellValue(`H${row}`, career.period);
+                    setCellValue(`M${row}`, career.grade);
+                    setCellValue(`O${row}`, career.years);
+                    setCellValue(`P${row}`, parseFloat(career.score));
                 });
 
                 // 가산점 입력 (Row 18부터 시작)
                 data.bonuses.forEach((bonus, index) => {
                     const row = 18 + index;
-                    worksheet.getCell(`C${row}`).value = bonus.type;
-                    worksheet.getCell(`E${row}`).value = bonus.itemName;
-                    worksheet.getCell(`K${row}`).value = bonus.period;
-                    worksheet.getCell(`N${row}`).value = parseFloat(bonus.score);
-                    worksheet.getCell(`P${row}`).value = bonus.note;
+                    setCellValue(`C${row}`, bonus.type);
+                    setCellValue(`E${row}`, bonus.itemName);
+                    setCellValue(`K${row}`, bonus.period);
+                    setCellValue(`N${row}`, parseFloat(bonus.score));
+                    setCellValue(`P${row}`, bonus.note);
                 });
 
                 // 파일 다운로드
