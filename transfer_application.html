@@ -429,7 +429,7 @@
                         <span id="practiceScore">0.000점</span>
                     </div>
                     <div class="score-item">
-                        <span>총점:</span>
+                        <span style="color: #2196F3; font-weight: bold;">총점:</span>
                         <span id="totalScore" style="color: #2196F3; font-weight: bold;">0.000점</span>
                     </div>
                     <div class="score-item" id="practiceAdjustedScoreItem" style="display: none;">
@@ -4869,6 +4869,11 @@
                     const row = 18 + index;
                     setCellValue(`C${row}`, bonus.type);
                     setCellValue(`E${row}`, bonus.itemName);
+
+                    // 내용 셀에 텍스트 자동 축소 적용
+                    const contentCell = worksheet.getCell(`E${row}`);
+                    contentCell.alignment = { ...contentCell.alignment, shrinkToFit: true };
+
                     setCellValue(`K${row}`, bonus.period);
                     setCellValue(`O${row}`, parseFloat(bonus.score));
                 });
