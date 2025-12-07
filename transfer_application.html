@@ -1003,6 +1003,12 @@
                 item.addEventListener('click', function() {
                     input.value = school;
                     dropdown.classList.add('hidden');
+
+                    // input 이벤트를 명시적으로 트리거 (oninput 핸들러 실행)
+                    const event = new Event('input', { bubbles: true });
+                    input.dispatchEvent(event);
+
+                    // onchange 콜백 실행
                     if (input.onchange) input.onchange();
                 });
                 dropdown.appendChild(item);
