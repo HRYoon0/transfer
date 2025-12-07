@@ -4305,22 +4305,17 @@
             let practiceTotal = 0;
 
             // 경력점 계산 (조정된 근무연수 기반)
-            console.log('calculateScore - savedCareers:', savedCareers);
             const adjustedServiceYears = calculateAdjustedServiceYears();
-            console.log('calculateScore - adjustedServiceYears:', adjustedServiceYears);
             savedCareers.forEach((career, index) => {
                 const startDate = career.adjustedStartDate || career.startDate;
                 const grade = findGrade(career.school, startDate);
                 const scoreTable = determineScoreTable(startDate);
                 const serviceYear = adjustedServiceYears[index];
-                console.log(`Career ${index}: grade=${grade}, serviceYear=`, serviceYear);
                 if (serviceYear) {
                     const score = calculateScoreForCareer(grade, serviceYear.years, serviceYear.months, scoreTable);
-                    console.log(`Career ${index} score:`, score);
                     careerTotal += score;
                 }
             });
-            console.log('Total careerTotal:', careerTotal);
 
             // 가산점 계산
             document.querySelectorAll('[id^="bonus-score-"]').forEach(input => {
@@ -4460,9 +4455,8 @@
             const improvementScore = (improvementContent && improvementDigits.length === 16) ? 2.0 : 0;
             document.getElementById('practiceImprovementScore').value = improvementScore.toFixed(3);
 
-            // 전체 점수 재계산 (calculateScore 함수 호출 - 이미 존재하는 함수)
-            // calculateScore(); 대신 직접 업데이트
-            updateTotalScore();
+            // 전체 점수 재계산
+            calculateScore();
         }
 
         // 교육실습협력학교 - 수업 실적 데이터 수집
