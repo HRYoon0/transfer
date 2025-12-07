@@ -1545,7 +1545,7 @@
                     <tr id="saved-career-${index}">
                         <td>${career.school}</td>
                         <td>${periodDisplay}</td>
-                        <td>${grade}(${monthlyScore.toFixed(3)})</td>
+                        <td>${grade}(${monthlyScore.toFixed(1)})</td>
                         <td>${serviceYearDisplay}</td>
                         <td>${score.toFixed(3)}</td>
                         <td><button class="btn btn-danger delete-btn" onclick="removeSavedCareer(${index})">삭제</button></td>
@@ -1857,7 +1857,7 @@
                 const totalScore = yearScore + monthScore;
 
                 // 급지(점수)에는 12개월 기준 점수만 표시
-                gradeInput.value = `${grade}(${monthlyScoreFor12Months.toFixed(3)})`;
+                gradeInput.value = `${grade}(${monthlyScoreFor12Months.toFixed(1)})`;
                 // 점수 열에는 실제 총 점수 표시
                 scoreInput.value = totalScore.toFixed(3);
             } else {
@@ -4331,7 +4331,7 @@
                 return {
                     school: career.school,
                     period: periodDisplay,
-                    grade: `${grade}(${monthlyScore.toFixed(3)})`,
+                    grade: `${grade}(${monthlyScore.toFixed(1)})`,
                     years: serviceYearDisplay,
                     score: score.toFixed(3)
                 };
