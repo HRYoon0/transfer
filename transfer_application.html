@@ -4893,14 +4893,16 @@
                     setCellValue(`K${row}`, bonus.period);
                     setCellValue(`O${row}`, parseFloat(bonus.score));
 
-                    // 내용 셀에 텍스트 자동 축소 적용 (setCellValue 후에 적용)
+                    // 내용 셀에 텍스트 자동 축소 적용 (cell.style 전체를 재설정)
                     const contentCell = worksheet.getCell(`E${row}`);
-                    const currentAlignment = contentCell.alignment || {};
-                    contentCell.alignment = {
-                        vertical: currentAlignment.vertical || 'middle',
-                        horizontal: currentAlignment.horizontal || 'left',
-                        wrapText: currentAlignment.wrapText,
-                        shrinkToFit: true
+                    contentCell.style = {
+                        ...contentCell.style,
+                        alignment: {
+                            vertical: contentCell.style.alignment?.vertical || 'middle',
+                            horizontal: contentCell.style.alignment?.horizontal || 'left',
+                            wrapText: contentCell.style.alignment?.wrapText,
+                            shrinkToFit: true
+                        }
                     };
                 });
 
@@ -4910,14 +4912,16 @@
                     setCellValue('E33', data.practiceClass.contents);
                     setCellValue('K33', data.practiceClass.dates);
 
-                    // 내용 셀에 텍스트 자동 축소 적용
+                    // 내용 셀에 텍스트 자동 축소 적용 (cell.style 전체를 재설정)
                     const cell33 = worksheet.getCell('E33');
-                    const align33 = cell33.alignment || {};
-                    cell33.alignment = {
-                        vertical: align33.vertical || 'middle',
-                        horizontal: align33.horizontal || 'left',
-                        wrapText: align33.wrapText,
-                        shrinkToFit: true
+                    cell33.style = {
+                        ...cell33.style,
+                        alignment: {
+                            vertical: cell33.style.alignment?.vertical || 'middle',
+                            horizontal: cell33.style.alignment?.horizontal || 'left',
+                            wrapText: cell33.style.alignment?.wrapText,
+                            shrinkToFit: true
+                        }
                     };
                 }
                 if (data.practiceClassScore) {
@@ -4929,14 +4933,16 @@
                     setCellValue('E34', data.practiceResearch.content);
                     setCellValue('K34', data.practiceResearch.date);
 
-                    // 내용 셀에 텍스트 자동 축소 적용
+                    // 내용 셀에 텍스트 자동 축소 적용 (cell.style 전체를 재설정)
                     const cell34 = worksheet.getCell('E34');
-                    const align34 = cell34.alignment || {};
-                    cell34.alignment = {
-                        vertical: align34.vertical || 'middle',
-                        horizontal: align34.horizontal || 'left',
-                        wrapText: align34.wrapText,
-                        shrinkToFit: true
+                    cell34.style = {
+                        ...cell34.style,
+                        alignment: {
+                            vertical: cell34.style.alignment?.vertical || 'middle',
+                            horizontal: cell34.style.alignment?.horizontal || 'left',
+                            wrapText: cell34.style.alignment?.wrapText,
+                            shrinkToFit: true
+                        }
                     };
                 }
                 if (data.practiceResearchScore) {
@@ -4948,14 +4954,16 @@
                     setCellValue('E35', data.practiceFuture.content);
                     setCellValue('K35', data.practiceFuture.period);
 
-                    // 내용 셀에 텍스트 자동 축소 적용
+                    // 내용 셀에 텍스트 자동 축소 적용 (cell.style 전체를 재설정)
                     const cell35 = worksheet.getCell('E35');
-                    const align35 = cell35.alignment || {};
-                    cell35.alignment = {
-                        vertical: align35.vertical || 'middle',
-                        horizontal: align35.horizontal || 'left',
-                        wrapText: align35.wrapText,
-                        shrinkToFit: true
+                    cell35.style = {
+                        ...cell35.style,
+                        alignment: {
+                            vertical: cell35.style.alignment?.vertical || 'middle',
+                            horizontal: cell35.style.alignment?.horizontal || 'left',
+                            wrapText: cell35.style.alignment?.wrapText,
+                            shrinkToFit: true
+                        }
                     };
                 }
                 if (data.practiceFutureScore) {
@@ -4967,14 +4975,16 @@
                     setCellValue('E36', data.practiceImprovement.content);
                     setCellValue('K36', data.practiceImprovement.period);
 
-                    // 내용 셀에 텍스트 자동 축소 적용
+                    // 내용 셀에 텍스트 자동 축소 적용 (cell.style 전체를 재설정)
                     const cell36 = worksheet.getCell('E36');
-                    const align36 = cell36.alignment || {};
-                    cell36.alignment = {
-                        vertical: align36.vertical || 'middle',
-                        horizontal: align36.horizontal || 'left',
-                        wrapText: align36.wrapText,
-                        shrinkToFit: true
+                    cell36.style = {
+                        ...cell36.style,
+                        alignment: {
+                            vertical: cell36.style.alignment?.vertical || 'middle',
+                            horizontal: cell36.style.alignment?.horizontal || 'left',
+                            wrapText: cell36.style.alignment?.wrapText,
+                            shrinkToFit: true
+                        }
                     };
                 }
                 if (data.practiceImprovementScore) {
