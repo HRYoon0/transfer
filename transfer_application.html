@@ -1312,20 +1312,33 @@
                 return;
             }
 
-            // 총 개월 수와 일 수 계산 (30일 = 1개월 규칙 적용)
-            let totalMonths = tempCareers.reduce((sum, c) => sum + c.months, 0);
-            let totalDays = tempCareers.reduce((sum, c) => sum + c.days, 0);
+            // 기존 savedCareers를 원본 데이터로 복원 (조정 전 데이터)
+            const originalSavedCareers = savedCareers.map(career => ({
+                school: career.school,
+                period: career.originalPeriod || career.period,
+                startDate: career.originalStartDate || career.startDate,
+                endDate: career.originalEndDate || career.endDate,
+                months: career.originalMonths || career.months,
+                days: career.originalDays || career.days
+            }));
+
+            // 기존 경력과 새 경력을 합침
+            const allCareers = [...originalSavedCareers, ...tempCareers];
+
+            // 전체 경력의 총 개월 수와 일 수 계산
+            let totalMonths = allCareers.reduce((sum, c) => sum + c.months, 0);
+            let totalDays = allCareers.reduce((sum, c) => sum + c.days, 0);
 
             // 일 수를 개월로 변환 (30일 = 1개월)
             const additionalMonths = Math.floor(totalDays / 30);
             totalMonths += additionalMonths;
             totalDays = totalDays % 30;
 
-            // 48개월 제한 적용
-            const adjustedCareers = adjustCareersTo48Months([...tempCareers], totalMonths, totalDays);
+            // 전체 경력에 48개월 제한 적용
+            const adjustedCareers = adjustCareersTo48Months([...allCareers], totalMonths, totalDays);
 
-            // 저장된 경력 목록에 추가 (최신순 정렬)
-            savedCareers = [...adjustedCareers, ...savedCareers];
+            // 저장된 경력 목록 전체 갱신
+            savedCareers = adjustedCareers;
 
             // 테이블 렌더링
             renderSavedCareers();
@@ -1368,6 +1381,10 @@
                     result.push({
                         ...career,
                         originalPeriod: career.period,
+                        originalStartDate: career.startDate,
+                        originalEndDate: career.endDate,
+                        originalMonths: career.months,
+                        originalDays: career.days,
                         adjustedPeriod: null,
                         adjustedStartDate: career.startDate,
                         adjustedEndDate: career.endDate,
@@ -1396,6 +1413,10 @@
                     result.push({
                         ...career,
                         originalPeriod: career.period,
+                        originalStartDate: career.startDate,
+                        originalEndDate: career.endDate,
+                        originalMonths: career.months,
+                        originalDays: career.days,
                         adjustedPeriod: adjustedPeriodStr,
                         adjustedStartDate: adjustedStartDate,
                         adjustedEndDate: adjustedEndDate,
@@ -1563,7 +1584,39 @@
         // 저장된 경력 삭제
         function removeSavedCareer(index) {
             if (confirm('이 경력을 삭제하시겠습니까?')) {
-                savedCareers.splice(index, 1);
+                // 원본 데이터로 복원
+                const originalCareers = savedCareers.map(career => ({
+                    school: career.school,
+                    period: career.originalPeriod || career.period,
+                    startDate: career.originalStartDate || career.startDate,
+                    endDate: career.originalEndDate || career.endDate,
+                    months: career.originalMonths || career.months,
+                    days: career.originalDays || career.days
+                }));
+
+                // 해당 인덱스의 경력 삭제
+                originalCareers.splice(index, 1);
+
+                // 남은 경력이 없으면 초기화
+                if (originalCareers.length === 0) {
+                    savedCareers = [];
+                    renderSavedCareers();
+                    calculateScore();
+                    return;
+                }
+
+                // 전체 경력의 총 개월 수와 일 수 재계산
+                let totalMonths = originalCareers.reduce((sum, c) => sum + c.months, 0);
+                let totalDays = originalCareers.reduce((sum, c) => sum + c.days, 0);
+
+                // 일 수를 개월로 변환
+                const additionalMonths = Math.floor(totalDays / 30);
+                totalMonths += additionalMonths;
+                totalDays = totalDays % 30;
+
+                // 전체 경력에 48개월 제한 재적용
+                savedCareers = adjustCareersTo48Months([...originalCareers], totalMonths, totalDays);
+
                 renderSavedCareers();
                 calculateScore();
             }
