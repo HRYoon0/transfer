@@ -1211,7 +1211,7 @@
 
         // 두 날짜 사이의 개월 수와 일 수 계산 (역에 의한 계산: 시작일 포함, 종료일 포함)
         function calculatePeriodMonthsAndDays(startDate, endDate) {
-            if (!startDate || !endDate || isNaN(startDate) || isNaN(endDate) || endDate <= startDate) {
+            if (!startDate || !endDate || isNaN(startDate) || isNaN(endDate) || endDate < startDate) {
                 return { months: 0, days: 0 };
             }
 
@@ -1219,10 +1219,20 @@
             let months = endDate.getMonth() - startDate.getMonth();
             let days = endDate.getDate() - startDate.getDate();
 
+            // 역에 의한 계산: 종료일 = 응당일의 전일
+            // 예: 2021.03.01 ~ 2022.02.28 = 1년 (2022.03.01의 전일)
+            // 따라서 종료일에 1일을 더하여 응당일로 만들어 계산
+            const adjustedEndDate = new Date(endDate);
+            adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
+
+            years = adjustedEndDate.getFullYear() - startDate.getFullYear();
+            months = adjustedEndDate.getMonth() - startDate.getMonth();
+            days = adjustedEndDate.getDate() - startDate.getDate();
+
             // 일수 조정
             if (days < 0) {
                 months--;
-                const prevMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+                const prevMonth = new Date(adjustedEndDate.getFullYear(), adjustedEndDate.getMonth(), 0);
                 days += prevMonth.getDate();
             }
 
@@ -1231,9 +1241,6 @@
                 years--;
                 months += 12;
             }
-
-            // 역에 의한 계산: 시작일과 종료일 모두 포함하므로 +1일
-            days += 1;
 
             // 일수가 30일을 넘으면 1개월로 변환 (30일 = 1개월 규칙)
             if (days >= 30) {
@@ -4322,10 +4329,12 @@
                 const serviceYearDisplay = `${serviceYear.years}.${String(serviceYear.months).padStart(2, '0')}`;
                 const score = calculateScoreForCareer(grade, serviceYear.years, serviceYear.months, scoreTable);
 
-                // 근무기간: 조정된 경우 조정된 기간 표시
-                let periodDisplay = career.originalPeriod || career.period;
+                // 근무기간: 조정된 경우 조정된 기간만 표시
+                let periodDisplay;
                 if (career.isAdjusted && career.adjustedPeriod) {
-                    periodDisplay = `${career.originalPeriod} → ${career.adjustedPeriod} (조정된 기간)`;
+                    periodDisplay = career.adjustedPeriod;
+                } else {
+                    periodDisplay = career.originalPeriod || career.period;
                 }
 
                 return {
@@ -4544,21 +4553,21 @@
                 setCellValue('D5', data.transferType);
                 setCellValue('H5', data.firstChoice);
                 setCellValue('M5', data.secondChoice);
-                setCellValue('P5', data.thirdChoice);
+                setCellValue('Q5', data.thirdChoice);
                 setCellValue('D6', data.integrated1);
                 setCellValue('H6', data.integrated2);
                 setCellValue('M6', data.integrated3);
                 setCellValue('D7', data.currentSchool);
                 setCellValue('H7', data.name);
                 setCellValue('M7', data.gender);
-                setCellValue('R7', data.residence);
+                setCellValue('Q7', data.residence);
                 setCellValue('D8', data.qualification);
                 setCellValue('H8', data.otherCity);
                 setCellValue('M8', data.otherProvince);
-                setCellValue('R8', data.promotionCandidate);
+                setCellValue('Q8', data.promotionCandidate);
                 setCellValue('I9', data.currentSchoolYears);
-                setCellValue('P9', data.birthdate);
-                setCellValue('R9', data.remarks);
+                setCellValue('O9', data.birthdate);
+                setCellValue('Q9', data.remarks);
 
                 // 경력 사항 입력 (Row 12부터 시작)
                 data.careers.forEach((career, index) => {
