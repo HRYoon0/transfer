@@ -247,6 +247,24 @@
                     <strong>주의:</strong> 최근 근무기간부터 4년간 기재. 휴직기간이 있으면 전후로 구분하여 입력하고 휴직기간만큼 소급하여 이전 근무경력 포함.
                     <br><strong>TIP:</strong> 경력 추가 버튼을 눌러 여러 경력을 입력한 후 저장하면, 전체 근무기간이 4년을 초과할 경우 자동으로 조정됩니다.
                 </div>
+
+                <!-- 경력 입력 영역 (처음엔 숨김) -->
+                <div id="careerInputArea" class="hidden" style="background: #f8f9ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #667eea;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; color: #667eea; font-size: 18px;">경력 입력</h3>
+                        <button class="btn btn-danger" onclick="cancelCareerInput()" style="padding: 6px 12px; font-size: 13px;">닫기</button>
+                    </div>
+                    <div class="alert alert-info" style="margin-bottom: 15px; padding: 10px;">
+                        <strong>안내:</strong> 여러 경력을 추가한 후 저장 버튼을 누르면 전체 경력이 확정됩니다. 전체 근무기간이 4년을 초과하면 자동으로 조정됩니다.
+                    </div>
+                    <div id="tempCareerList"></div>
+                    <button class="btn btn-add" onclick="addTempCareer()" style="margin-bottom: 15px;">+ 경력 항목 추가</button>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-danger" onclick="cancelCareerInput()">취소</button>
+                        <button class="btn btn-success" onclick="saveAllCareers()">저장</button>
+                    </div>
+                </div>
+
                 <table class="career-table">
                     <thead>
                         <tr>
@@ -265,28 +283,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-add" onclick="openCareerModal()">+ 경력 추가</button>
-            </div>
-
-            <!-- 경력 추가 모달 -->
-            <div id="careerModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>경력 입력</h3>
-                        <button class="modal-close" onclick="closeCareerModal()">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-info" style="margin-bottom: 20px;">
-                            <strong>안내:</strong> 여러 경력을 추가한 후 저장 버튼을 누르면 전체 경력이 확정됩니다. 전체 근무기간이 4년을 초과하면 자동으로 조정됩니다.
-                        </div>
-                        <div id="tempCareerList"></div>
-                        <button class="btn btn-add" onclick="addTempCareer()" style="margin-bottom: 20px;">+ 경력 항목 추가</button>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-danger" onclick="closeCareerModal()">취소</button>
-                        <button class="btn btn-success" onclick="saveAllCareers()">저장</button>
-                    </div>
-                </div>
+                <button class="btn btn-add" onclick="showCareerInput()">+ 경력 추가</button>
             </div>
 
             <!-- 3. 가산점 -->
@@ -1096,22 +1093,26 @@
 
         // ==================== 경력 관리 시스템 ====================
 
-        // 모달 열기
-        function openCareerModal() {
-            const modal = document.getElementById('careerModal');
-            modal.classList.add('active');
-            // 모달을 열 때마다 임시 경력 초기화
+        // 경력 입력 영역 표시
+        function showCareerInput() {
+            const inputArea = document.getElementById('careerInputArea');
+            inputArea.classList.remove('hidden');
+            // 입력 영역을 열 때마다 임시 경력 초기화
             tempCareers = [];
             tempCareerCounter = 0;
             renderTempCareerList();
             // 첫 번째 경력 항목 자동 추가
             addTempCareer();
+            // 입력 영역으로 스크롤
+            setTimeout(() => {
+                inputArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
         }
 
-        // 모달 닫기
-        function closeCareerModal() {
-            const modal = document.getElementById('careerModal');
-            modal.classList.remove('active');
+        // 경력 입력 취소
+        function cancelCareerInput() {
+            const inputArea = document.getElementById('careerInputArea');
+            inputArea.classList.add('hidden');
             tempCareers = [];
             tempCareerCounter = 0;
         }
@@ -1248,8 +1249,8 @@
             // 테이블 렌더링
             renderSavedCareers();
 
-            // 모달 닫기
-            closeCareerModal();
+            // 입력 영역 닫기
+            cancelCareerInput();
 
             // 점수 재계산
             calculateScore();
