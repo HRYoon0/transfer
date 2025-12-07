@@ -4525,51 +4525,67 @@
                 }
 
                 const arrayBuffer = await response.arrayBuffer();
-                const wb = XLSX.read(arrayBuffer, { type: 'array' });
+                const wb = XLSX.read(arrayBuffer, {
+                    type: 'array',
+                    cellStyles: true,
+                    cellFormula: true,
+                    cellDates: true
+                });
                 const ws = wb.Sheets[wb.SheetNames[0]];
 
+                // 셀 값 설정 헬퍼 함수 (원본 스타일 보존)
+                const setCellValue = (cellRef, value, type = 's') => {
+                    if (!ws[cellRef]) ws[cellRef] = {};
+                    ws[cellRef].v = value;
+                    ws[cellRef].t = type;
+                };
+
                 // 기본 정보 입력
-                ws['D5'] = { t: 's', v: data.transferType };
-                ws['H5'] = { t: 's', v: data.firstChoice };
-                ws['M5'] = { t: 's', v: data.secondChoice };
-                ws['P5'] = { t: 's', v: data.thirdChoice };
-                ws['D6'] = { t: 's', v: data.integrated1 };
-                ws['H6'] = { t: 's', v: data.integrated2 };
-                ws['M6'] = { t: 's', v: data.integrated3 };
-                ws['D7'] = { t: 's', v: data.currentSchool };
-                ws['H7'] = { t: 's', v: data.name };
-                ws['M7'] = { t: 's', v: data.gender };
-                ws['R7'] = { t: 's', v: data.residence };
-                ws['D8'] = { t: 's', v: data.qualification };
-                ws['H8'] = { t: 's', v: data.otherCity };
-                ws['M8'] = { t: 's', v: data.otherProvince };
-                ws['R8'] = { t: 's', v: data.promotionCandidate };
-                ws['I9'] = { t: 's', v: data.currentSchoolYears };
-                ws['P9'] = { t: 's', v: data.birthdate };
-                ws['R9'] = { t: 's', v: data.remarks };
+                setCellValue('D5', data.transferType);
+                setCellValue('H5', data.firstChoice);
+                setCellValue('M5', data.secondChoice);
+                setCellValue('P5', data.thirdChoice);
+                setCellValue('D6', data.integrated1);
+                setCellValue('H6', data.integrated2);
+                setCellValue('M6', data.integrated3);
+                setCellValue('D7', data.currentSchool);
+                setCellValue('H7', data.name);
+                setCellValue('M7', data.gender);
+                setCellValue('R7', data.residence);
+                setCellValue('D8', data.qualification);
+                setCellValue('H8', data.otherCity);
+                setCellValue('M8', data.otherProvince);
+                setCellValue('R8', data.promotionCandidate);
+                setCellValue('I9', data.currentSchoolYears);
+                setCellValue('P9', data.birthdate);
+                setCellValue('R9', data.remarks);
 
                 // 경력 사항 입력 (Row 12부터 시작)
                 data.careers.forEach((career, index) => {
                     const row = 12 + index;
-                    ws[`E${row}`] = { t: 's', v: career.school };
-                    ws[`H${row}`] = { t: 's', v: career.period };
-                    ws[`M${row}`] = { t: 's', v: career.grade };
-                    ws[`O${row}`] = { t: 's', v: career.years };
-                    ws[`P${row}`] = { t: 'n', v: parseFloat(career.score) };
+                    setCellValue(`E${row}`, career.school);
+                    setCellValue(`H${row}`, career.period);
+                    setCellValue(`M${row}`, career.grade);
+                    setCellValue(`O${row}`, career.years);
+                    setCellValue(`P${row}`, parseFloat(career.score), 'n');
                 });
 
                 // 가산점 입력 (Row 18부터 시작 - 실제 위치는 원본 파일 확인 필요)
                 data.bonuses.forEach((bonus, index) => {
                     const row = 18 + index;
-                    ws[`C${row}`] = { t: 's', v: bonus.type };
-                    ws[`E${row}`] = { t: 's', v: bonus.itemName };
-                    ws[`K${row}`] = { t: 's', v: bonus.period };
-                    ws[`N${row}`] = { t: 'n', v: parseFloat(bonus.score) };
-                    ws[`P${row}`] = { t: 's', v: bonus.note };
+                    setCellValue(`C${row}`, bonus.type);
+                    setCellValue(`E${row}`, bonus.itemName);
+                    setCellValue(`K${row}`, bonus.period);
+                    setCellValue(`N${row}`, parseFloat(bonus.score), 'n');
+                    setCellValue(`P${row}`, bonus.note);
                 });
 
                 // 파일 다운로드
-                XLSX.writeFile(wb, `전보신청서_${data.name}_${new Date().toISOString().split('T')[0]}.xlsx`);
+                XLSX.writeFile(wb, `전보신청서_${data.name}_${new Date().toISOString().split('T')[0]}.xlsx`, {
+                    cellStyles: true,
+                    bookType: 'xlsx',
+                    type: 'binary'
+                });
                 alert('✅ 엑셀 파일이 다운로드되었습니다!');
             } catch (error) {
                 console.error('엑셀 다운로드 오류:', error);
