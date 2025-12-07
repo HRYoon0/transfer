@@ -1328,8 +1328,11 @@
             const startDate = career.startDate;
             const endDate = career.endDate;
 
+            console.log('splitCareerByGradeChange:', originalSchoolName, schoolName, startDate, endDate);
+
             // 학교의 급지 데이터가 없으면 분할하지 않음 (가급지로 처리)
             if (!gradeData[schoolName]) {
+                console.log('No grade data for:', schoolName);
                 return [career];
             }
 
@@ -1348,6 +1351,8 @@
                 endYear--;
             }
 
+            console.log('currentYear:', currentYear, 'endYear:', endYear);
+
             // 현재 급지
             let currentGrade = gradeData[schoolName][currentYear] || '가';
 
@@ -1355,14 +1360,18 @@
             for (let year = currentYear; year <= endYear; year++) {
                 const nextYear = year + 1;
                 const nextGrade = gradeData[schoolName][nextYear] || null;
+                console.log(`year ${year}: currentGrade=${currentGrade}, nextGrade=${nextGrade}`);
 
                 // 급지가 바뀌는 경우
                 if (nextGrade && nextGrade !== currentGrade && nextYear <= endYear) {
+                    console.log(`Grade change detected at year ${nextYear}: ${currentGrade} → ${nextGrade}`);
+
                     // 이번 학년도 종료일 (다음 해 2월 28일)
                     const splitEndDate = new Date(nextYear, 1, 28); // 2월은 인덱스 1
 
                     // 경력의 실제 종료일보다 이후면 경력의 종료일 사용
                     const actualSplitEndDate = splitEndDate > endDate ? endDate : splitEndDate;
+                    console.log('Split at:', formatDateToString(actualSplitEndDate));
 
                     // 현재 구간 저장
                     const periodData = calculatePeriodMonthsAndDays(currentStartDate, actualSplitEndDate);
@@ -1383,6 +1392,7 @@
 
                     // 이미 종료일에 도달했으면 종료
                     if (actualSplitEndDate >= endDate) {
+                        console.log('Break: actualSplitEndDate >= endDate');
                         break;
                     }
                 }
@@ -1390,6 +1400,7 @@
 
             // 마지막 구간 추가 (급지 변경이 없었거나 마지막 남은 구간)
             if (currentStartDate <= endDate) {
+                console.log('Adding final segment:', formatDateToString(currentStartDate), '~', formatDateToString(endDate));
                 const periodData = calculatePeriodMonthsAndDays(currentStartDate, endDate);
                 const periodStr = `${formatDateToString(currentStartDate)}~${formatDateToString(endDate)}`;
 
@@ -1402,6 +1413,8 @@
                     days: periodData.days
                 });
             }
+
+            console.log('Total split careers:', splitCareers.length, splitCareers);
 
             // 분할된 경력이 없으면 원본 경력 반환
             return splitCareers.length > 0 ? splitCareers : [career];
