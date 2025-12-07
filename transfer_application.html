@@ -1274,6 +1274,9 @@
             result.setFullYear(result.getFullYear() - years);
             result.setMonth(result.getMonth() - remainingMonths);
 
+            // 역에 의한 계산: 시작일 = (종료일 - 기간) + 1일
+            result.setDate(result.getDate() + 1);
+
             return result;
         }
 
