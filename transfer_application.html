@@ -3534,7 +3534,23 @@
                 } else {
                     scoreInput.value = '';
                 }
-                selectedOption.textContent = originalName;
+
+                // dateWithMedal인 경우 메달 선택을 이름에 추가
+                let displayName = originalName;
+                if (inputType === 'dateWithMedal') {
+                    // 가장 최근 행의 메달 선택 가져오기
+                    const rows = periodsListContainer.querySelectorAll('.period-row');
+                    if (rows.length > 0) {
+                        const lastRow = rows[rows.length - 1];
+                        const medalSelect = lastRow.querySelector('.medal-select');
+                        if (medalSelect && medalSelect.value) {
+                            const medalOption = JSON.parse(medalSelect.value);
+                            displayName = originalName + ' ' + medalOption.label;
+                        }
+                    }
+                }
+
+                selectedOption.textContent = displayName;
             } else if (totalMonths > 0) {
                 scoreInput.value = formatScore(totalScore);
                 // 개월을 년/개월로 변환
@@ -3989,6 +4005,11 @@
                     }
                 } else if (inputType === 'gradeWithPeriod') {
                     // 근무실적 16 - 급지 선택 + 단일 기간 입력
+                    // 원본 이름 저장
+                    if (!selectedOption.dataset.originalName) {
+                        selectedOption.dataset.originalName = selectedOption.textContent;
+                    }
+
                     // 급지 선택 드롭다운 생성
                     const gradeOptions = selectedOption.dataset.gradeOptions ?
                         JSON.parse(selectedOption.dataset.gradeOptions) : [];
@@ -4114,8 +4135,13 @@
             // gradeWithPeriod: 급지 선택 + 기간 입력
             if (inputType === 'gradeWithPeriod') {
                 const gradeSelect = document.getElementById(`bonus-grade-select-${id}`);
+
+                // 원본 이름 가져오기
+                const originalName = selectedOption.dataset.originalName || selectedOption.textContent.split(' 가·나')[0].split(' 다·라')[0];
+
                 if (!gradeSelect || !gradeSelect.value || !periodValue) {
                     scoreInput.value = '';
+                    selectedOption.textContent = originalName;
                     calculateScore();
                     return;
                 }
@@ -4123,12 +4149,22 @@
                 // 기간 형식 검증
                 if (!/^\d{4}\.\d{2}\.\d{2}~\d{4}\.\d{2}\.\d{2}$/.test(periodValue)) {
                     scoreInput.value = '';
+                    selectedOption.textContent = originalName;
                     calculateScore();
                     return;
                 }
 
                 const selectedGrade = JSON.parse(gradeSelect.value);
                 scoreInput.value = formatScore(selectedGrade.score);
+
+                // 급지 선택을 이름에 추가
+                const gradeMatch = selectedGrade.label.match(/'([^']+)'\s*급지/);
+                if (gradeMatch) {
+                    selectedOption.textContent = originalName + ' ' + gradeMatch[1] + ' 급지';
+                } else {
+                    selectedOption.textContent = originalName;
+                }
+
                 calculateScore();
                 return;
             }
