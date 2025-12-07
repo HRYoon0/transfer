@@ -1522,7 +1522,7 @@
                 // 근무기간 표시
                 let periodDisplay = career.originalPeriod;
                 if (career.isAdjusted && career.adjustedPeriod) {
-                    periodDisplay = `${career.originalPeriod} → ${career.adjustedPeriod}`;
+                    periodDisplay = `${career.originalPeriod} → <span style="color: #4A90E2; font-weight: 600;">${career.adjustedPeriod} (조정된 기간)</span>`;
                 }
 
                 // 급지 및 점수표 결정
@@ -4261,16 +4261,30 @@
         }
 
         function collectData() {
-            const careers = [];
-            document.querySelectorAll('[id^="career-"][id*="-school-"]').forEach(input => {
-                const id = input.id.split('-')[2];
-                careers.push({
-                    school: document.getElementById(`career-school-${id}`).value,
-                    period: document.getElementById(`career-period-${id}`).value,
-                    grade: document.getElementById(`career-grade-${id}`).value,
-                    years: document.getElementById(`career-years-${id}`).value,
-                    score: document.getElementById(`career-score-${id}`).value
-                });
+            // savedCareers 배열에서 경력 데이터 수집
+            const adjustedServiceYears = calculateAdjustedServiceYears();
+            const careers = savedCareers.map((career, index) => {
+                const startDate = career.adjustedStartDate || career.startDate;
+                const grade = findGrade(career.school, startDate);
+                const scoreTable = determineScoreTable(startDate);
+                const monthlyScore = scoreTable[grade] ? scoreTable[grade][11] : 0;
+                const serviceYear = adjustedServiceYears[index];
+                const serviceYearDisplay = `${serviceYear.years}.${String(serviceYear.months).padStart(2, '0')}`;
+                const score = calculateScoreForCareer(grade, serviceYear.years, serviceYear.months, scoreTable);
+
+                // 근무기간: 조정된 경우 조정된 기간 표시
+                let periodDisplay = career.originalPeriod || career.period;
+                if (career.isAdjusted && career.adjustedPeriod) {
+                    periodDisplay = `${career.originalPeriod} → ${career.adjustedPeriod} (조정된 기간)`;
+                }
+
+                return {
+                    school: career.school,
+                    period: periodDisplay,
+                    grade: `${grade}(${monthlyScore.toFixed(2)})`,
+                    years: serviceYearDisplay,
+                    score: score.toFixed(2)
+                };
             });
 
             const bonuses = [];
