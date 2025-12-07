@@ -3535,15 +3535,17 @@
                     scoreInput.value = '';
                 }
 
-                // dateWithMedal인 경우 메달 선택을 이름에 추가
+                // dateWithMedal인 경우 메달 선택을 이름에 추가 (날짜도 입력되어야 함)
                 let displayName = originalName;
                 if (inputType === 'dateWithMedal') {
-                    // 가장 최근 행의 메달 선택 가져오기
+                    // 가장 최근 행의 메달 선택과 날짜 입력 확인
                     const rows = periodsListContainer.querySelectorAll('.period-row');
                     if (rows.length > 0) {
                         const lastRow = rows[rows.length - 1];
                         const medalSelect = lastRow.querySelector('.medal-select');
-                        if (medalSelect && medalSelect.value) {
+                        const periodInput = lastRow.querySelector('.period-input');
+                        // 메달 선택과 날짜 입력이 모두 완료된 경우에만 표시
+                        if (medalSelect && medalSelect.value && periodInput && periodInput.value.trim()) {
                             const medalOption = JSON.parse(medalSelect.value);
                             displayName = originalName + ' ' + medalOption.label;
                         }
