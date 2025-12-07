@@ -4585,9 +4585,93 @@
                     setCellValue(`C${row}`, bonus.type);
                     setCellValue(`E${row}`, bonus.itemName);
                     setCellValue(`K${row}`, bonus.period);
-                    setCellValue(`N${row}`, parseFloat(bonus.score));
-                    setCellValue(`P${row}`, bonus.note);
+                    setCellValue(`O${row}`, parseFloat(bonus.score));
                 });
+
+                // 교육실습협력학교 가산점 입력 (Row 33-36)
+                // 1~3. 수업 실적 (Row 33)
+                if (data.practiceClass && (data.practiceClass.contents || data.practiceClass.dates)) {
+                    setCellValue('E33', data.practiceClass.contents);
+                    setCellValue('K33', data.practiceClass.dates);
+                }
+                if (data.practiceClassScore) {
+                    setCellValue('O33', parseFloat(data.practiceClassScore));
+                }
+
+                // 4. 연구 실적 (Row 34)
+                if (data.practiceResearch && (data.practiceResearch.content || data.practiceResearch.date)) {
+                    setCellValue('E34', data.practiceResearch.content);
+                    setCellValue('K34', data.practiceResearch.date);
+                }
+                if (data.practiceResearchScore) {
+                    setCellValue('O34', parseFloat(data.practiceResearchScore));
+                }
+
+                // 5. 미래교육 실적 (Row 35)
+                if (data.practiceFuture && (data.practiceFuture.content || data.practiceFuture.period)) {
+                    setCellValue('E35', data.practiceFuture.content);
+                    setCellValue('K35', data.practiceFuture.period);
+                }
+                if (data.practiceFutureScore) {
+                    setCellValue('O35', parseFloat(data.practiceFutureScore));
+                }
+
+                // 6. 교육력 제고 실적 (Row 36)
+                if (data.practiceImprovement && (data.practiceImprovement.content || data.practiceImprovement.period)) {
+                    setCellValue('E36', data.practiceImprovement.content);
+                    setCellValue('K36', data.practiceImprovement.period);
+                }
+                if (data.practiceImprovementScore) {
+                    setCellValue('O36', parseFloat(data.practiceImprovementScore));
+                }
+
+                // 추가 입력 항목 (Row 48-57)
+                // Row 48: 승진 희망 지역 (웹 페이지에 해당 필드 없음)
+
+                // Row 49: 과원 전보 내신자 희망
+                if (data.overStaffHope) {
+                    setCellValue('F49', data.overStaffHope);
+                }
+
+                // Row 50: 전보우선 사유
+                if (data.transferPriorityReason) {
+                    setCellValue('F50', data.transferPriorityReason);
+                }
+
+                // Row 51: 전보유예 사유
+                if (data.transferDeferReason) {
+                    setCellValue('F51', data.transferDeferReason);
+                }
+
+                // Row 52: 부부 교직원 성명
+                if (data.spouseName) {
+                    setCellValue('F52', data.spouseName);
+                }
+
+                // Row 53: 부부 교직원 소속
+                if (data.spouseSchool) {
+                    setCellValue('F53', data.spouseSchool);
+                }
+
+                // Row 54: 직계존비속 교직원1 성명
+                if (data.relative1Name) {
+                    setCellValue('F54', data.relative1Name);
+                }
+
+                // Row 55: 직계존비속 교직원1 소속
+                if (data.relative1School) {
+                    setCellValue('F55', data.relative1School);
+                }
+
+                // Row 56: 직계존비속 교직원2 성명
+                if (data.relative2Name) {
+                    setCellValue('F56', data.relative2Name);
+                }
+
+                // Row 57: 직계존비속 교직원2 소속
+                if (data.relative2School) {
+                    setCellValue('F57', data.relative2School);
+                }
 
                 // 파일 다운로드
                 const buffer = await workbook.xlsx.writeBuffer();
