@@ -191,8 +191,8 @@
                     </div>
                     <div class="form-group">
                         <label>현임교근무연수 <span class="required">*</span></label>
-                        <input type="text" id="currentSchoolYears" placeholder="4.06" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
-                        <div class="help-text">✨ 경력 사항에서 현임교와 일치하는 경력이 자동 계산됩니다 (30일 미만 버림)</div>
+                        <input type="text" id="currentSchoolYears" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
+                        <div class="help-text">✨ 경력 사항에서 현임교와 일치하는 경력이 자동 계산됩니다 (30일 미만 버림, 형식: 4.06)</div>
                     </div>
                     <div class="form-group">
                         <label>생활근거지 <span class="required">*</span></label>
@@ -4429,7 +4429,6 @@
                 otherCity: document.getElementById('otherCity').value,
                 otherProvince: document.getElementById('otherProvince').value,
                 promotionCandidate: document.getElementById('promotionCandidate').value,
-                tieBreaker: document.getElementById('tieBreaker').value,
                 remarks: document.getElementById('remarks').value,
                 transferType: document.getElementById('transferType').value,
                 firstChoice: document.getElementById('firstChoice').value,
@@ -4515,86 +4514,69 @@
         function downloadExcel() {
             if (!validateRequired()) return;
             const data = collectData();
-            
-            const wb = XLSX.utils.book_new();
-            
-            const basicInfo = [
-                ['2026학년도 관내전보 내신자 조사서'],
-                [],
-                ['■ 기본 정보'],
-                ['성명', data.name],
-                ['성별', data.gender],
-                ['생년월일', data.birthdate],
-                ['현임교', data.currentSchool],
-                ['현임교근무연수', data.currentSchoolYears],
-                ['생활근거지', data.residence],
-                ['소지자격', data.qualification],
-                ['타시군내신', data.otherCity],
-                ['타시도내신', data.otherProvince],
-                ['승진후보자', data.promotionCandidate],
-                ['비고', data.remarks],
-                [],
-                ['■ 전보 정보'],
-                ['전보구분', data.transferType],
-                ['1희망', data.firstChoice],
-                ['2희망', data.secondChoice],
-                ['3희망', data.thirdChoice],
-                ['통합1희망', data.integrated1],
-                ['통합2희망', data.integrated2],
-                ['통합3희망', data.integrated3],
-                [],
-                ['■ 점수'],
-                ['학교경력점', data.careerScore],
-                ['가산점', data.bonusScore],
-                ['교육실습협력학교 가산점', data.practiceScore],
-                ['총점', data.totalScore],
-                ['실습교 보정총점', data.practiceAdjustedScore]
-            ];
-            
-            const careerData = [
-                ['■ 경력 사항'],
-                ['순번', '학교명', '근무기간', '급지(점수)', '근무연수', '점수']
-            ];
-            data.careers.forEach((c, i) => {
-                careerData.push([i+1, c.school, c.period, c.grade, c.years, c.score]);
-            });
-            
-            const bonusData = [
-                ['■ 가산점'],
-                ['순번', '종별', '평정대상', '기간/연월일', '점수', '비고']
-            ];
-            data.bonuses.forEach((b, i) => {
-                bonusData.push([i+1, b.type, b.itemName, b.period, b.score, b.note]);
-            });
-            
-            const practiceData = [
-                ['■ 교육실습협력학교 가산점'],
-                ['항목', '내용', '기간/연월일', '점수'],
-                ['1~3. 수업 실적', data.practiceClass.contents, data.practiceClass.dates, data.practiceClassScore],
-                ['4. 연구 실적', data.practiceResearch.content, data.practiceResearch.date, data.practiceResearchScore],
-                ['5. 미래교육 실적', data.practiceFuture.content, data.practiceFuture.period, data.practiceFutureScore],
-                ['6. 교육력 제고 실적', data.practiceImprovement.content, data.practiceImprovement.period, data.practiceImprovementScore]
-            ];
-            
-            const additionalData = [
-                ['■ 추가 입력 항목'],
-                ['과원 전보 내신자 희망', data.overStaffHope],
-                ['전보우선 사유', data.transferPriorityReason],
-                ['전보유예 사유', data.transferDeferReason],
-                ['부부 교직원 성명', data.spouseName],
-                ['부부 교직원 소속', data.spouseSchool],
-                ['직계존비속 교직원1 성명', data.relative1Name],
-                ['직계존비속 교직원1 소속', data.relative1School],
-                ['직계존비속 교직원2 성명', data.relative2Name],
-                ['직계존비속 교직원2 소속', data.relative2School]
-            ];
-            
-            const allData = [...basicInfo, [], ...careerData, [], ...bonusData, [], ...practiceData, [], ...additionalData];
-            const ws = XLSX.utils.aoa_to_sheet(allData);
-            XLSX.utils.book_append_sheet(wb, ws, '전보신청서');
-            
-            XLSX.writeFile(wb, `전보신청서_${data.name}_${new Date().toISOString().split('T')[0]}.xlsx`);
-            alert('✅ 엑셀 파일이 다운로드되었습니다!');
+
+            try {
+                // 원본 템플릿 파일 로드 (XMLHttpRequest 사용)
+                const templatePath = '2026.3.1.자 관내전보 내신자 조사서(초등-초등,특수,상담,사서,보건교사)_1124.xlsx';
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', templatePath, false); // 동기 요청
+                xhr.responseType = 'arraybuffer';
+                xhr.send();
+
+                if (xhr.status !== 200) {
+                    throw new Error('템플릿 파일을 찾을 수 없습니다');
+                }
+
+                const wb = XLSX.read(xhr.response, { type: 'array' });
+                const ws = wb.Sheets[wb.SheetNames[0]];
+
+                // 기본 정보 입력
+                ws['D5'] = { t: 's', v: data.transferType };
+                ws['H5'] = { t: 's', v: data.firstChoice };
+                ws['M5'] = { t: 's', v: data.secondChoice };
+                ws['P5'] = { t: 's', v: data.thirdChoice };
+                ws['D6'] = { t: 's', v: data.integrated1 };
+                ws['H6'] = { t: 's', v: data.integrated2 };
+                ws['M6'] = { t: 's', v: data.integrated3 };
+                ws['D7'] = { t: 's', v: data.currentSchool };
+                ws['H7'] = { t: 's', v: data.name };
+                ws['M7'] = { t: 's', v: data.gender };
+                ws['R7'] = { t: 's', v: data.residence };
+                ws['D8'] = { t: 's', v: data.qualification };
+                ws['H8'] = { t: 's', v: data.otherCity };
+                ws['M8'] = { t: 's', v: data.otherProvince };
+                ws['R8'] = { t: 's', v: data.promotionCandidate };
+                ws['I9'] = { t: 's', v: data.currentSchoolYears };
+                ws['P9'] = { t: 's', v: data.birthdate };
+                ws['R9'] = { t: 's', v: data.remarks };
+
+                // 경력 사항 입력 (Row 12부터 시작)
+                data.careers.forEach((career, index) => {
+                    const row = 12 + index;
+                    ws[`E${row}`] = { t: 's', v: career.school };
+                    ws[`H${row}`] = { t: 's', v: career.period };
+                    ws[`M${row}`] = { t: 's', v: career.grade };
+                    ws[`O${row}`] = { t: 's', v: career.years };
+                    ws[`P${row}`] = { t: 'n', v: parseFloat(career.score) };
+                });
+
+                // 가산점 입력 (Row 18부터 시작 - 실제 위치는 원본 파일 확인 필요)
+                data.bonuses.forEach((bonus, index) => {
+                    const row = 18 + index;
+                    ws[`C${row}`] = { t: 's', v: bonus.type };
+                    ws[`E${row}`] = { t: 's', v: bonus.itemName };
+                    ws[`K${row}`] = { t: 's', v: bonus.period };
+                    ws[`N${row}`] = { t: 'n', v: parseFloat(bonus.score) };
+                    ws[`P${row}`] = { t: 's', v: bonus.note };
+                });
+
+                // 파일 다운로드
+                XLSX.writeFile(wb, `전보신청서_${data.name}_${new Date().toISOString().split('T')[0]}.xlsx`);
+                alert('✅ 엑셀 파일이 다운로드되었습니다!');
+            } catch (error) {
+                console.error('엑셀 다운로드 오류:', error);
+                alert('❌ 엑셀 파일 생성 중 오류가 발생했습니다. 템플릿 파일이 있는지 확인하세요.');
+            }
         }
     </script>
 </body>
