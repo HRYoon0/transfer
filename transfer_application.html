@@ -430,9 +430,9 @@
                     </div>
                     <div class="score-item">
                         <span>총점:</span>
-                        <span id="totalScore">0.000점</span>
+                        <span id="totalScore" style="color: #2196F3; font-weight: bold;">0.000점</span>
                     </div>
-                    <div class="score-item">
+                    <div class="score-item" id="practiceAdjustedScoreItem" style="display: none;">
                         <span>실습교 보정총점:</span>
                         <span id="practiceAdjustedScore">-</span>
                     </div>
@@ -4323,14 +4323,22 @@
                 }
             });
 
-            const total = careerTotal + bonusTotal;
+            const total = careerTotal + bonusTotal + practiceTotal;
             const practiceAdjusted = careerTotal + practiceTotal;
 
             document.getElementById('careerScore').textContent = careerTotal.toFixed(3) + '점';
             document.getElementById('bonusScore').textContent = bonusTotal.toFixed(3) + '점';
             document.getElementById('practiceScore').textContent = practiceTotal.toFixed(3) + '점';
             document.getElementById('totalScore').textContent = total.toFixed(3) + '점';
-            document.getElementById('practiceAdjustedScore').textContent = practiceAdjusted.toFixed(3) + '점';
+
+            // 실습교 보정총점은 교육실습협력학교 가산점이 있을 때만 표시
+            const practiceAdjustedScoreItem = document.getElementById('practiceAdjustedScoreItem');
+            if (practiceTotal > 0) {
+                practiceAdjustedScoreItem.style.display = 'flex';
+                document.getElementById('practiceAdjustedScore').textContent = practiceAdjusted.toFixed(3) + '점';
+            } else {
+                practiceAdjustedScoreItem.style.display = 'none';
+            }
         }
 
         // 교육실습협력학교 - 수업 실적 추가
@@ -4521,14 +4529,22 @@
                 }
             });
 
-            const total = careerTotal + bonusTotal;
+            const total = careerTotal + bonusTotal + practiceTotal;
             const practiceAdjusted = careerTotal + practiceTotal;
 
             document.getElementById('careerScore').textContent = careerTotal.toFixed(3) + '점';
             document.getElementById('bonusScore').textContent = bonusTotal.toFixed(3) + '점';
             document.getElementById('practiceScore').textContent = practiceTotal.toFixed(3) + '점';
             document.getElementById('totalScore').textContent = total.toFixed(3) + '점';
-            document.getElementById('practiceAdjustedScore').textContent = practiceAdjusted.toFixed(3) + '점';
+
+            // 실습교 보정총점은 교육실습협력학교 가산점이 있을 때만 표시
+            const practiceAdjustedScoreItem = document.getElementById('practiceAdjustedScoreItem');
+            if (practiceTotal > 0) {
+                practiceAdjustedScoreItem.style.display = 'flex';
+                document.getElementById('practiceAdjustedScore').textContent = practiceAdjusted.toFixed(3) + '점';
+            } else {
+                practiceAdjustedScoreItem.style.display = 'none';
+            }
         }
 
         function validateRequired() {
