@@ -1355,8 +1355,8 @@
 
                 // 급지가 바뀌는 경우
                 if (nextGrade && nextGrade !== currentGrade && nextYear <= endYear) {
-                    // 이번 학년도 종료일 (다음 해 2월 28일)
-                    const splitEndDate = new Date(nextYear, 1, 28); // 2월은 인덱스 1
+                    // 이번 학년도 종료일 (다음 해 2월 마지막 날 - 윤년 고려)
+                    const splitEndDate = new Date(nextYear, 2, 0); // 2월 마지막 날 (윤년이면 29일, 평년이면 28일)
 
                     // 경력의 실제 종료일보다 이후면 경력의 종료일 사용
                     const actualSplitEndDate = splitEndDate > endDate ? endDate : splitEndDate;
