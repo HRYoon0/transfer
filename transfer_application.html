@@ -4956,6 +4956,9 @@
                 const workbook = new ExcelJS.Workbook();
                 await workbook.xlsx.load(arrayBuffer);
 
+                // 수식 자동 계산 설정 (윈도우 환경에서도 자동 계산되도록)
+                workbook.calcProperties.fullCalcOnLoad = true;
+
                 const worksheet = workbook.getWorksheet(1); // 첫 번째 시트
 
                 // 헬퍼 함수: 스타일을 유지하면서 값만 설정
