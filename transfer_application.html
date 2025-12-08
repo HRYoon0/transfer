@@ -4543,28 +4543,28 @@
                 }
             }
             const classScore = classCount * 2.0;
-            document.getElementById('practiceClassScore').value = classScore.toFixed(3);
+            document.getElementById('practiceClassScore').value = classScore > 0 ? classScore.toFixed(3) : '';
 
             // 4. 연구 실적 점수 계산
             const researchContent = document.getElementById('practiceResearchContent').value.trim();
             const researchDate = document.getElementById('practiceResearchDate').value.trim();
             const researchDigits = researchDate.replace(/[^0-9]/g, '');
             const researchScore = (researchContent && researchDigits.length === 8) ? 2.0 : 0;
-            document.getElementById('practiceResearchScore').value = researchScore.toFixed(3);
+            document.getElementById('practiceResearchScore').value = researchScore > 0 ? researchScore.toFixed(3) : '';
 
             // 5. 미래교육 실적 점수 계산
             const futureContent = document.getElementById('practiceFutureContent').value.trim();
             const futurePeriod = document.getElementById('practiceFuturePeriod').value.trim();
             const futureDigits = futurePeriod.replace(/[^0-9]/g, '');
             const futureScore = (futureContent && futureDigits.length === 16) ? 2.0 : 0;
-            document.getElementById('practiceFutureScore').value = futureScore.toFixed(3);
+            document.getElementById('practiceFutureScore').value = futureScore > 0 ? futureScore.toFixed(3) : '';
 
             // 6. 교육력 제고 실적 점수 계산
             const improvementContent = document.getElementById('practiceImprovementContent').value.trim();
             const improvementPeriod = document.getElementById('practiceImprovementPeriod').value.trim();
             const improvementDigits = improvementPeriod.replace(/[^0-9]/g, '');
             const improvementScore = (improvementContent && improvementDigits.length === 16) ? 2.0 : 0;
-            document.getElementById('practiceImprovementScore').value = improvementScore.toFixed(3);
+            document.getElementById('practiceImprovementScore').value = improvementScore > 0 ? improvementScore.toFixed(3) : '';
 
             // 전체 점수 재계산
             calculateScore();
@@ -4957,7 +4957,10 @@
                 await workbook.xlsx.load(arrayBuffer);
 
                 // 수식 자동 계산 설정 (윈도우 환경에서도 자동 계산되도록)
+                workbook.calcProperties = workbook.calcProperties || {};
                 workbook.calcProperties.fullCalcOnLoad = true;
+                workbook.calcProperties.calcMode = 'auto';
+                workbook.calcProperties.calcCompleted = false;
 
                 const worksheet = workbook.getWorksheet(1); // 첫 번째 시트
 
