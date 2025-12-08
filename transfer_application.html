@@ -1271,6 +1271,10 @@
         function subtractMonthsAndDaysFromDate(date, months, days) {
             const result = new Date(date);
 
+            // 원본 날짜가 해당 월의 마지막 날인지 확인
+            const originalDate = new Date(date);
+            const isLastDayOfMonth = originalDate.getDate() === new Date(originalDate.getFullYear(), originalDate.getMonth() + 1, 0).getDate();
+
             // 먼저 일 수를 빼기
             result.setDate(result.getDate() - days);
 
@@ -1280,6 +1284,12 @@
 
             result.setFullYear(result.getFullYear() - years);
             result.setMonth(result.getMonth() - remainingMonths);
+
+            // 원본이 월의 마지막 날이었다면, 결과도 해당 월의 마지막 날로 설정
+            if (isLastDayOfMonth) {
+                const lastDay = new Date(result.getFullYear(), result.getMonth() + 1, 0).getDate();
+                result.setDate(lastDay);
+            }
 
             // 역에 의한 계산: 시작일 = (종료일 - 기간) + 1일
             result.setDate(result.getDate() + 1);
