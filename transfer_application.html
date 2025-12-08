@@ -1693,6 +1693,7 @@
         function calculateCurrentSchoolYears() {
             const currentSchool = document.getElementById('currentSchool').value.trim();
             if (!currentSchool || savedCareers.length === 0) {
+                document.getElementById('currentSchoolYears').value = '0.00';
                 return;
             }
 
@@ -1702,6 +1703,7 @@
             });
 
             if (matchingCareers.length === 0) {
+                document.getElementById('currentSchoolYears').value = '0.00';
                 return;
             }
 
@@ -1780,6 +1782,7 @@
                 if (originalCareers.length === 0) {
                     savedCareers = [];
                     renderSavedCareers();
+                    calculateCurrentSchoolYears(); // 현임교 근무연수 재계산 (0.00으로 초기화)
                     calculateScore();
                     return;
                 }
@@ -1797,6 +1800,7 @@
                 savedCareers = adjustCareersTo48Months([...originalCareers], totalMonths, totalDays);
 
                 renderSavedCareers();
+                calculateCurrentSchoolYears(); // 현임교 근무연수 재계산
                 calculateScore();
             }
         }
