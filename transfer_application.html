@@ -1278,6 +1278,11 @@
             // 먼저 일 수를 빼기
             result.setDate(result.getDate() - days);
 
+            // 월의 마지막 날인 경우, 날짜 오버플로우 방지를 위해 임시로 1일로 설정
+            if (isLastDayOfMonth) {
+                result.setDate(1);
+            }
+
             // 그 다음 개월 수를 빼기
             const years = Math.floor(months / 12);
             const remainingMonths = months % 12;
